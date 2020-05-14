@@ -1,5 +1,6 @@
 <template>
     <div class="charts">
+         <span class="title-name">{{name}}</span>
         <div class="right" @click="toTable">查看图表</div>
         <div class="charts-main">
              <div id='list' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
@@ -23,7 +24,8 @@ export default {
             showShaoguan: false,
             updataUrl: yuenanUrl + '/ErpYn',
             type: 0,
-            optionsdata: {}
+            optionsdata: {},
+            name: ''
         }
     },
      computed: {
@@ -40,12 +42,15 @@ export default {
             }
         },
         xrData: function(newData,oldData){
+            this.name = '后整过程耗能';
             this.draw('zylzlstonwm','zylzqtonwm', 'zyltrqmwm', this.xrData)
         },
         jrgchn: function(newdata, olddata) {
+             this.name = '将染过程耗能';
             this.draw('ystonbz','ysmbz', 'jsmbz', this.jrgchn)
         },
         zzkthn: function(newdata, olddata) {
+             this.name = '织布空调耗能';
             this.draw('tonhbz','tonwmbz', '', this.zzkthn)
         }
     },
@@ -184,7 +189,6 @@ export default {
         }))
     },
     getGCNHJrgcTuBiaoData() {
-        //String ystonbz; //染色自来水标准用量String ysmbz; //染色蒸汽标准用量String jsmbz; //浆纱蒸汽标准用量String ystonwm; //染色自来水用量String ysmwm; //染色蒸汽用量String jsmwm; //浆纱蒸汽用量
         axios.post(this.updataUrl + '/api/getGCNHJrgcTuBiaoData').then((res => {
             let arr =res.data.data
              arr.map((v, idx) => {
@@ -196,7 +200,6 @@ export default {
         }))
     },
      getGCNHZbktTuBiaoData() {
-       // String rq;//日期String tonhbz; //自来水每小时用水标准String tonh; //自来水实际每小时用水String tonwmbz; //自来水没万米用水标准String tonwm; //自来水实际没万米用水
         axios.post(this.updataUrl + '/api/getGCNHZbktTuBiaoData').then((res => {
             let arr =res.data.data
              arr.map((v, idx) => {
@@ -435,14 +438,23 @@ export default {
     width: 100%;
    padding-top: 200px;
     background: url(..\assets\Administration\other_bg.png);
+    position: relative;
+    .title-name{
+        display: block;
+        font-size: 120px;
+        color: #00ecfc;
+        margin-top: 100px;
+        margin: 0 auto;
+    }
     .charts-main{
         width: 2500px;
         height: 3500px;
     }
     .right{
-        margin-left: 6700px;
         font-size: 120px;
         color: #00ecfc;
+        position: absolute;
+        left: 6700px;
     }
 }
 </style>

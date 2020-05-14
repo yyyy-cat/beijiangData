@@ -1,5 +1,6 @@
 <template>
     <div class="charts">
+        <span class="title-name">{{name}}</span>
         <div class="right" @click="toTable">查看图表</div>
         <div class="left">
             <el-calendar>
@@ -31,7 +32,8 @@ export default {
             type: null,//上个页面判断渲染哪个图表的
             rsyl: [],
             sjfl: [],
-            optionsdata: {}
+            optionsdata: {},
+            name: ''
         
         }
     },
@@ -42,9 +44,11 @@ export default {
     },
     watch: {
         rsyl: function(nelData, oldData) {
+            this.name = '染色用料数据';
             this.draw(this.rsyl);
         },
         sjfl: function(nelData, oldData) {
+            this.name = '上浆辅料数据';
             this.draw(this.sjfl);
         },
      showShaoguan: function(newdata,olddata){

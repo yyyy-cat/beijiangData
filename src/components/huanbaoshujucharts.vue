@@ -1,5 +1,6 @@
 <template>
     <div class="charts">
+         <span class="title-name">环保数据</span>
         <div class="left">
         <div class="charts-main">
              <div id='list' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
@@ -433,12 +434,19 @@ export default {
 <style lang="less" scoped>
 .charts{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     position: relative;
     height: 100%;
     width: 100%;
     padding-top: 200px;
     background: url(..\assets\Administration\other_bg.png);
+    .title-name{
+        display: block;
+        font-size: 120px;
+        color: #00ecfc;
+        margin-top: 100px;
+        margin: 0 auto;
+    }
     .left{
         display: flex;
         flex-direction: column;
@@ -457,7 +465,6 @@ export default {
     }
     .right{
         position: absolute;
-        top: 100px;
         left: 6700px;
         font-size: 120px;
         color: #00ecfc;

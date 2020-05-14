@@ -1,5 +1,6 @@
 <template>
     <div class="charts">
+        <span class="title-name">{{name}}</span>
         <div class="right" @click="toTable"> 查看日历图</div>
         <div class="left">
             <div class="charts-main">
@@ -53,7 +54,8 @@ export default {
             type: null,
             rsylcurrent: {}, //染色用料的当前数据
             rsylcurrent2: {}, //第二个实例
-            optionsdata: {}
+            optionsdata: {},
+            name: ''
         }
     },
     watch: {
@@ -64,11 +66,14 @@ export default {
     },
    mounted() {
     if(Number(this.type) == 0) {
+            this.name = '浆染投入产出数据';
             this.draw('sjtrcd', 'jsczzc');
         }
    else if(Number(this.type) == 1) {
+        this.name = '织造投入产出数据';
         this.draw('baimiyongweibiaozhun','zhichenglvbiaozhun');
     }else{
+        this.name = '后整投入产出数据'
         this.draw('bzzcl');
     }
       
@@ -353,6 +358,10 @@ export default {
             myCharts.setOption(this.initOptions(setBaseOptions, xData, source));
 
              myCharts.on('click', function(params) {
+                if(_this.type == 0 && params.seriesType == 'line' && params.seriesName == "原纱利用率"){
+                    _this.ybp(params.data, 'sjsrl', params.seriesName);
+                    _this.rsylcurrent = data[params.dataIndex];
+                }
                 if(_this.type == 1 && params.seriesType == 'line' && params.seriesName == "百米用纬"){
                     _this.ybp(params.data, 'sjsrl2', params.seriesName);
                     _this.rsylcurrent2 = data[params.dataIndex];

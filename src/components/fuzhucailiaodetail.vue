@@ -1,5 +1,6 @@
 <template>
     <div class="charts">
+        <span class="title-name">{{name}}</span>
         <div class="right" @click="toTable"> 查看日历图</div>
         <div class="left">
             <div class="charts-main">
@@ -35,7 +36,8 @@ export default {
             lData: this.$route.params.wdata,
             type: null,
             rsylcurrent: {}, //染色用料的当前数据
-            optionsdata: {}
+            optionsdata: {},
+            name: ''
         }
     },
     watch: {
@@ -46,9 +48,11 @@ export default {
     },
    mounted() {
     if(Number(this.type) == 0) {
+            this.name = '染色用料数据';
             this.draw('mybzsr');
         }
    else if(Number(this.type) == 1) {
+        this.name = '上浆辅料数据';
         this.draw('fljybzsjl');
     }
       

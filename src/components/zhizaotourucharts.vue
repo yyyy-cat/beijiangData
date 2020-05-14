@@ -1,5 +1,6 @@
 <template>
     <div class="charts">
+        <span class="title-name">{{name}}</span>
         <div class="right" @click="toTable">查看图表</div>
         <div class="left">
             <el-calendar>
@@ -33,7 +34,8 @@ export default {
             jrtrcc: [],
             type: null,//上个页面判断渲染哪个图表的值
             hztrcc: [],
-            optionsdata: {}
+            optionsdata: {},
+            name: ''
         
         }
     },
@@ -44,12 +46,15 @@ export default {
     },
     watch: {
         xrData: function(nelData, oldData) {
+            this.name = '织造投入产出数据';
             this.draw(this.xrData);
         },
         jrtrcc: function(nelData, oldData) {
+            this.name = '浆染投入产出数据';
             this.draw(this.jrtrcc);
         },
         hztrcc: function(nelData, oldData) {
+            this.name = '后整投入产出数据'
             this.draw(this.hztrcc);
         },
      showShaoguan: function(newdata,olddata){
@@ -119,6 +124,7 @@ export default {
         axios.post(this.updataUrl+'/api/getYCLJrTuBiaoData').then(res => {
             //原材料浆染投入产出
           this.jrtrcc = res.data.data;
+          
         });
     },
     getYCLHzTuBiaoData() {
@@ -338,4 +344,5 @@ export default {
 
 <style lang="less" scoped>
 @import '../style/hasrl.less';
+
 </style>
