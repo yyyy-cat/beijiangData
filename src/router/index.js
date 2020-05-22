@@ -214,6 +214,11 @@ export default new Router({
       component:()=>import("../components/charts"),
     },
     {
+      //越南后整辅料foot
+      path: "/chart2",
+      component:()=>import("../components/chart2"),
+    },
+    {
       //韶关环保数据
       path: "/shaoguanhuanbaoshuju",
       component:()=>import("@/components/shaoguanhuanbaoshuju"),
