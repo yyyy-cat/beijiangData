@@ -12,7 +12,7 @@ export default {
     data() {
         return{
         cellSize:[500, 500],
-        pieRadius:30,
+        pieRadius: 200,
         mydata:[
             [10, 2, 0, 12],
             [0, 1, 0, 23],
@@ -148,7 +148,7 @@ export default {
                     offset: [-_this.cellSize[0] / 2 + 10, -_this.cellSize[1] / 2 + 10],
                     textStyle: {
                         color: '#000',
-                        fontSize: 14
+                        fontSize: 50
                     }
                 }
             },

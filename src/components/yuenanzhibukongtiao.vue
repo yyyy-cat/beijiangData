@@ -92,16 +92,39 @@
               width="450">
             </el-table-column>
             <el-table-column
-              prop="tonh"
+              
               label="ton/H"
               align="center"
               width="450">
+               <el-table-column
+              prop="tonhbz"
+              label="标准"
+              align="center"
+              width="230">
             </el-table-column>
             <el-table-column
-              prop="tonwm"
+              prop="tonh"
+              label="实绩"
+              align="center"
+              width="230">
+            </el-table-column>
+            </el-table-column>
+            <el-table-column
               label="ton/万米"
               align="center"
               width="450">
+               <el-table-column
+              prop="tonwmbz"
+              label="标准"
+              align="center"
+              width="230">
+            </el-table-column>
+            <el-table-column
+              prop="tonwm"
+              label="实绩"
+              align="center"
+              width="230">
+            </el-table-column>
             </el-table-column>
           </el-table>
         </div>
