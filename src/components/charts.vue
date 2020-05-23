@@ -12,7 +12,7 @@ export default {
     data() {
         return{
         cellSize:[500, 500],
-        pieRadius:30,
+        pieRadius: 200,
         mydata:[
             [10, 2, 0, 12],
             [0, 1, 0, 23],
@@ -93,6 +93,7 @@ export default {
     getPieSeriesUpdate(scatterData, chart) {
         return this.$echarts.util.map(scatterData, function (item, index) {
             var center = chart.convertToPixel('calendar', item);
+            
             return {
                 id: index + 'pie',
                 center: center
@@ -112,25 +113,17 @@ export default {
         },
         calendar: {
             // width: '3000px',
+            fontSize: 100,
             top: 'middle',
             left: 'center', 
             orient: 'vertical', //设置坐标的方向，既可以横着也可以竖着
             cellSize: _this.cellSize, //设置日历格大小
-            yearLabel: { 
-                show: false,
-                textStyle: {
-                    fontSize: 30
-                }
-            },
             dayLabel: {
                 margin: 20,
-                fontSize: 50,
+                fontSize: 100,
                 firstDay: 1,
                 nameMap: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
                 show: true
-            },
-            monthLabel: {
-                show: false
             },
             range: ['2017-02']
         },
@@ -148,7 +141,7 @@ export default {
                     offset: [-_this.cellSize[0] / 2 + 10, -_this.cellSize[1] / 2 + 10],
                     textStyle: {
                         color: '#000',
-                        fontSize: 14
+                        fontSize: 50,
                     }
                 }
             },
@@ -160,16 +153,16 @@ export default {
         var pieInitialized;
         setTimeout(function () {
             pieInitialized = true;
-            myChart.setOption({
-                series: _this.getPieSeries(scatterData, myChart)
-            });
+            // myChart.setOption({
+            //     series: _this.getPieSeries(scatterData, myChart)
+            // });
         }, 10);
  
         myChart.onresize = function () {
             if (pieInitialized) {
-                myChart.setOption({
-                    series: _this.getPieSeriesUpdate(scatterData, myChart)
-                });
+                // myChart.setOption({
+                //     series: _this.getPieSeriesUpdate(scatterData, myChart)
+                // });
             }
         };
  
