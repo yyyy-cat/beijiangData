@@ -125,6 +125,18 @@
                 align="center"
                 width="300">
               </el-table-column>
+                <el-table-column
+                prop="ystonbz"
+                label="自来水标准用量"
+                align="center"
+                width="400">
+                <el-table-column
+                  prop="ystonwm"
+                  label="吨/万米"
+                  align="center"
+                  width="400">
+                </el-table-column>
+              </el-table-column>
               <el-table-column
                 label="自来水用量"
                 align="center"
@@ -146,6 +158,18 @@
                   label="吨/万米"
                   align="center"
                   width="300">
+                </el-table-column>
+              </el-table-column>
+              <el-table-column
+                prop="ysmbz"
+                label="蒸汽标准用量"
+                align="center"
+                width="400">
+                <el-table-column
+                  prop="ystonwm"
+                  label="吨/万米"
+                  align="center"
+                  width="400">
                 </el-table-column>
               </el-table-column>
               <el-table-column
@@ -203,6 +227,18 @@
                   label="吨/万米"
                   align="center"
                   width="350">
+                </el-table-column>
+              </el-table-column>
+                <el-table-column
+                prop="jsmbz"
+                label="蒸汽标准用量"
+                align="center"
+                width="400">
+                <el-table-column
+                  prop="jsmbzb"
+                  label=" 吨/万米"
+                  align="center"
+                  width="400">
                 </el-table-column>
               </el-table-column>
               <el-table-column
@@ -1517,6 +1553,7 @@ a {
 }
 .cell{
   padding: 20px !important;
+  line-height: 60px !important;
 }
 .el-table--scrollable-y .el-table__body-wrapper {
   overflow-y: auto !important;

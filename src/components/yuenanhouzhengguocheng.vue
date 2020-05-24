@@ -102,6 +102,44 @@
               </el-table-column>
             </el-table-column>
             <el-table-column
+              label="标准万米用量"
+              align="center"
+              width="450">
+              <el-table-column
+                prop="bzwmzls"
+                label="自来水用量"
+                align="center"
+                width="350">
+                 <el-table-column
+                label="ton"
+                align="center"
+                width="350">
+              </el-table-column>
+              </el-table-column>
+              <el-table-column
+                prop="bzwmzq"
+                label=" 蒸汽用量"
+                align="center"
+                width="350">
+                 <el-table-column
+                label="ton"
+                align="center"
+                width="350">
+              </el-table-column>
+              </el-table-column>
+              <el-table-column
+                prop=" bzwmtrq"
+                label="天然气用量"
+                align="center"
+                width="350">
+                 <el-table-column
+                label="m3"
+                align="center"
+                width="350">
+              </el-table-column>
+              </el-table-column>
+            </el-table-column>
+            <el-table-column
               prop="hzrq"
               label="后整日期"
               align="center"
@@ -116,6 +154,63 @@
                 label="米"
                 align="center"
                 width="300">
+              </el-table-column>
+            </el-table-column>
+
+            <el-table-column
+              label="总用量"
+              align="center"
+              width="450">
+              <el-table-column
+                label="自来水用量"
+                align="center"
+                width="350">
+                 <el-table-column
+                prop="zylzlston"
+                label="ton"
+                align="center"
+                width="350">
+              </el-table-column>
+              <el-table-column
+                prop="zylzlstonwm"
+                label="ton/万米"
+                align="center"
+                width="350">
+              </el-table-column>
+              </el-table-column>
+              <el-table-column
+                label="蒸汽用量"
+                align="center"
+                width="350">
+                 <el-table-column
+                prop="zylzqton"
+                label="ton"
+                align="center"
+                width="350">
+              </el-table-column>
+              <el-table-column
+                prop="zylzqtonwm"
+                label="ton/万米"
+                align="center"
+                width="350">
+              </el-table-column>
+              </el-table-column>
+              <el-table-column
+                label="天然气用量"
+                align="center"
+                width="350">
+                 <el-table-column
+                prop="zyltrqm"
+                label="m3"
+                align="center"
+                width="350">
+              </el-table-column>
+              <el-table-column
+                prop="zyltrqmwm"
+                label="m3/万米"
+                align="center"
+                width="350">
+              </el-table-column>
               </el-table-column>
             </el-table-column>
             <template v-if="show1">

@@ -1,187 +1,163 @@
 <template>
     <div class="charts">
         <div class="charts-main">
-            <div id="list" :style="{width: '3500px', height: '3000px'}"></div>
+             <div id='list' :style="{width: '100%', height: '100%', margin: '0 auto', zIndex: '10'}"></div>
+        </div>
+        <div class="ybp">
+             <div id="gauge" :style="{width: '100%', height: '100%', margin: '0 auto', zIndex: '10'}"></div>
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name: 'Charts',
     data() {
         return{
-        cellSize:[500, 500],
-        pieRadius: 200,
-        mydata:[
-            [10, 2, 0, 12],
-            [0, 1, 0, 23],
-            [0, 2, 0, 22],
-            [0, 2, 1.5, 20.5],
-            [0, 3, 1.5, 19.5],
-            [10, 1, 1.5, 11.5],
-            [0, 2, 1.5, 20.5],
-            [10, 2, 0, 12],
-            [0, 1, 0, 23],
-            [0, 4, 0, 20],
-            [0, 2, 1.5, 20.5],
-            [0, 1, 1.5, 21.5],
-            [9, 2, 1.5, 11.5],
-            [0, 5, 1.5, 17.5],
-            [10, 1, 0, 13],
-            [0, 5, 0, 19],
-            [0, 1, 0, 23],
-            [0, 1, 1.5, 21.5],
-            [0, 5, 1.5, 17.5],
-            [9, 2, 1.5, 11.5],
-            [0, 1, 1.5, 21.5],
-            [9, 1, 0, 14],
-            [0, 1, 0, 23],
-            [0, 3, 0, 21],
-            [0, 1, 1.5, 21.5],
-            [0, 4, 1.5, 18.5],
-            [10, 2, 1.5, 10.5],
-            [0, 4, 1.5, 18.5],
-            [10, 1, 0, 11],
-            [0, 4, 0, 20],
-            [0, 12, 0, 12]
-        ],
+            myCharts: null,
+            // id: this.$route.query.id
         }
     },
    mounted() {
-    this.handleCharts();
-    // var scatterData = this.getVirtulData();
-    // this.getVirtulData();
+    //    console.log( this.$route.query,"这是一个生死攸关")
+      this.draw();
+      this.ybp();
+       this.UploadFilesGhb();
   },
    methods: {
-    getVirtulData() {
-        var date = +this.$echarts.number.parseDate('2017-02-01');
-        var end = +this.$echarts.number.parseDate('2017-03-01');
-        var dayTime = 3600 * 24 * 1000;
-        var data = [];
-        for (var time = date; time < end; time += dayTime) {
-            data.push([
-                this.$echarts.format.formatTime('yyyy-MM-dd', time),
-                Math.floor(Math.random() * 10000)
-            ]);
-        }
-        return data;
-    },
-    getPieSeries(scatterData, chart) {
-        var _this = this
-        return this.$echarts.util.map(scatterData, function (item, index) {
-            var center = chart.convertToPixel('calendar', item);
-            return {
-                id: index + 'pie',
-                type: 'pie',
-                center: center,
-                label: {
-                    normal: {
-                        formatter: '{c}',
-                        position: 'inside'
-                    }
-                },
-                radius: _this.pieRadius,
-                data: [
-                    {name: '工作', value: Math.round(Math.random() * 24)},
-                    {name: '娱乐', value: Math.round(Math.random() * 24)},
-                    {name: '睡觉', value: Math.round(Math.random() * 24)}
-                ]
-            };
+    UploadFilesGhb() {
+        axios.post('http://120.78.186.60:8082/ErpYn/api/getYCLHzTuBiaoData').then(res => {
+          console.log("res", res.data);
         });
     },
-    getPieSeriesUpdate(scatterData, chart) {
-        return this.$echarts.util.map(scatterData, function (item, index) {
-            var center = chart.convertToPixel('calendar', item);
-            
-            return {
-                id: index + 'pie',
-                center: center
-            };
-        });
-    },
-    handleCharts() {
-    //   var scatterData = this.getVirtulData();
-      var _this = this
-      var myChart = this.$echarts.init(document.getElementById("list"));
-      var scatterData = this.getVirtulData();
-      let option = {
-        tooltip : {},
-        legend: {
-            data: ['工作', '娱乐', '睡觉'],
-            bottom: 20
-        },
-        calendar: {
-            // width: '3000px',
-            fontSize: 100,
-            top: 'middle',
-            left: 'center', 
-            orient: 'vertical', //设置坐标的方向，既可以横着也可以竖着
-            cellSize: _this.cellSize, //设置日历格大小
-            dayLabel: {
-                margin: 20,
-                fontSize: 100,
-                firstDay: 1,
-                nameMap: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-                show: true
+    ybp() {
+        let options = {
+            tooltip: {
+                formatter: '{a} <br/>{b} : {c}%'
             },
-            range: ['2017-02']
-        },
-        series: [{
-            id: 'label',
-            type: 'scatter',
-            coordinateSystem: 'calendar',
-            symbolSize: 1,
-            label: {
-                normal: {
-                    show: true,
-                    formatter: function (params) {
-                        return _this.$echarts.format.formatTime('dd', params.value[0]);
-                    },
-                    offset: [-_this.cellSize[0] / 2 + 10, -_this.cellSize[1] / 2 + 10],
-                    textStyle: {
-                        color: '#000',
-                        fontSize: 50,
+            radius: '75%',
+            series: [
+                {
+                    name: '业务指标',
+                    type: 'gauge',
+                    detail: {formatter: '{value}%'},
+                    data: [{value: 50, name: '完成率'}],
+                    axisLine: {            // 坐标轴线  
+                     lineStyle: {       // 属性lineStyle控制线条样式  
+                        color: [[0.2, '#c23531'], [0.8, '#63869e'], [1, '#c23531']]
+                            }  
+                        },  
+                }
+            ]
+        };
+            let myCharts = this.$echarts.init(document.getElementById('gauge'));
+            options.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
+            myCharts.setOption(options, true);
+    },
+    draw() {
+         let options = {
+             tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
                     }
                 }
             },
-            data: scatterData
-        }]
-    };
-    if (!myChart.inNode) {
-        var _this = this;
-        var pieInitialized;
-        setTimeout(function () {
-            pieInitialized = true;
-            // myChart.setOption({
-            //     series: _this.getPieSeries(scatterData, myChart)
-            // });
-        }, 10);
- 
-        myChart.onresize = function () {
-            if (pieInitialized) {
-                // myChart.setOption({
-                //     series: _this.getPieSeriesUpdate(scatterData, myChart)
-                // });
-            }
-        };
- 
-    };
-     myChart.setOption(option)
-    }
     
-  }
+        legend: {
+            data: ['蒸发量', '降水量', '平均温度']
+        },
+        xAxis: [
+            {
+                type: 'category',
+            
+                axisPointer: {
+                    type: 'shadow'
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                name: '水量',
+                min: 0,
+                max: 250,
+                interval: 50,
+                axisLabel: {
+                    formatter: '{value} ml',
+                    textStyle: { 
+                        fontSize : 30   
+                        }
+                },
+                nameTextStyle: {
+                    fontSize: 30,
+                },
+            },
+            {
+                type: 'value',
+                name: '水量',
+                min: 0,
+                max: 250,
+                interval: 50,
+                axisLabel: {
+                    formatter: '{value} ml',
+                    textStyle: { 
+                        fontSize : 30   
+                        }
+                },
+                nameTextStyle: {
+                    fontSize: 30,
+                },
+            }
+        ],
+        series: [
+            {
+                name: '整经长度',
+                type: 'bar',
+                data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+            },
+            {
+                name: '出轴长度',
+                type: 'bar',
+                data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+            },
+            {
+                name: '原纱利用率',
+                type: 'line',
+                smooth: 0.5,
+                yAxisIndex: 1,
+                symbolSize: 30, 
+
+                data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
+                 lineStyle: {
+                     width: 8
+                 }
+            }
+        ],
+        }
+         let myCharts = this.$echarts.init(document.getElementById('list'));
+            myCharts.setOption(options);
+            myCharts.on('click', function(params) {
+                console.log('14566')
+                console.log(params); 
+            });
+    }
+  } 
 }
 </script>
 
 <style lang="less" scoped>
 .charts{
+    display: flex;
+
     //  background: url(..\assets\Administration\other_bg.png);
-    .charts-main{
-        padding-left: 500px ;
-    }
-    #list{
-        margin-top: 300px;
+    .charts-main, .ybp{
+        width: 2500px;
+        height: 2500px;
+        background: pink;
     }
 }
 </style>
