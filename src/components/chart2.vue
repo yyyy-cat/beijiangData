@@ -8,7 +8,7 @@
             class="name"
             slot-scope="{date, data}">
              <div class="calendar-day">{{ data.day.split('-').slice(1).join('-') }}</div>
-                <div :id="'step' + data.day.split('-').slice(1).join('-')" :style="{width: '900px', height: '800px', margin: '0 auto', zIndex: '10'}" @click="toNextPage('step' + data.day.split('-').slice(1).join('-'))"></div>
+                <div :id="'step' + data.day.split('-').slice(1).join('-')" :style="{width: '800px', height: '700px', margin: '0 auto', zIndex: '10'}" @click="toNextPage(data.day.split('-').slice(2).join('-'))"></div>
               
         </template>
         </el-calendar>
@@ -22,11 +22,14 @@ export default {
     data() {
         return{
             myCharts: null,
-            dayData: this.createMonthDay(),
             xrData: [],
             zData: [],
             bzzcl: [],
-            zcl: []
+            zcl: [],
+            wData: [],
+            sjtrcd: [],//整经
+            jsczzc: [],//出轴
+            syl: []//原纱
         
         }
     },
@@ -36,30 +39,25 @@ export default {
     }
     },
    mounted() {
-    
-      
       this.UploadFilesGhb();
   },
    methods: {
        toNextPage(id) {
-           //this.$router.push('/charts?id='+ id)
-           console.log(this.xrData,"返回的数据")
-        //    console.log(this.bzzcl,this.zcl,"生成的数组")
+           let arr = []
+            this.xrData.forEach((n, idx) => {
+                if(n.zjsj.slice(8,10) == id) {
+                     arr.push(n.list)
+                }
+        })
+          this.$router.push({
+              name: 'charts',
+              params: {
+                  wdata: JSON.stringify(arr[0])
+              }
+          })
        },
-       createMonthDay() {
-        let daysOfMonth = [];
-        let fullYear = new Date().getFullYear();
-        let month = new Date().getMonth() + 1;
-        let lastDayOfMonth = new Date(fullYear, month, 0).getDate();
-        for (var i = 1; i <= lastDayOfMonth; i++) {
-          let a =  i<10 ? '0' + i : i;
-           let months =  month<10 ? '0' + month : month
-            daysOfMonth.push(months + '-' + a);
-        };
-        return daysOfMonth;
-    },
     UploadFilesGhb() {
-        axios.post('http://120.78.186.60:8082/ErpYn/api/getYCLHzTuBiaoData').then(res => {
+        axios.post('http://120.78.186.60:8082/ErpYn/api/getYCLJrTuBiaoData').then(res => {
           this.xrData = res.data.data;
         });
     },
@@ -74,20 +72,19 @@ export default {
                     }
                 }
             },
-    
-        legend: {
-            data: ['蒸发量', '降水量', '平均温度']
-        },
-        xAxis: [
-            {
+        xAxis:  {
                 type: 'category',
             
                 axisPointer: {
                     type: 'shadow'
                 },
-                data:[0,10,20,30,40,50,60,70,80,90,100]
-            }
-        ],
+                data:[0,4,8,12,14,16,22,24],
+                axisLabel: {
+                    textStyle: { 
+                        fontSize : 30   
+                        }
+                },
+            },
         yAxis: [
             {
                 type: 'value',
@@ -95,7 +92,7 @@ export default {
                 max: 100,
                 interval: 50,
                 axisLabel: {
-                    formatter: '{value} ml',
+                    formatter: '{value}',
                     textStyle: { 
                         fontSize : 30   
                         }
@@ -110,7 +107,7 @@ export default {
                 max: 100,
                 interval: 50,
                 axisLabel: {
-                    formatter: '{value} ml',
+                    formatter: '{value}',
                     textStyle: { 
                         fontSize : 30   
                         }
@@ -121,10 +118,15 @@ export default {
             }
         ],
         series: [
-            {
+            { 
                 name: '整经长度',
                 type: 'bar',
-                data: this.bzzcl
+                data: this.sjtrcd
+            },
+            {
+                name: '出轴长度',
+                type: 'bar',
+                data: this.jsczzc
             },
             {
                 name: '原纱利用率',
@@ -133,7 +135,7 @@ export default {
                 yAxisIndex: 1,
                 symbolSize: 10, 
 
-                data: this.zcl,
+                data: this.syl,
                  lineStyle: {
                      width: 8
                  }
@@ -146,30 +148,36 @@ export default {
         arr.forEach((key, idx) => {
             let brr =[];
             let crr = [];
+            let drr = [];
             for(let k in key) {
-                brr.push(key[k].bzzcl);
-                crr.push(key[k].sjzcl)
+                brr.push(key[k].sjtrcd);
+                crr.push(key[k].jsczzc);
+                drr.push(key[k].syl)
             }
-            this.bzzcl = brr
-            this.zcl = crr
+            this.sjtrcd = brr
+            this.jsczzc = crr
+            this.syl = drr
         })
     },
     draw() {
         let _this = this;
-        this.dayData.forEach((v, index) => {
-            let myCharts = this.$echarts.init(document.getElementById(`step${v}`));
+
+        this.xrData.forEach((v, index) => {
+            let zjsj = '05-'+v.zjsj.slice(8,10);
+            let myCharts = this.$echarts.init(document.getElementById(`step${zjsj}`));
             let arr =[]
-            arr.push(this.xrData[index].list)
-            console.log(arr,"我的全部数据")
-            this.zData = arr;
+            arr.push(v.list)
             this.toChangeData(arr)
-            myCharts.setOption(this.initOptions());
-            myCharts.on('click', function(params) {
-                console.log(params); 
-                if(params.seriesType == 'line'){
-                    _this.$router.push('/charts')
-                }
-            });
+            if(v.list.length > 0) {
+                myCharts.setOption(this.initOptions());
+            }
+            
+            // myCharts.on('click', function(params) {
+            //     console.log(params); 
+            //     if(params.seriesType == 'line'){
+            //         _this.$router.push('/charts')
+            //     }
+            // });
         }) 
     }
   } 

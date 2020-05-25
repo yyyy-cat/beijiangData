@@ -128,6 +128,18 @@ export default new Router({
       component:()=>import("@/components/yuenanzhizaotouru"),
     },
     {
+      //跳转织造图表
+      path: "/zhizaotourucharts",
+      name: "zhizaotourucharts",
+      component:()=>import("@/components/zhizaotourucharts"),
+    },
+    {
+      //跳转织造图表详情
+      path: "/zhizaotourudetail",
+      name: "zhizaotourudetail",
+      component:()=>import("@/components/zhizaotourudetail"),
+    },
+    {
       //越南后整投入产出数据
       path: "/yuenanhouzhengtouru",
       component:()=>import("@/components/yuenanhouzhengtouru"),
@@ -211,11 +223,13 @@ export default new Router({
     {
       //越南后整辅料foot
       path: "/charts",
+      name: 'charts',
       component:()=>import("../components/charts"),
     },
     {
       //越南后整辅料foot
       path: "/chart2",
+      name: 'chart2',
       component:()=>import("../components/chart2"),
     },
     {

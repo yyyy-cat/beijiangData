@@ -16,21 +16,24 @@ export default {
     data() {
         return{
             myCharts: null,
+            lData: this.$route.params.wdata
             // id: this.$route.query.id
         }
     },
    mounted() {
-    //    console.log( this.$route.query,"这是一个生死攸关")
       this.draw();
       this.ybp();
-       this.UploadFilesGhb();
   },
    methods: {
-    UploadFilesGhb() {
-        axios.post('http://120.78.186.60:8082/ErpYn/api/getYCLHzTuBiaoData').then(res => {
-          console.log("res", res.data);
-        });
-    },
+       changeOptions(name) {
+           let data = JSON.parse(this.lData);
+           let arr = []
+            data.forEach((item, idx) => {
+                arr.push(item[name])
+            });
+
+            return arr
+       },
     ybp() {
         let options = {
             tooltip: {
@@ -45,9 +48,20 @@ export default {
                     data: [{value: 50, name: '完成率'}],
                     axisLine: {            // 坐标轴线  
                      lineStyle: {       // 属性lineStyle控制线条样式  
-                        color: [[0.2, '#c23531'], [0.8, '#63869e'], [1, '#c23531']]
+                        color: [[0.2, '#c23531'], [0.8, '#63869e'], [1, '#c23531']],
+                        width: 150
                             }  
                         },  
+                    axisTick: {
+                        length: 50,
+                         lineStyle: {
+                             width: 8
+                         }
+                    },
+                    axisLabel: {
+                        show: true,
+                        color: '#ff0'
+                    }
                 }
             ]
         };
@@ -82,12 +96,11 @@ export default {
         yAxis: [
             {
                 type: 'value',
-                name: '水量',
                 min: 0,
                 max: 250,
                 interval: 50,
                 axisLabel: {
-                    formatter: '{value} ml',
+                    formatter: '{value} ',
                     textStyle: { 
                         fontSize : 30   
                         }
@@ -98,12 +111,11 @@ export default {
             },
             {
                 type: 'value',
-                name: '水量',
                 min: 0,
                 max: 250,
                 interval: 50,
                 axisLabel: {
-                    formatter: '{value} ml',
+                    formatter: '{value} ',
                     textStyle: { 
                         fontSize : 30   
                         }
@@ -117,12 +129,12 @@ export default {
             {
                 name: '整经长度',
                 type: 'bar',
-                data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                data: this.changeOptions('sjtrcd')
             },
-            {
+             {
                 name: '出轴长度',
                 type: 'bar',
-                data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                data: this.changeOptions('jsczzc')
             },
             {
                 name: '原纱利用率',
@@ -131,7 +143,7 @@ export default {
                 yAxisIndex: 1,
                 symbolSize: 30, 
 
-                data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
+                data: this.changeOptions('syl'),
                  lineStyle: {
                      width: 8
                  }
@@ -152,12 +164,12 @@ export default {
 <style lang="less" scoped>
 .charts{
     display: flex;
-
+    height: 100%;
+    width: 100%;
     //  background: url(..\assets\Administration\other_bg.png);
     .charts-main, .ybp{
         width: 2500px;
-        height: 2500px;
-        background: pink;
+        height: 3500px;
     }
 }
 </style>
