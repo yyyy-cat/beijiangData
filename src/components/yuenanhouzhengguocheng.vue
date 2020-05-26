@@ -2,9 +2,8 @@
   <!-- 管控中心 -->
   <div class="Administration" v-on:dblclick="shuangji()">
     <!-- 顶部logo -->
+    <div class="nav-main">
     <div class="index-top_nav">
-      <!-- <img src="..\assets\Administration\gk_logo.png" alt> -->
-      <!-- <img src="../assets/index/top_nav.png" alt=""> -->
       <p
         style="text-align: center; font-family: 庞门正道标题体; font-size: 180px;color:#00ecfc; letter-spacing:15px;"
       >
@@ -22,14 +21,12 @@
         <img src="..\assets\Administration\home.png" alt />
         返回
       </span>
-      <!--<span @click="syj">-->
-      <!--<img src="..\assets\Administration\home.png" alt />-->
-      <!--上级-->
-      <!--</span>-->
     </div>
-    <!-- 显示用户登陆和退出 -->
-    <login></login>
-
+      <div class="right">
+        <img src="..\assets\production\sc_chart.png" alt  class="img" @click='toBarCharts'/>
+        <login></login>
+    </div>
+  </div>
     <div id="bgColor">
       <!-- <h1>数据管控标准</h1> -->
 
@@ -615,6 +612,9 @@ export default {
     clearInterval(this.str);
   },
   methods: {
+    toBarCharts() {
+      this.$router.push('/barCharts?type='+ 2)
+    },
     handlpe(){
       this.show=!this.show;
 this.show1=!this.show1;
@@ -775,7 +775,18 @@ this.show1=!this.show1;
   }
 };
 </script>
-<style scoped>
+<style scoped lang='less'>
+.nav-main{
+  display: flex;
+  height: 292px;
+  align-items: center;
+  .right{
+  display: flex;
+  .img{
+    margin-right: 1600px;
+  }
+}
+}
 .ChemicalTable {
   margin: 200px auto 0;
   /* width: 1751px; */

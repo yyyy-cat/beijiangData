@@ -16,9 +16,9 @@
         </span>
       </div>
       <div class="right">
-          <img src="..\assets\production\sc_chart.png" alt  class="img"/>
-      <login></login>
-  </div>
+          <img src="..\assets\production\sc_chart.png" alt  class="img" @click='toBarCharts'/>
+          <login></login>
+      </div>
   </div>
     <div id="bgColor">
       <!-- <h1>数据管控标准</h1> -->
@@ -375,6 +375,9 @@ export default {
     clearInterval(this.str);
   },
   methods: {
+    toBarCharts() {
+      this.$router.push('/barCharts?type='+ 0)
+    },
     arraySpanMethod({row, column, rowIndex, columnIndex}) {
 
     },
