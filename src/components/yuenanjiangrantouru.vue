@@ -114,7 +114,7 @@
               </el-table-column>
               <el-table-column
                 prop="ztf"
-                label="总年份"
+                label="总头份"
                 align="center"
                 width="450">
               </el-table-column>

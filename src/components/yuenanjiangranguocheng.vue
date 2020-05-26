@@ -2,34 +2,24 @@
   <!-- 管控中心 -->
   <div class="Administration" v-on:dblclick="shuangji()">
     <!-- 顶部logo -->
-    <div class="index-top_nav">
-      <!-- <img src="..\assets\Administration\gk_logo.png" alt> -->
-      <!-- <img src="../assets/index/top_nav.png" alt=""> -->
-      <p
-        style="text-align: center; font-family: 庞门正道标题体; font-size: 180px;color:#00ecfc; letter-spacing:15px;"
-      >
-        <img
-          src="..\assets\Administration\nav_logo.png"
-          alt
-          style="vertical-align: middle;margin-top: -37px;"
-        />
-        <span>浆染过程耗能</span>
-      </p>
-    </div>
-    <!-- 返回主页 -->
-    <div class="index-esc">
-      <span @click="esc">
-        <img src="..\assets\Administration\home.png" alt />
-        返回
-      </span>
-      <!--<span @click="syj">-->
-      <!--<img src="..\assets\Administration\home.png" alt />-->
-      <!--上级-->
-      <!--</span>-->
-    </div>
-    <!-- 显示用户登陆和退出 -->
-    <login></login>
-
+  <div class="nav-main">
+      <div class="index-top_nav">
+        <p style="text-align: center; font-family: 庞门正道标题体; font-size: 180px;color:#00ecfc; letter-spacing:15px;">
+          <img src="..\assets\Administration\nav_logo.png" style="vertical-align: middle;margin-top: -37px;"/>
+          <span>浆染过程耗能</span>
+        </p>
+      </div>
+      <div class="index-esc">
+        <span @click="esc">
+          <img src="..\assets\Administration\home.png" alt />
+          返回
+        </span>
+      </div>
+      <div class="right">
+          <img src="..\assets\production\sc_chart.png" alt  class="img"/>
+      <login></login>
+  </div>
+  </div>
     <div id="bgColor">
       <!-- <h1>数据管控标准</h1> -->
 
@@ -544,7 +534,18 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style scoped lang='less'>
+.nav-main{
+  display: flex;
+  height: 292px;
+  align-items: center;
+  .right{
+  display: flex;
+  .img{
+    margin-right: 1600px;
+  }
+}
+}
 .ChemicalTable {
   margin: 200px auto 0;
   width: 6651px;

@@ -252,6 +252,12 @@ export default new Router({
       path: "/i2",
       component:()=>import("../components/i2"),
     },
+    //图表
+    {
+      path: "/barCharts",
+      name: 'barCharts',
+      component:()=>import("../components/barCharts"),
+    },
     // {
     //   //默认
     //   path: "*",

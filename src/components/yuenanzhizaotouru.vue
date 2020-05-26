@@ -19,7 +19,7 @@
       <div class="right">
           <img src="..\assets\production\sc_chart.png" alt  class="img" @click="toCharts"/>
         <login></login>
-      </div>`
+      </div>
     </div>
     <div id="bgColor">
       <!-- <h1>数据管控标准</h1> -->
