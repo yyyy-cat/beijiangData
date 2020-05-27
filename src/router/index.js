@@ -134,8 +134,20 @@ export default new Router({
       component:()=>import("@/components/zhizaotourucharts"),
     },
     {
+      //跳转辅助图表
+      path: "/fuzhucailiaocharts",
+      name: "fuzhucailiaocharts",
+      component:()=>import("@/components/fuzhucailiaocharts"),
+    },
+    {
+      //跳转环保数据图表
+      path: "/huanbaoshujucharts",
+      name: "huanbaoshujucharts",
+      component:()=>import("@/components/huanbaoshujucharts"),
+    },
+    {
       //跳转织造图表详情
-      path: "/zhizaotourudetail",
+      path: "/zhizaotourudetail/:wdata/:type",
       name: "zhizaotourudetail",
       component:()=>import("@/components/zhizaotourudetail"),
     },

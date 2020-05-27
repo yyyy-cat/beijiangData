@@ -26,7 +26,7 @@ export default {
         return{
             showShaoguan: false,
             updataUrl: yuenanUrl + '/ErpYn',
-            xrData: [],
+            hbsj: [],
             wData: [],//传入下一个页面的数据
             jrtrcc: [],
             type: null,//上个页面判断渲染哪个图表的值
@@ -40,14 +40,8 @@ export default {
         ])
     },
     watch: {
-        xrData: function(nelData, oldData) {
-            this.draw(this.xrData);
-        },
-        jrtrcc: function(nelData, oldData) {
-            this.draw(this.jrtrcc);
-        },
-        hztrcc: function(nelData, oldData) {
-            this.draw(this.hztrcc);
+        hbsj: function(nelData, oldData) {
+            this.draw(this.hbsj);
         },
      showShaoguan: function(newdata,olddata){
 
@@ -102,22 +96,10 @@ export default {
               }
           })
        },
-    getYCLZbTuBiaoData() {
-        axios.post(this.updataUrl+'/api/getYCLZbTuBiaoData').then(res => {
-            //原材料数据织造投入产出
-          this.xrData = res.data.data;
-        });
-    },
-     getYCLJrTuBiaoData() {
-        axios.post(this.updataUrl+'/api/getYCLJrTuBiaoData').then(res => {
-            //原材料浆染投入产出
-          this.jrtrcc = res.data.data;
-        });
-    },
-    getYCLHzTuBiaoData() {
-        axios.post(this.updataUrl+'/api/getYCLHzTuBiaoData').then(res => {
-            //原材料后整投入产出数据
-          this.hztrcc = res.data.data;
+    getGHBTuBiaoData() {
+        axios.post(this.updataUrl+'/api/getGHBTuBiaoData').then(res => {
+            //环保数据数据织造投入产出
+          this.hbsj = res.data.data;
         });
     },
     setBaseOptions() {
@@ -127,20 +109,20 @@ export default {
             //原材料浆染投入产出
             seriesData =  [
                 { 
-                    name: '整经长度',
+                    name: '万码原水量',
                     type: 'bar',
                     itemStyle: {
                         color: '#1e4d7a'
                     },
-                    data: _this.toSetData('sjtrcd', _this.jrtrcc)
+                    data: _this.toSetData('ysmwm', _this.hbsj)
                 },
                 {
-                    name: '出轴长度',
+                    name: '外排水量',
                     type: 'bar',
                     itemStyle: {
                         color: '#9bc4e7'
                     },
-                    data: _this.toSetData('jsczzc', _this.jrtrcc)
+                    data: _this.toSetData('wpmwm', _this.hbsj)
                 },
                 {
                     name: '原纱利用率',

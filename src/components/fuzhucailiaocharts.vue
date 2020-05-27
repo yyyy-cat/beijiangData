@@ -26,11 +26,10 @@ export default {
         return{
             showShaoguan: false,
             updataUrl: yuenanUrl + '/ErpYn',
-            xrData: [],
             wData: [],//传入下一个页面的数据
-            jrtrcc: [],
-            type: null,//上个页面判断渲染哪个图表的值
-            hztrcc: []
+            type: null,//上个页面判断渲染哪个图表的
+            rsyl: [],
+            sjfl: []
         
         }
     },
@@ -40,14 +39,11 @@ export default {
         ])
     },
     watch: {
-        xrData: function(nelData, oldData) {
-            this.draw(this.xrData);
+        rsyl: function(nelData, oldData) {
+            this.draw(this.rsyl);
         },
-        jrtrcc: function(nelData, oldData) {
-            this.draw(this.jrtrcc);
-        },
-        hztrcc: function(nelData, oldData) {
-            this.draw(this.hztrcc);
+        sjfl: function(nelData, oldData) {
+            this.draw(this.sjfl);
         },
      showShaoguan: function(newdata,olddata){
 
@@ -70,11 +66,9 @@ export default {
    mounted() {
        
        if(Number(this.type) == 0) {
-           this.getYCLJrTuBiaoData()
+           this.getFZCLRsylTuBiaoData()
        }else if(Number(this.type) == 1){
-           this.getYCLZbTuBiaoData();
-       }else{
-           this.getYCLHzTuBiaoData();
+           this.getFZCLSjflTuBiaoData();
        }
   },
    methods: {
@@ -86,8 +80,6 @@ export default {
                data = _this.jrtrcc
            }else if(Number(_this.type) == 1){
                data = this.xrData
-           }else{
-               data = this.hztrcc
            }
             data.forEach((n, idx) => {
                 if(n.zjsj.slice(8,10) == id) {
@@ -102,22 +94,16 @@ export default {
               }
           })
        },
-    getYCLZbTuBiaoData() {
-        axios.post(this.updataUrl+'/api/getYCLZbTuBiaoData').then(res => {
+    getFZCLRsylTuBiaoData() {
+        axios.post(this.updataUrl+'/api/getFZCLRsylTuBiaoData').then(res => {
             //原材料数据织造投入产出
-          this.xrData = res.data.data;
+          this.rsyl = res.data.data;
         });
     },
-     getYCLJrTuBiaoData() {
-        axios.post(this.updataUrl+'/api/getYCLJrTuBiaoData').then(res => {
+     getFZCLSjflTuBiaoData() {
+        axios.post(this.updataUrl+'/api/getFZCLSjflTuBiaoData').then(res => {
             //原材料浆染投入产出
-          this.jrtrcc = res.data.data;
-        });
-    },
-    getYCLHzTuBiaoData() {
-        axios.post(this.updataUrl+'/api/getYCLHzTuBiaoData').then(res => {
-            //原材料后整投入产出数据
-          this.hztrcc = res.data.data;
+          this.sjfl = res.data.data;
         });
     },
     setBaseOptions() {
@@ -127,28 +113,20 @@ export default {
             //原材料浆染投入产出
             seriesData =  [
                 { 
-                    name: '整经长度',
+                    name: '标准上染率',
                     type: 'bar',
                     itemStyle: {
                         color: '#1e4d7a'
                     },
-                    data: _this.toSetData('sjtrcd', _this.jrtrcc)
+                    data: _this.toSetData('mybzsr', _this.rsyl)
                 },
                 {
-                    name: '出轴长度',
-                    type: 'bar',
-                    itemStyle: {
-                        color: '#9bc4e7'
-                    },
-                    data: _this.toSetData('jsczzc', _this.jrtrcc)
-                },
-                {
-                    name: '原纱利用率',
+                    name: '实际上染率',
                     type: 'line',
                     smooth: 0.5,
                     yAxisIndex: 1,
                     symbolSize: 10, 
-                    data: _this.toSetData('syl', _this.jrtrcc),
+                    data: _this.toSetData('mysjsr', _this.rsyl),
                     lineStyle: {
                         width: 8,
                         color: '#1e4d7a'
@@ -158,70 +136,26 @@ export default {
         }else if(_this.type == 1) {
             seriesData =  [
                 { 
-                    name: '百米用纬标准',
+                    name: '标准上浆率',
                     type: 'bar',
                     itemStyle: {
                         color: '#1e4d7a'
                     },
-                    data: _this.toSetData('baimiyongweibiaozhun', _this.xrData)
+                    data: _this.toSetData('fljybzsjl', _this.sjfl)
                 },
                 {
-                    name: '制成率标准',
-                    type: 'bar',
-                    itemStyle: {
-                        color: '#9bc4e7'
-                    },
-                    data: _this.toSetData('zhichenglvbiaozhun', _this.xrData)
-                },
-                {
-                    name: '织成率',
+                    name: '实际上浆率',
                     type: 'line',
                     smooth: 0.5,
                     yAxisIndex: 1,
                     symbolSize: 10, 
-                    data: _this.toSetData('zhichenglv', _this.xrData),
+                    data: _this.toSetData('fljysjsjl', _this.sjfl),
                     lineStyle: {
                         width: 8,
                         color: '#1e4d7a'
-                    }
-                },
-                {
-                    name: '百米用纬',
-                    type: 'line',
-                    smooth: 0.5,
-                    yAxisIndex: 1,
-                    symbolSize: 10, 
-
-                    data: _this.toSetData('baimiyongwei', _this.xrData),
-                    lineStyle: {
-                        width: 8,
-                        color: '#9bc4e7'
                     }
                 }
             ]
-        }else{
-          seriesData =  [
-            { 
-                name: '标准制成率',
-                type: 'bar',
-                itemStyle: {
-                    color: '#1e4d7a'
-                },
-                data: _this.toSetData('bzzcl', _this.hztrcc)
-            },
-            {
-                name: '制成率',
-                type: 'line',
-                smooth: 0.5,
-                yAxisIndex: 1,
-                symbolSize: 10, 
-                data: _this.toSetData('sjzcl', _this.hztrcc),
-                lineStyle: {
-                    width: 8,
-                    color: '#1e4d7a'
-                }
-            }
-         ]
         }
             return seriesData
     },
@@ -277,7 +211,7 @@ export default {
                     type: 'slider',
                     show: true,
                     start: 0,
-                    end: 10,
+                    end: 50,
                     handleSize: 8
                 },
                 {
@@ -325,13 +259,6 @@ export default {
             if(v.list.length > 0) {
                 myCharts.setOption(this.initOptions(setBaseOptions,source));
             }
-            
-            // myCharts.on('click', function(params) {
-            //     console.log(params); 
-            //     if(params.seriesType == 'line'){
-            //         _this.$router.push('/charts')
-            //     }
-            // });
         }) 
     }
   } 

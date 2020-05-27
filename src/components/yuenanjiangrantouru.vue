@@ -517,7 +517,7 @@
     methods: {
 
       toCharts() {
-        this.$router.push('/charts')
+        this.$router.push('/zhizaotourucharts?type=' + 0)
       },
       handlp(){
         // this.show=!this.show;

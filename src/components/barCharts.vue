@@ -381,6 +381,7 @@ export default {
              
             //  String bzwmzls; //标准万米用量自来水用量String bzwmzq; //标准万米用量蒸汽用量String bzwmtrq; //标准万米用量天然气用量
              v.list.map((k, index) =>{
+                 
                  let dayData = []
                  k.name = zjsj + '-' + index
                  nameList.push(k.name)

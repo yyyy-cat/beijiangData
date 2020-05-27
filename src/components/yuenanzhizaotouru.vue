@@ -428,7 +428,7 @@ export default {
   methods: {
     toCharts() {
 
-      this.$router.push('/zhizaotourucharts')
+      this.$router.push('/zhizaotourucharts?type=' + 1)
     },
     handlpe(){
       this.show=!this.show;

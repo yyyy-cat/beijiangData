@@ -57,6 +57,7 @@ export default {
           })
        },
     UploadFilesGhb() {
+        //浆染投入产出数据
         axios.post('http://120.78.186.60:8082/ErpYn/api/getYCLJrTuBiaoData').then(res => {
           this.xrData = res.data.data;
         });
