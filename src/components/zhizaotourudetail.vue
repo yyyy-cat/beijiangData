@@ -17,7 +17,7 @@
                     </tr>
                 </table>
             </div>
-             <div id="gauge" :style="{width: '100%', height: '100%', margin: '0 auto', zIndex: '10'}"></div>
+             <div id="gauge" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
         <div class="ybp">
             <div class="info">
@@ -33,7 +33,7 @@
                     </tr>
                 </table>
             </div>
-             <div id="gauge1" :style="{width: '100%', height: '100%', margin: '0 auto', zIndex: '10'}"></div>
+             <div id="gauge1" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
     </div>
 </template>
@@ -75,8 +75,13 @@ export default {
 // String baimiyongweibiaozhun: 百米用纬标准
 // String zhichenglv: 制成率
 // String zhichenglvbiaozhun: 制成率标准
-    if(Number(this.type) == 1) {
+    if(Number(this.type) == 0) {
+            this.draw('sjtrcd','jsczzc');
+        }
+   else if(Number(this.type) == 1) {
         this.draw('baimiyongweibiaozhun','zhichenglvbiaozhun');
+    }else{
+         this.draw('bzzcl');
     }
       
      
@@ -97,7 +102,7 @@ export default {
             tooltip: {
                 formatter: '{a} <br/>{b} : {c}%'
             },
-            radius: '75%',
+            radius: '85%',
             series: [
                    
                 {
@@ -114,7 +119,7 @@ export default {
                     data: [{value: valueName, name: showName}],
                     axisLine: {             
                      lineStyle: {     
-                        color: [[0.05, '#c23531'], [0.95, '#63869e'], [1, '#c23531']],
+                        color: [[valueName*0.95*0.0001, '#c23531'], [1-(valueName*0.95*0.0001+valueName*1.05*0.0001), '#63869e'], [valueName*1.05*0.0001, '#c23531']],
                         width: 150
                             }  
                     },  
@@ -164,7 +169,37 @@ export default {
     setBaseOptions() {
         let _this = this;
          let seriesData = [];
-        if(Number(_this.type) == 1) {
+         if(Number(_this.type) == 0) {
+          seriesData =  [
+                { 
+                    name: '整经长度',
+                    type: 'bar',
+                    itemStyle: {
+                        color: '#1e4d7a'
+                    }
+                },
+                {
+                    name: '出轴长度',
+                    type: 'bar',
+                    itemStyle: {
+                        color: '#9bc4e7'
+                    }
+                },
+                {
+                    name: '原纱利用率',
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 10, 
+                    data: _this.changeOptions('syl'),
+                    lineStyle: {
+                        width: 8,
+                        color: '#1e4d7a'
+                    }
+                }
+            ]
+        }
+        else if(Number(_this.type) == 1) {
             seriesData = [
             { 
                 name: '百米用纬标准',
@@ -207,6 +242,28 @@ export default {
                 }
             }
         ]
+        }else{
+             seriesData =  [
+            { 
+                name: '标准制成率',
+                type: 'bar',
+                itemStyle: {
+                    color: '#1e4d7a'
+                }
+            },
+            {
+                name: '制成率',
+                type: 'line',
+                smooth: 0.5,
+                yAxisIndex: 1,
+                symbolSize: 10, 
+                data: _this.changeOptions('sjzcl', _this.hztrcc),
+                lineStyle: {
+                    width: 8,
+                    color: '#1e4d7a'
+                }
+            }
+         ]
         }
             return seriesData
     },
@@ -302,7 +359,9 @@ export default {
             });
          let myCharts = this.$echarts.init(document.getElementById('list'));
             myCharts.setOption(this.initOptions(setBaseOptions, xData, source));
+            if(Number(_this.type) == 0) return 
             myCharts.on('click', function(params) {
+                console.log(params)
                 if(params.seriesType == 'line' && params.seriesName == "织成率") {
                     _this.zclvalue = params.data
                     let data = JSON.parse(_this.lData);

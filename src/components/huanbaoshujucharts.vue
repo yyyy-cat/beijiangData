@@ -1,17 +1,32 @@
 <template>
     <div class="charts">
         <div class="charts-main">
+             <div id='list' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
-        <el-calendar>
-            <template
-            slot="dateCell"
-            class="name"
-            slot-scope="{date, data}">
-             <div class="calendar-day">{{ data.day.split('-').slice(1).join('-') }}</div>
-                <div :id="'step' + data.day.split('-').slice(1).join('-')" :style="{width: '800px', height: '700px', margin: '0 auto', zIndex: '10'}" @click="toNextPage(data.day.split('-').slice(2).join('-'))"></div>
-              
-        </template>
-        </el-calendar>
+         <div class="charts-main">
+             <div id='list1' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+        </div>
+         <div class="charts-main">
+             <div id='list2' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+        </div>
+
+        <div class="ybp">
+             <div class="info">
+                <div class="data">基本信息</div>
+                    <table border="1">
+                        <tr>
+                            <th>缸号</th>
+                            <th>123455</th>
+                        </tr>
+                        <tr>
+                            <td>品种</td>
+                            <td>pppppp</td>
+                        </tr>
+                    </table>
+            </div>
+             <div id="gauge" :style="{width: '3500px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+             <div id="cod" :style="{width: '3500px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+        </div>
     </div>
 </template>
 
@@ -26,232 +41,92 @@ export default {
         return{
             showShaoguan: false,
             updataUrl: yuenanUrl + '/ErpYn',
+            type: 0,
             hbsj: [],
-            wData: [],//传入下一个页面的数据
-            jrtrcc: [],
-            type: null,//上个页面判断渲染哪个图表的值
-            hztrcc: []
-        
+            ph: {}
         }
     },
-    computed: {
-      ...mapGetters([
+     computed: {
+        ...mapGetters([
         'changeShaoguan'
-        ])
-    },
+    ])},
     watch: {
-        hbsj: function(nelData, oldData) {
-            this.draw(this.hbsj);
-        },
-     showShaoguan: function(newdata,olddata){
+        showShaoguan: function(newdata,olddata){
 
-      if(newdata != 'false'){
-        this.updataUrl = shaoguanUrl + '/ErpSg'
-      }else{
-        this.updataUrl = yuenanUrl+'/ErpYn'
-      }
-    }
+            if(newdata != 'false'){
+                this.updataUrl = shaoguanUrl + '/ErpSg'
+            }else{
+                this.updataUrl = yuenanUrl+'/ErpYn'
+            }
+        },
+        hbsj: function(newData,oldData){
+            this.draw('ysmwm','wpmwm', this.hbsj)
+        },
     },
-    created() {
-        this.type = this.$route.query.type
+     created() {
+         this.type = this.$route.query.type
         this.showShaoguan = this.changeShaoguan;
         if(this.changeShaoguan != 'false'){
             this.updataUrl = shaoguanUrl + '/ErpSg'
         }else{
             this.updataUrl = yuenanUrl+'/ErpYn'
         }
-    },
+  },
    mounted() {
-       
-       if(Number(this.type) == 0) {
-           this.getYCLJrTuBiaoData()
-       }else if(Number(this.type) == 1){
-           this.getYCLZbTuBiaoData();
-       }else{
-           this.getYCLHzTuBiaoData();
-       }
+       this.getGHBTuBiaoData();
   },
    methods: {
-       toNextPage(id) {
-           let _this = this
-           let arr = []
-           let data = null;
-           if(Number(_this.type) == 0){
-               data = _this.jrtrcc
-           }else if(Number(_this.type) == 1){
-               data = this.xrData
-           }else{
-               data = this.hztrcc
-           }
-            data.forEach((n, idx) => {
-                if(n.zjsj.slice(8,10) == id) {
-                     arr.push(n.list)
-                }
-        })
-          this.$router.push({
-              name: 'zhizaotourudetail',
-              params: {
-                  wdata: JSON.stringify(arr[0]),
-                  type: _this.type
-              }
-          })
-       },
-    getGHBTuBiaoData() {
-        axios.post(this.updataUrl+'/api/getGHBTuBiaoData').then(res => {
-            //环保数据数据织造投入产出
-          this.hbsj = res.data.data;
-        });
-    },
-    setBaseOptions() {
-        let _this = this;
-        let seriesData = [];
-        if(Number(_this.type) == 0){
-            //原材料浆染投入产出
-            seriesData =  [
-                { 
-                    name: '万码原水量',
-                    type: 'bar',
-                    itemStyle: {
-                        color: '#1e4d7a'
-                    },
-                    data: _this.toSetData('ysmwm', _this.hbsj)
-                },
-                {
-                    name: '外排水量',
-                    type: 'bar',
-                    itemStyle: {
-                        color: '#9bc4e7'
-                    },
-                    data: _this.toSetData('wpmwm', _this.hbsj)
-                },
-                {
-                    name: '原纱利用率',
-                    type: 'line',
-                    smooth: 0.5,
-                    yAxisIndex: 1,
-                    symbolSize: 10, 
-                    data: _this.toSetData('syl', _this.jrtrcc),
-                    lineStyle: {
-                        width: 8,
-                        color: '#1e4d7a'
-                    }
-                }
-            ]
-        }else if(_this.type == 1) {
-            seriesData =  [
-                { 
-                    name: '百米用纬标准',
-                    type: 'bar',
-                    itemStyle: {
-                        color: '#1e4d7a'
-                    },
-                    data: _this.toSetData('baimiyongweibiaozhun', _this.xrData)
-                },
-                {
-                    name: '制成率标准',
-                    type: 'bar',
-                    itemStyle: {
-                        color: '#9bc4e7'
-                    },
-                    data: _this.toSetData('zhichenglvbiaozhun', _this.xrData)
-                },
-                {
-                    name: '织成率',
-                    type: 'line',
-                    smooth: 0.5,
-                    yAxisIndex: 1,
-                    symbolSize: 10, 
-                    data: _this.toSetData('zhichenglv', _this.xrData),
-                    lineStyle: {
-                        width: 8,
-                        color: '#1e4d7a'
-                    }
-                },
-                {
-                    name: '百米用纬',
-                    type: 'line',
-                    smooth: 0.5,
-                    yAxisIndex: 1,
-                    symbolSize: 10, 
-
-                    data: _this.toSetData('baimiyongwei', _this.xrData),
-                    lineStyle: {
-                        width: 8,
-                        color: '#9bc4e7'
-                    }
-                }
-            ]
-        }else{
-          seriesData =  [
-            { 
-                name: '标准制成率',
-                type: 'bar',
-                itemStyle: {
-                    color: '#1e4d7a'
-                },
-                data: _this.toSetData('bzzcl', _this.hztrcc)
+    initOptions(seriesData, source, nameList) {
+        let options =  {
+            dataset: {
+               source: source
             },
-            {
-                name: '制成率',
-                type: 'line',
-                smooth: 0.5,
-                yAxisIndex: 1,
-                symbolSize: 10, 
-                data: _this.toSetData('sjzcl', _this.hztrcc),
-                lineStyle: {
-                    width: 8,
-                    color: '#1e4d7a'
-                }
-            }
-         ]
-        }
-            return seriesData
-    },
-    initOptions(setBaseOptions, source) {
-        let _this = this;
-        let options = {
-            xAxis:  {
+            grid: {
+                left: '3%',
+                right: '4%',  //距离右侧边距
+                bottom: '9%',
+                show:true,
+                containLabel: true
+                },
+            xAxis: [
+                {
                     type: 'category',
+                    data: nameList,
                     axisPointer: {
                         type: 'shadow'
                     },
-                    data: source,
                     axisLabel: {
+                        interval: 0,
                         textStyle: { 
-                            fontSize : 30   
+                            fontSize : 60   
                             }
                     },
-            },
+                }
+            ],
             yAxis: [
                 {
                     type: 'value',
                     min: 0,
                     max: 100,
-                    interval: 50,
+                    interval: 20,
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 30   
-                            }
-                    },
-                    nameTextStyle: {
-                        fontSize: 30,
-                    },
+                            fontSize : 40   
+                        }
+                    }
                 },
                 {
                     type: 'value',
                     min: 0,
                     max: 100,
-                    interval: 50,
+                    interval: 20,
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 30   
-                            }
-                    },
-                    nameTextStyle: {
-                        fontSize: 30,
-                    },
+                            fontSize : 40   
+                        }
+                    }
                 }
             ],
              dataZoom : [
@@ -259,7 +134,7 @@ export default {
                     type: 'slider',
                     show: true,
                     start: 0,
-                    end: 10,
+                    end: 50,
                     handleSize: 8
                 },
                 {
@@ -279,42 +154,249 @@ export default {
                     left: '93%'
                 }
             ],
-            series: setBaseOptions,
-        }
+            series: seriesData
+        };
+
         return options
     },
-    toSetData(name, data) {
+    getGHBTuBiaoData() {
+        //环保数据
+        axios.post(this.updataUrl + '/api/getGHBTuBiaoData').then((res => {
+            let arr =res.data.data
+             arr.map((v, idx) => {
+                 let name = v.zjsj.slice(8,10)
+                v.zjsj = name;
+                return arr
+              })
+            this.hbsj = res.data.data
+        }))
+    },
+    toChangeData(name, data) {
         let _this = this;
-        let day = [];
+        let day =[]
         data.forEach((v, idx) => {
-            v.list.map((k, index) => {
+             v.list.map((k, index) =>{
                 day.push(k[name])
-            })
+             })  
         })
         return day
     },
-    draw(data) {
+     ybpOptions(value, showName,max, min) {
+            let options = {
+            tooltip: {
+                formatter: '{a} <br/>{b} : {c}%'
+            },
+            radius: '85%',
+            series: [
+                   
+                {
+                    fontSize: 70,
+                    type: 'gauge',
+                    min: 0.01,   
+                    max: 1,
+                    detail: {
+                        formatter: '{value}',
+                        textStyle: {
+                            fontSize: 70,
+                        },
+                    },
+                    data: [{value: value, name: showName}],
+                    axisLine: {             
+                     lineStyle: {     
+                        color: [[Number(min)*0.01, '#c23531'], [1,'#63869e'], [Number(max)*0.01, '#c23531']],
+                        width: 150
+                            }  
+                    },  
+                     title : {               
+                        textStyle: {   
+                            fontWeight: 'bolder',
+                            fontSize: 50,
+                            color: "#63869e"
+                        }
+                    },
+                    axisTick: {
+                        length: 50,
+                         lineStyle: {
+                             width: 8
+                         }
+                    },
+                    axisLabel: {
+                        show: true,
+                        color: '#000',
+                        fontSize: 50,
+                    }
+                }
+            ]
+        };
+        return options
+    },
+    ybp(value, name, max, min) {
         let _this = this;
-        let setBaseOptions = _this.setBaseOptions()
-        data.forEach((v, index) => {
-            let source = []
-            let zjsj = '05-'+v.zjsj.slice(8,10);
-            v.list.map((k, idx) => {
-                let name = v.zjsj.slice(8,10)+ '-' + idx
-                source.push(name)
-            })
-            let myCharts = this.$echarts.init(document.getElementById(`step${zjsj}`));
-            if(v.list.length > 0) {
-                myCharts.setOption(this.initOptions(setBaseOptions,source));
-            }
-            
-            // myCharts.on('click', function(params) {
-            //     console.log(params); 
-            //     if(params.seriesType == 'line'){
-            //         _this.$router.push('/charts')
-            //     }
-            // });
-        }) 
+        let showName = ''
+        if(name == 'gauge'){
+            let gauge = this.$echarts.init(document.getElementById('gauge'))
+            this.ybpOptions().series[0].data[0].value = value;
+            showName = 'PH';
+            gauge.setOption(this.ybpOptions(value, showName, max, min), true);
+        }
+         if(name == 'cod'){
+            let gauge = this.$echarts.init(document.getElementById('cod'))
+            this.ybpOptions().series[0].data[0].value = value;
+            showName = 'cod';
+            gauge.setOption(this.ybpOptions(value, showName, max, min), true);
+        }
+    }, 
+
+    setBaseOptions() {
+        let _this = this;
+        let seriesData = [
+                {
+                    name: '万码原水量',
+                    type: 'bar',
+                    itemStyle: {
+                        color: '#1e4d7a'
+                    }
+                },
+                {
+                    name: '外排水量',
+                    type: 'bar',
+                    itemStyle: {
+                        color: '#9bc4e7'
+                    }
+                },
+                {
+                    name: 'PH',
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: '#1e4d7a',
+                        width: 8
+                    },
+                    data: _this.toChangeData('ph', _this.hbsj)
+                }
+        ]
+        
+        return seriesData
+   
+   },
+    setBaseOptions1() {
+        let _this = this;
+        let seriesData = [
+                {
+                    name: '万码原水量',
+                    type: 'bar',
+                    itemStyle: {
+                        color: '#1e4d7a'
+                    }
+                },
+                {
+                    name: '外排水量',
+                    type: 'bar',
+                    itemStyle: {
+                        color: '#9bc4e7'
+                    }
+                },
+                {
+                    name: '外排水cod值',
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: '#1e4d7a',
+                        width: 8
+                    },
+                    data: _this.toChangeData('cod', _this.hbsj)
+                }
+        ]
+        
+        return seriesData
+   
+   },
+    setBaseOptions2() {
+        let _this = this;
+        let seriesData = [
+                {
+                    name: '万码原水量',
+                    type: 'bar',
+                    itemStyle: {
+                        color: '#1e4d7a'
+                    }
+                },
+                {
+                    name: '外排水量',
+                    type: 'bar',
+                    itemStyle: {
+                        color: '#9bc4e7'
+                    }
+                },
+                {
+                    name: '外排水硫化物',
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: '#1e4d7a',
+                        width: 8
+                    },
+                    data: _this.toChangeData('lhw', _this.hbsj)
+                }
+        ]
+        
+        return seriesData
+   
+   },
+    draw(str1,str2,data) {
+        let _this = this;
+        let nameList = [];
+        let source = [];
+        let nameData =[]
+        data.forEach((v, idx) => {
+             let zjsj = v.zjsj;
+             nameData.push(v.list)
+             v.list.map((k, index) =>{
+                 let dayData = []
+                 k.name = zjsj + '-' + index
+                 nameList.push(k.name)
+                 dayData.push(k.name, k[str1], k[str2])
+                source.push(dayData)
+                 return v.list
+             })  
+        })
+       
+        let seriesData = _this.setBaseOptions()
+        let seriesData1 = _this.setBaseOptions1()
+        let seriesData2 = _this.setBaseOptions2()
+        
+        
+        let myCharts = this.$echarts.init(document.getElementById('list'));
+        myCharts.setOption(_this.initOptions(seriesData, source, nameList));
+
+        myCharts.on('click', function(params) {
+            this.ph = nameData[params.dataIndex][0];
+            let phbzmin = nameData[params.dataIndex][0].phbzmin;
+            let phbzmax = nameData[params.dataIndex][0].phbzmax;
+                if(params.seriesType == 'line' && params.seriesName == "PH") {
+                    _this.ybp(params.data, 'gauge', phbzmax, phbzmin);
+                }
+            });
+
+        let myCharts1 = this.$echarts.init(document.getElementById('list1'));
+        myCharts1.setOption(_this.initOptions(seriesData1, source, nameList));
+
+         myCharts1.on('click', function(params) {
+            this.ph = nameData[params.dataIndex][0];
+            let phbzmax = nameData[params.dataIndex][0].codbzmax;
+                if(params.seriesType == 'line' && params.seriesName == "外排水cod值") {
+                    _this.ybp(params.data, 'cod', phbzmax,'');
+                }
+            });
+
+        let myCharts2 = this.$echarts.init(document.getElementById('list2'));
+        myCharts2.setOption(_this.initOptions(seriesData2, source, nameList));
     }
   } 
 }
@@ -322,17 +404,24 @@ export default {
 
 <style lang="less" scoped>
 .charts{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    margin-top: 200px;
     //  background: url(..\assets\Administration\other_bg.png);
     .charts-main{
-        padding-left: 500px ;
+        width: 2500px;
+        height: 1000px;
+        margin-top: 10px;
     }
-}
 
-/deep/.el-calendar{
-    width: 8200px;
-}
-
- /deep/.el-calendar-day{
-    height: 800px !important;
+    .ybp{
+        display: flex;
+        flex-direction: column;
+        width: 3500px;
+        justify-content: center;
+        align-items: center;
+    }
 }
 </style>
