@@ -166,7 +166,7 @@ export default {
                     data: _this.toSetData('baimiyongweibiaozhun', _this.xrData)
                 },
                 {
-                    name: '制成率标准',
+                    name: '织成率标准',
                     type: 'bar',
                     itemStyle: {
                         color: '#9bc4e7'
@@ -243,9 +243,6 @@ export default {
             yAxis: [
                 {
                     type: 'value',
-                    min: 0,
-                    max: 100,
-                    interval: 50,
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
@@ -258,9 +255,6 @@ export default {
                 },
                 {
                     type: 'value',
-                    min: 0,
-                    max: 100,
-                    interval: 50,
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
@@ -325,13 +319,6 @@ export default {
             if(v.list.length > 0) {
                 myCharts.setOption(this.initOptions(setBaseOptions,source));
             }
-            
-            // myCharts.on('click', function(params) {
-            //     console.log(params); 
-            //     if(params.seriesType == 'line'){
-            //         _this.$router.push('/charts')
-            //     }
-            // });
         }) 
     }
   } 

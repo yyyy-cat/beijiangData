@@ -11,21 +11,9 @@
         </div>
 
         <div class="ybp">
-             <div class="info">
-                <div class="data">基本信息</div>
-                    <table border="1">
-                        <tr>
-                            <th>缸号</th>
-                            <th>123455</th>
-                        </tr>
-                        <tr>
-                            <td>品种</td>
-                            <td>pppppp</td>
-                        </tr>
-                    </table>
-            </div>
              <div id="gauge" :style="{width: '3500px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
              <div id="cod" :style="{width: '3500px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+             <div id="lhw" :style="{width: '3500px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
     </div>
 </template>
@@ -106,9 +94,6 @@ export default {
             yAxis: [
                 {
                     type: 'value',
-                    min: 0,
-                    max: 100,
-                    interval: 20,
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
@@ -118,9 +103,6 @@ export default {
                 },
                 {
                     type: 'value',
-                    min: 0,
-                    max: 100,
-                    interval: 20,
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
@@ -182,6 +164,14 @@ export default {
         return day
     },
      ybpOptions(value, showName,max, min) {
+         let minx = Number(min).toFixed(2);
+         let maxx = Number(max).toFixed(2);
+         let mindata = [];
+         if(min == '0') {
+             mindata = [[0.99,'#63869e'], [1, '#c23531']]
+         }else{
+             mindata = [[0.01, '#c23531'], [0.99,'#63869e'], [1, '#c23531']]
+         }
             let options = {
             tooltip: {
                 formatter: '{a} <br/>{b} : {c}%'
@@ -192,20 +182,20 @@ export default {
                 {
                     fontSize: 70,
                     type: 'gauge',
-                    min: 0.01,   
-                    max: 1,
+                    min: Number(minx),   
+                    max: Number(maxx),
                     detail: {
                         formatter: '{value}',
                         textStyle: {
                             fontSize: 70,
                         },
                     },
-                    data: [{value: value, name: showName}],
+                    data: [{value: Number(value).toFixed(2), name: showName}],
                     axisLine: {             
-                     lineStyle: {     
-                        color: [[Number(min)*0.01, '#c23531'], [1,'#63869e'], [Number(max)*0.01, '#c23531']],
+                     lineStyle: { 
+                        color: mindata,
                         width: 150
-                            }  
+                        }  
                     },  
                      title : {               
                         textStyle: {   
@@ -243,6 +233,12 @@ export default {
             let gauge = this.$echarts.init(document.getElementById('cod'))
             this.ybpOptions().series[0].data[0].value = value;
             showName = 'cod';
+            gauge.setOption(this.ybpOptions(value, showName, max, min), true);
+        }
+         if(name == 'lhw'){
+            let gauge = this.$echarts.init(document.getElementById('lhw'))
+            this.ybpOptions().series[0].data[0].value = value;
+            showName = 'lhw';
             gauge.setOption(this.ybpOptions(value, showName, max, min), true);
         }
     }, 
@@ -391,12 +387,19 @@ export default {
             this.ph = nameData[params.dataIndex][0];
             let phbzmax = nameData[params.dataIndex][0].codbzmax;
                 if(params.seriesType == 'line' && params.seriesName == "外排水cod值") {
-                    _this.ybp(params.data, 'cod', phbzmax,'');
+                    _this.ybp(params.data, 'cod', phbzmax,'0');
                 }
             });
 
         let myCharts2 = this.$echarts.init(document.getElementById('list2'));
         myCharts2.setOption(_this.initOptions(seriesData2, source, nameList));
+         myCharts2.on('click', function(params) {
+            this.ph = nameData[params.dataIndex][0];
+            let phbzmax = nameData[params.dataIndex][0].codbzmax;
+                if(params.seriesType == 'line' && params.seriesName == "外排水硫化物") {
+                    _this.ybp(params.data, 'lhw', phbzmax,'0');
+                }
+            });
     }
   } 
 }
@@ -418,8 +421,7 @@ export default {
 
     .ybp{
         display: flex;
-        flex-direction: column;
-        width: 3500px;
+        width: 100%;
         justify-content: center;
         align-items: center;
     }

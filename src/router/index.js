@@ -140,6 +140,12 @@ export default new Router({
       component:()=>import("@/components/fuzhucailiaocharts"),
     },
     {
+      //跳转辅助材料详情图表
+      path: "/fuzhucailiaodetail/:wdata/:type",
+      name: "fuzhucailiaodetail",
+      component:()=>import("@/components/fuzhucailiaodetail"),
+    },
+    {
       //跳转环保数据图表
       path: "/huanbaoshujucharts",
       name: "huanbaoshujucharts",
@@ -231,18 +237,6 @@ export default new Router({
       //越南后整辅料foot
       path: "/yuenanjiangrangguochengfoot",
       component:()=>import("../components/yuenanjiangrangguochengfoot"),
-    },
-    {
-      //越南后整辅料foot
-      path: "/charts",
-      name: 'charts',
-      component:()=>import("../components/charts"),
-    },
-    {
-      //越南后整辅料foot
-      path: "/chart2",
-      name: 'chart2',
-      component:()=>import("../components/chart2"),
     },
     {
       //韶关环保数据

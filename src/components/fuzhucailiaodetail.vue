@@ -3,7 +3,7 @@
         <div class="charts-main">
              <div id='list' :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
-        <div class="ybp" v-show='JSON.stringify(this.rsylcurrent) !== "{}"'>
+        <div class="ybp" >
             <div class="info">
                 <div class="data">基本信息</div>
                 <table border="1">
@@ -19,23 +19,6 @@
             </div>
              <div id="sjsrl" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
-
-         <div class="ybp" v-show='JSON.stringify(this.rsylcurrent2) !== "{}"'>
-            <div class="info">
-                <div class="data">基本信息</div>
-                <table border="1">
-                    <tr>
-                        <th>缸号</th>
-                        <th>{{rsylcurrent2.gh}}</th>
-                    </tr>
-                    <tr>
-                        <td>品种</td>
-                        <td>{{rsylcurrent2.pz}}</td>
-                    </tr>
-                </table>
-            </div>
-             <div id="sjsrl2" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
-        </div>
     </div>
 </template>
 
@@ -47,24 +30,20 @@ export default {
         return{
             lData: this.$route.params.wdata,
             type: null,
-            rsylcurrent: {}, //染色用料的当前数据
-            rsylcurrent2: {} //第二个实例
+            rsylcurrent: {} //染色用料的当前数据
         }
     },
     watch: {
     },
     created() {
         this.type = this.$route.params.type
-        console.log(JSON.stringify(this.rsylcurrent2) == "{}","输出来一个数据把")
     },
    mounted() {
     if(Number(this.type) == 0) {
-            this.draw('sjtrcd', 'jsczzc');
+            this.draw('mybzsr');
         }
    else if(Number(this.type) == 1) {
-        this.draw('baimiyongweibiaozhun','zhichenglvbiaozhun');
-    }else{
-        this.draw('bzzcl');
+        this.draw('fljybzsjl');
     }
       
      
@@ -131,14 +110,13 @@ export default {
         };
         return options
     },
-    ybp(value, name, title) {
+    ybp(value, name) {
         let _this = this;
+        let showName = ''
         if(name == 'sjsrl'){
             let sjsrl = this.$echarts.init(document.getElementById('sjsrl'))
-            sjsrl.setOption(_this.ybpOptions(value, title), true);
-        }else if(name == 'sjsrl2'){
-            let sjsrl = this.$echarts.init(document.getElementById('sjsrl2'))
-            sjsrl.setOption(_this.ybpOptions(value, title), true);
+            showName = '实际上浆率';
+            sjsrl.setOption(_this.ybpOptions(value, showName), true);
         }
     }, 
     setBaseOptions() {
@@ -147,26 +125,19 @@ export default {
          if(Number(_this.type) == 0) {
           seriesData =  [
                 { 
-                    name: '整经长度',
-                    type: 'bar',
-                    itemStyle: {
-                        color: '#1e4d7a'
-                    }
-                },
-                { 
-                    name: '出轴长度',
+                    name: '标准上染率',
                     type: 'bar',
                     itemStyle: {
                         color: '#1e4d7a'
                     }
                 },
                 {
-                    name: '原纱利用率',
+                    name: '实际上染率',
                     type: 'line',
                     smooth: 0.5,
                     yAxisIndex: 1,
                     symbolSize: 40, 
-                    data: _this.changeOptions('syl'),
+                    data: _this.changeOptions('mysjsr'),
                     lineStyle: {
                         width: 8,
                         color: '#1e4d7a'
@@ -177,63 +148,20 @@ export default {
         else if(Number(_this.type) == 1) {
             seriesData = [
             { 
-                name: '百米用纬标准',
-                type: 'bar',
-                itemStyle: {
-                    color: '#1e4d7a'
-                }
-            },
-             { 
-                name: '织成率标准',
-                type: 'bar',
-                itemStyle: {
-                    color: '#9bc4e7'
-                }
-            },
-            {
-                name: '织成率',
-                type: 'line',
-                smooth: 0.5,
-                yAxisIndex: 1,
-                symbolSize: 40, 
-
-                data: this.changeOptions('zhichenglv'),
-                lineStyle: {
-                    width: 8,
-                    color: '#9bc4e7'
-                }
-            },
-            {
-                name: '百米用纬',
-                type: 'line',
-                smooth: 0.5,
-                yAxisIndex: 1,
-                symbolSize: 40, 
-
-                data: this.changeOptions('baimiyongwei'),
-                lineStyle: {
-                    width: 8,
-                    color: '#1e4d7a'
-                }
-            }
-        ]
-        }else{
-            seriesData = [
-            { 
-                name: '标准制成率',
+                name: '标准上浆率',
                 type: 'bar',
                 itemStyle: {
                     color: '#1e4d7a'
                 }
             },
             {
-                name: '制成率',
+                name: '上浆率',
                 type: 'line',
                 smooth: 0.5,
                 yAxisIndex: 1,
                 symbolSize: 40, 
 
-                data: this.changeOptions('sjzcl'),
+                data: this.changeOptions('fljysjsjl'),
                 lineStyle: {
                     width: 8,
                     color: '#1e4d7a'
@@ -332,15 +260,11 @@ export default {
             myCharts.setOption(this.initOptions(setBaseOptions, xData, source));
 
              myCharts.on('click', function(params) {
-                 console.log(params)
-                if(_this.type == 1 && params.seriesType == 'line' && params.seriesName == "百米用纬"){
-                    _this.ybp(params.data, 'sjsrl2', params.seriesName);
-                    _this.rsylcurrent2 = data[params.dataIndex];
-                }else if(_this.type == 1 && params.seriesType == 'line' && params.seriesName == "织成率"){
-                    _this.ybp(params.data, 'sjsrl', params.seriesName);
+                if(_this.type == 0 && params.seriesType == 'line' && params.seriesName == "实际上染率") {
+                    _this.ybp(params.data, 'sjsrl');
                     _this.rsylcurrent = data[params.dataIndex];
-                }else if(_this.type == 2 && params.seriesType == 'line' && params.seriesName == "制成率") {
-                    _this.ybp(params.data, 'sjsrl', params.seriesName);
+                }else if(_this.type == 1 && params.seriesType == 'line' && params.seriesName == "上浆率"){
+                    _this.ybp(params.data, 'sjsrl');
                     _this.rsylcurrent = data[params.dataIndex];
                 }
                 

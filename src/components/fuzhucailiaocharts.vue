@@ -72,14 +72,13 @@ export default {
        }
   },
    methods: {
-       toNextPage(id) {
+       toNextPage(id, data) {
            let _this = this
            let arr = []
-           let data = null;
            if(Number(_this.type) == 0){
-               data = _this.jrtrcc
+               data = _this.rsyl
            }else if(Number(_this.type) == 1){
-               data = this.xrData
+               data = this.sjfl
            }
             data.forEach((n, idx) => {
                 if(n.zjsj.slice(8,10) == id) {
@@ -87,7 +86,7 @@ export default {
                 }
         })
           this.$router.push({
-              name: 'zhizaotourudetail',
+              name: 'fuzhucailiaodetail',
               params: {
                   wdata: JSON.stringify(arr[0]),
                   type: _this.type
@@ -177,9 +176,6 @@ export default {
             yAxis: [
                 {
                     type: 'value',
-                    min: 0,
-                    max: 100,
-                    interval: 50,
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
@@ -192,9 +188,6 @@ export default {
                 },
                 {
                     type: 'value',
-                    min: 0,
-                    max: 100,
-                    interval: 50,
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
@@ -211,7 +204,7 @@ export default {
                     type: 'slider',
                     show: true,
                     start: 0,
-                    end: 50,
+                    end: 100,
                     handleSize: 8
                 },
                 {
