@@ -9,16 +9,8 @@
       </select>
     </div>
     <div class="index-top_nav">
-      <!-- <img src="../assets/index/home_logo.png" alt> -->
-      <!-- <img src="../assets/index/top_nav.png" alt=""> -->
-      <p
-        style="text-align: center; font-family: 庞门正道标题体; font-size: 180px;color:#00ecfc; letter-spacing:15px;"
-      >
-        <img
-          src="..\assets\Administration\nav_logo.png"
-          alt
-          style="vertical-align: middle; margin-top: -37px;"
-        />
+      <p style="text-align: center; font-family: 庞门正道标题体; font-size: 180px;color:#00ecfc; letter-spacing:15px;">
+        <img src="..\assets\Administration\nav_logo.png" style="vertical-align: middle; margin-top: -37px;"/>
         <span>北江数据中心</span>
       </p>
     </div>

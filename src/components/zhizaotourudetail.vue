@@ -1,46 +1,50 @@
 <template>
     <div class="charts">
-        <div class="charts-main">
-             <div id='list' :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
-        </div>
-        <div class="ybp" v-show='JSON.stringify(this.rsylcurrent) !== "{}"'>
-            <div class="info">
-                <div class="data">基本信息</div>
-                <table border="1">
-                    <tr>
-                        <th>缸号</th>
-                        <th>{{rsylcurrent.gh}}</th>
-                    </tr>
-                    <tr>
-                        <td>品种</td>
-                        <td>{{rsylcurrent.pz}}</td>
-                    </tr>
-                </table>
+        <div class="right" @click="toTable"> 查看日历图</div>
+        <div class="left">
+            <div class="charts-main">
+                <div id='list' :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
             </div>
-             <div id="sjsrl" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
-        </div>
+            <div class="ybp" v-show='JSON.stringify(this.rsylcurrent) !== "{}"'>
+                <div class="info">
+                    <div class="data">基本信息</div>
+                    <table border="1">
+                        <tr>
+                            <th>缸号</th>
+                            <th>{{rsylcurrent.gh}}</th>
+                        </tr>
+                        <tr>
+                            <td>品种</td>
+                            <td>{{rsylcurrent.pz}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="sjsrl" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
+            </div>
 
-         <div class="ybp" v-show='JSON.stringify(this.rsylcurrent2) !== "{}"'>
-            <div class="info">
-                <div class="data">基本信息</div>
-                <table border="1">
-                    <tr>
-                        <th>缸号</th>
-                        <th>{{rsylcurrent2.gh}}</th>
-                    </tr>
-                    <tr>
-                        <td>品种</td>
-                        <td>{{rsylcurrent2.pz}}</td>
-                    </tr>
-                </table>
+            <div class="ybp" v-show='JSON.stringify(this.rsylcurrent2) !== "{}"'>
+                <div class="info">
+                    <div class="data">基本信息</div>
+                    <table border="1">
+                        <tr>
+                            <th>缸号</th>
+                            <th>{{rsylcurrent2.gh}}</th>
+                        </tr>
+                        <tr>
+                            <td>品种</td>
+                            <td>{{rsylcurrent2.pz}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="sjsrl2" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
             </div>
-             <div id="sjsrl2" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Varible from '../utils/varible'
 export default {
     name: 'Charts',
     data() {
@@ -48,14 +52,15 @@ export default {
             lData: this.$route.params.wdata,
             type: null,
             rsylcurrent: {}, //染色用料的当前数据
-            rsylcurrent2: {} //第二个实例
+            rsylcurrent2: {}, //第二个实例
+            optionsdata: {}
         }
     },
     watch: {
     },
     created() {
-        this.type = this.$route.params.type
-        console.log(JSON.stringify(this.rsylcurrent2) == "{}","输出来一个数据把")
+        this.type = this.$route.params.type;
+        this.optionsdata = Varible.OPTIONS;
     },
    mounted() {
     if(Number(this.type) == 0) {
@@ -70,6 +75,9 @@ export default {
      
   },
    methods: {
+    toTable() {
+        this.$router.go(-1);
+    },
     changeOptions(name) {
         let data = JSON.parse(this.lData);
         let arr = []
@@ -81,8 +89,8 @@ export default {
     },
     //仪表盘数据
     ybpOptions(value, showName) {
-         let minx = (Number(value)*0.95).toFixed(2);
-         let maxx = (Number(value)*1.05).toFixed(2);
+         let minx = (Number(value)-2).toFixed(2);
+         let maxx = (Number(value)+2).toFixed(2);
             let options = {
             tooltip: {
                 formatter: '{a} <br/>{b} : {c}%'
@@ -112,7 +120,7 @@ export default {
                         textStyle: {   
                             fontWeight: 'bolder',
                             fontSize: 50,
-                            color: "#63869e"
+                            color: '#00ecfc',
                         }
                     },
                     axisTick: {
@@ -123,7 +131,7 @@ export default {
                     },
                     axisLabel: {
                         show: true,
-                        color: '#000',
+                        color: '#00ecfc',
                         fontSize: 50,
                     }
                 }
@@ -144,20 +152,21 @@ export default {
     setBaseOptions() {
         let _this = this;
          let seriesData = [];
+         let opt = this.optionsdata
          if(Number(_this.type) == 0) {
           seriesData =  [
                 { 
                     name: '整经长度',
                     type: 'bar',
                     itemStyle: {
-                        color: '#1e4d7a'
+                        color: opt.ql
                     }
                 },
                 { 
                     name: '出轴长度',
                     type: 'bar',
                     itemStyle: {
-                        color: '#1e4d7a'
+                        color: opt.ls
                     }
                 },
                 {
@@ -169,7 +178,7 @@ export default {
                     data: _this.changeOptions('syl'),
                     lineStyle: {
                         width: 8,
-                        color: '#1e4d7a'
+                        color: opt.qlx
                     }
                 }
             ]
@@ -180,14 +189,14 @@ export default {
                 name: '百米用纬标准',
                 type: 'bar',
                 itemStyle: {
-                    color: '#1e4d7a'
+                    color: opt.ql
                 }
             },
              { 
                 name: '织成率标准',
                 type: 'bar',
                 itemStyle: {
-                    color: '#9bc4e7'
+                    color: opt.ls
                 }
             },
             {
@@ -200,7 +209,7 @@ export default {
                 data: this.changeOptions('zhichenglv'),
                 lineStyle: {
                     width: 8,
-                    color: '#9bc4e7'
+                    color: opt.lsx
                 }
             },
             {
@@ -213,7 +222,7 @@ export default {
                 data: this.changeOptions('baimiyongwei'),
                 lineStyle: {
                     width: 8,
-                    color: '#1e4d7a'
+                    color: opt.qlx
                 }
             }
         ]
@@ -223,7 +232,7 @@ export default {
                 name: '标准制成率',
                 type: 'bar',
                 itemStyle: {
-                    color: '#1e4d7a'
+                    color: opt.ql
                 }
             },
             {
@@ -236,7 +245,7 @@ export default {
                 data: this.changeOptions('sjzcl'),
                 lineStyle: {
                     width: 8,
-                    color: '#1e4d7a'
+                    color: opt.qlx
                 }
             }
         ]
@@ -244,9 +253,19 @@ export default {
             return seriesData
     },
      initOptions(seriesData, xData, source) {
+         let opt = this.optionsdata;
         let options = {
             dataset: {
                source: source
+            },
+             tooltip: {
+                trigger: 'axis', 
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999',
+                    }
+                }
             },
             xAxis:  {
                     type: 'category',
@@ -256,7 +275,8 @@ export default {
                     data: xData,
                     axisLabel: {
                         textStyle: { 
-                            fontSize : 30   
+                            fontSize : 30,
+                            color: opt.zts     
                             }
                     },
             },
@@ -266,7 +286,8 @@ export default {
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 30   
+                            fontSize : 30,
+                            color: opt.zts     
                             }
                     },
                     nameTextStyle: {
@@ -332,7 +353,6 @@ export default {
             myCharts.setOption(this.initOptions(setBaseOptions, xData, source));
 
              myCharts.on('click', function(params) {
-                 console.log(params)
                 if(_this.type == 1 && params.seriesType == 'line' && params.seriesName == "百米用纬"){
                     _this.ybp(params.data, 'sjsrl2', params.seriesName);
                     _this.rsylcurrent2 = data[params.dataIndex];
@@ -352,23 +372,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.charts{
-    display: flex;
-    //  background: url(..\assets\Administration\other_bg.png);
-    .charts-main, .ybp{
-        width: 3500px;
-        height: 3500px;
-        position: relative;
-    }
-    .ybp{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-         .info{
-            margin-top: 400px;
-        }
-    }
-   
-}
+@import '../style/rlback.less';
 </style>

@@ -1,0 +1,32 @@
+.charts{
+    display: flex;
+    flex-direction: column;
+    background: url(..\assets\Administration\other_bg.png) no-repeat;
+    background-size: 100% 100%;
+    justify-content: center;
+    align-items: center;
+    .left{
+        width: 90%
+    }
+    .right{
+        padding: 100px 0;
+        margin-left: 6700px;
+        font-size: 120px;
+        color: #00ecfc;
+    }
+}
+
+/deep/.el-calendar{
+    background: url(..\assets\Administration\other_bg.png) no-repeat;
+    background-size: 100% 100%;
+}
+/deep/ .el-button-group{
+    display: none;
+}
+/deep/.calendar-day{
+    font-size: 20px;
+    color: #00ecfc;
+}
+ /deep/.el-calendar-day{
+    height: 800px !important;
+}

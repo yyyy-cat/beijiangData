@@ -1,5 +1,6 @@
 <template>
     <div class="charts">
+        <div class="left">
         <div class="charts-main">
              <div id='list' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
@@ -11,10 +12,12 @@
         </div>
 
         <div class="ybp">
-             <div id="gauge" :style="{width: '3500px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
-             <div id="cod" :style="{width: '3500px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
-             <div id="lhw" :style="{width: '3500px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+             <div id="gauge" :style="{width: '2000px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+             <div id="cod" :style="{width: '2000px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+             <div id="lhw" :style="{width: '2000px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
+        </div>
+        <div class="right" @click="toTable">返回表格</div>
     </div>
 </template>
 
@@ -23,6 +26,7 @@ import axios from 'axios'
 import {mapState,mapGetters} from 'vuex'
 import yuenanUrl from "../assets/url";
 import shaoguanUrl from '../assets/s_url';
+import Varible from '../utils/varible'
 export default {
     name: 'Charts',
     data() {
@@ -31,7 +35,8 @@ export default {
             updataUrl: yuenanUrl + '/ErpYn',
             type: 0,
             hbsj: [],
-            ph: {}
+            ph: {},
+            optionsdata: {}
         }
     },
      computed: {
@@ -52,7 +57,8 @@ export default {
         },
     },
      created() {
-         this.type = this.$route.query.type
+        this.optionsdata = Varible.OPTIONS;
+        this.type = this.$route.query.type
         this.showShaoguan = this.changeShaoguan;
         if(this.changeShaoguan != 'false'){
             this.updataUrl = shaoguanUrl + '/ErpSg'
@@ -64,10 +70,23 @@ export default {
        this.getGHBTuBiaoData();
   },
    methods: {
+       toTable() {
+        this.$router.go(-1);
+       },
     initOptions(seriesData, source, nameList) {
+        let opt = this.optionsdata
         let options =  {
             dataset: {
                source: source
+            },
+             tooltip: {
+                trigger: 'axis', 
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999',
+                    }
+                }
             },
             grid: {
                 left: '3%',
@@ -86,7 +105,8 @@ export default {
                     axisLabel: {
                         interval: 0,
                         textStyle: { 
-                            fontSize : 60   
+                            fontSize : 60,
+                            color: opt.zts   
                             }
                     },
                 }
@@ -97,7 +117,8 @@ export default {
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 40   
+                            fontSize : 40,
+                            color: opt.zts    
                         }
                     }
                 },
@@ -106,7 +127,8 @@ export default {
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 40   
+                            fontSize : 40,
+                            color: opt.zts   
                         }
                     }
                 }
@@ -201,7 +223,7 @@ export default {
                         textStyle: {   
                             fontWeight: 'bolder',
                             fontSize: 50,
-                            color: "#63869e"
+                            color: '#00ecfc'
                         }
                     },
                     axisTick: {
@@ -212,7 +234,7 @@ export default {
                     },
                     axisLabel: {
                         show: true,
-                        color: '#000',
+                        color: '#00ecfc',
                         fontSize: 50,
                     }
                 }
@@ -245,19 +267,20 @@ export default {
 
     setBaseOptions() {
         let _this = this;
+        let opt = this.optionsdata
         let seriesData = [
                 {
                     name: '万码原水量',
                     type: 'bar',
                     itemStyle: {
-                        color: '#1e4d7a'
+                        color: opt.ql
                     }
                 },
                 {
                     name: '外排水量',
                     type: 'bar',
                     itemStyle: {
-                        color: '#9bc4e7'
+                        color: opt.ls
                     }
                 },
                 {
@@ -267,7 +290,7 @@ export default {
                     yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: '#1e4d7a',
+                        color: opt.qlx,
                         width: 8
                     },
                     data: _this.toChangeData('ph', _this.hbsj)
@@ -279,19 +302,20 @@ export default {
    },
     setBaseOptions1() {
         let _this = this;
+        let opt = this.optionsdata
         let seriesData = [
                 {
                     name: '万码原水量',
                     type: 'bar',
                     itemStyle: {
-                        color: '#1e4d7a'
+                        color: opt.ql
                     }
                 },
                 {
                     name: '外排水量',
                     type: 'bar',
                     itemStyle: {
-                        color: '#9bc4e7'
+                        color: opt.ls
                     }
                 },
                 {
@@ -301,7 +325,7 @@ export default {
                     yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: '#1e4d7a',
+                        color: opt.qlx,
                         width: 8
                     },
                     data: _this.toChangeData('cod', _this.hbsj)
@@ -313,19 +337,20 @@ export default {
    },
     setBaseOptions2() {
         let _this = this;
+        let opt = this.optionsdata;
         let seriesData = [
                 {
                     name: '万码原水量',
                     type: 'bar',
                     itemStyle: {
-                        color: '#1e4d7a'
+                        color: opt.ql
                     }
                 },
                 {
                     name: '外排水量',
                     type: 'bar',
                     itemStyle: {
-                        color: '#9bc4e7'
+                        color: opt.ls
                     }
                 },
                 {
@@ -335,7 +360,7 @@ export default {
                     yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: '#1e4d7a',
+                        color: opt.qlx,
                         width: 8
                     },
                     data: _this.toChangeData('lhw', _this.hbsj)
@@ -408,12 +433,16 @@ export default {
 <style lang="less" scoped>
 .charts{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    position: relative;
     height: 100%;
     width: 100%;
-    margin-top: 200px;
-    //  background: url(..\assets\Administration\other_bg.png);
-    .charts-main{
+    padding-top: 200px;
+    background: url(..\assets\Administration\other_bg.png);
+    .left{
+        display: flex;
+        flex-direction: column;
+        .charts-main{
         width: 2500px;
         height: 1000px;
         margin-top: 10px;
@@ -425,5 +454,14 @@ export default {
         justify-content: center;
         align-items: center;
     }
+    }
+    .right{
+        position: absolute;
+        top: 100px;
+        left: 6700px;
+        font-size: 120px;
+        color: #00ecfc;
+    }
+ 
 }
 </style>

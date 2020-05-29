@@ -1,42 +1,48 @@
 <template>
     <div class="charts">
-        <div class="charts-main">
-             <div id='list' :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
-        </div>
-        <div class="ybp" >
-            <div class="info">
-                <div class="data">基本信息</div>
-                <table border="1">
-                    <tr>
-                        <th>缸号</th>
-                        <th>{{rsylcurrent.gh}}</th>
-                    </tr>
-                    <tr>
-                        <td>品种</td>
-                        <td>{{rsylcurrent.pz}}</td>
-                    </tr>
-                </table>
+        <div class="right" @click="toTable"> 查看日历图</div>
+        <div class="left">
+            <div class="charts-main">
+                <div id='list' :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
             </div>
-             <div id="sjsrl" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
+            <div class="ybp" v-show='JSON.stringify(this.rsylcurrent) !== "{}"'>
+                <div class="info">
+                    <div class="data">基本信息</div>
+                    <table border="1">
+                        <tr>
+                            <th>缸号</th>
+                            <th>{{rsylcurrent.gh}}</th>
+                        </tr>
+                        <tr>
+                            <td>品种</td>
+                            <td>{{rsylcurrent.pz}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="sjsrl" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Varible from '../utils/varible'
 export default {
     name: 'Charts',
     data() {
         return{
             lData: this.$route.params.wdata,
             type: null,
-            rsylcurrent: {} //染色用料的当前数据
+            rsylcurrent: {}, //染色用料的当前数据
+            optionsdata: {}
         }
     },
     watch: {
     },
     created() {
         this.type = this.$route.params.type
+        this.optionsdata = Varible.OPTIONS;
     },
    mounted() {
     if(Number(this.type) == 0) {
@@ -49,6 +55,9 @@ export default {
      
   },
    methods: {
+    toTable() {
+        this.$router.go(-1);
+    },
     changeOptions(name) {
         let data = JSON.parse(this.lData);
         let arr = []
@@ -60,8 +69,8 @@ export default {
     },
     //仪表盘数据
     ybpOptions(value, showName) {
-         let minx = (Number(value)*0.95).toFixed(2);
-         let maxx = (Number(value)*1.05).toFixed(2);
+         let minx = (Number(value)-2).toFixed(2);
+         let maxx = (Number(value)+2).toFixed(2);
             let options = {
             tooltip: {
                 formatter: '{a} <br/>{b} : {c}%'
@@ -91,7 +100,7 @@ export default {
                         textStyle: {   
                             fontWeight: 'bolder',
                             fontSize: 50,
-                            color: "#63869e"
+                            color: '#00ecfc',
                         }
                     },
                     axisTick: {
@@ -102,7 +111,7 @@ export default {
                     },
                     axisLabel: {
                         show: true,
-                        color: '#000',
+                        color: '#00ecfc',
                         fontSize: 50,
                     }
                 }
@@ -122,13 +131,14 @@ export default {
     setBaseOptions() {
         let _this = this;
          let seriesData = [];
+         let opt = this.optionsdata
          if(Number(_this.type) == 0) {
           seriesData =  [
                 { 
                     name: '标准上染率',
                     type: 'bar',
                     itemStyle: {
-                        color: '#1e4d7a'
+                        color: opt.ql
                     }
                 },
                 {
@@ -140,7 +150,7 @@ export default {
                     data: _this.changeOptions('mysjsr'),
                     lineStyle: {
                         width: 8,
-                        color: '#1e4d7a'
+                        color: opt.qlx
                     }
                 }
             ]
@@ -151,7 +161,7 @@ export default {
                 name: '标准上浆率',
                 type: 'bar',
                 itemStyle: {
-                    color: '#1e4d7a'
+                    color: opt.ql
                 }
             },
             {
@@ -164,7 +174,7 @@ export default {
                 data: this.changeOptions('fljysjsjl'),
                 lineStyle: {
                     width: 8,
-                    color: '#1e4d7a'
+                    color: opt.qlx
                 }
             }
         ]
@@ -175,6 +185,15 @@ export default {
         let options = {
             dataset: {
                source: source
+            },
+              tooltip: {
+                trigger: 'axis', 
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999',
+                    }
+                }
             },
             xAxis:  {
                     type: 'category',
@@ -276,23 +295,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.charts{
-    display: flex;
-    //  background: url(..\assets\Administration\other_bg.png);
-    .charts-main, .ybp{
-        width: 3500px;
-        height: 3500px;
-        position: relative;
-    }
-    .ybp{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-         .info{
-            margin-top: 400px;
-        }
-    }
-   
-}
+@import '../style/rlback.less';
 </style>

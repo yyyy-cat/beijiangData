@@ -1,34 +1,24 @@
 <template>
   <!-- 管控中心 -->
   <div class="Administration" v-on:dblclick="shuangji()">
-    <!-- 顶部logo -->
+  <div class="nav-main">
     <div class="index-top_nav">
-      <!-- <img src="..\assets\Administration\gk_logo.png" alt> -->
-      <!-- <img src="../assets/index/top_nav.png" alt=""> -->
-      <p
-        style="text-align: center; font-family: 庞门正道标题体; font-size: 180px;color:#00ecfc; letter-spacing:15px;"
-      >
-        <img
-          src="..\assets\Administration\nav_logo.png"
-          alt
-          style="vertical-align: middle;margin-top: -37px;"
-        />
+      <p style="text-align: center; font-family: 庞门正道标题体; font-size: 180px;color:#00ecfc; letter-spacing:15px;">
+        <img src="..\assets\Administration\nav_logo.png" style="vertical-align: middle;margin-top: -37px;"/>
         <span>环保数据</span>
       </p>
     </div>
     <!-- 返回主页 -->
-    <div class="index-esc">
-      <span @click="esc">
+    <div class="index-esc" @click="esc">
         <img src="..\assets\Administration\home.png" alt />
-        返回
-      </span>
-      <!--<span @click="syj">-->
-      <!--<img src="..\assets\Administration\home.png" alt />-->
-      <!--上级-->
-      <!--</span>-->
+      <span>返回</span>
     </div>
-    <!-- 显示用户登陆和退出 -->
-    <login></login>
+     <div class="right">
+        <img src="..\assets\production\sc_chart.png" alt  class="img" @click="toCharts"/>
+      <!-- 显示用户登陆和退出 -->
+      <login></login>
+    </div>
+  </div>
 
     <div id="bgColor">
       <!-- <h1>数据管控标准</h1> -->
@@ -414,6 +404,9 @@ export default {
     clearInterval(this.str);
   },
   methods: {
+    toCharts() {
+        this.$router.push('/huanbaoshujucharts?type=' + 0)
+    },
     arraySpanMethod({row, column, rowIndex, columnIndex}) {
 
     },
@@ -578,7 +571,8 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style scoped lang='less'>
+@import '../style/top.less';
 .ChemicalTable {
   margin: 0 auto 0;
   width: 6301px;
@@ -1410,70 +1404,6 @@ a {
   line-height: 160px;
 }
 
-/* 头部 */
-.Administration {
-  position: relative;
-  width: 7680px;
-  height: 3240px;
-  background: url(..\assets\Administration\other_bg.png);
-}
-.index-top_nav {
-  overflow: hidden;
-  width: 3358px;
-  height: 292px;
-  margin: 0 auto;
-  background: url(../assets/index/top_nav.png);
-}
-/* .index-top_nav img {
-  display: block;
-  margin: 45px auto;
-  width: 1052px;
-  height: 168px;
-} */
-/* 返回首页 */
-.index-esc {
-  position: absolute;
-  top: 100px;
-  left: 640px;
-  width: 1000px;
-  height: 100px;
-}
-.index-esc img {
-  padding-right: 40px;
-  width: 140px;
-  height: 100px;
-  vertical-align: -20px;
-}
-.index-esc span {
-  padding: 0 100px;
-  color: #00ecfc;
-  font-size: 80px;
-  line-height: 100px;
-}
-/* 退出登陆 */
-.index-name_esc {
-  position: absolute;
-  top: 100px;
-  right: 400px;
-  width: 1000px;
-  height: 100px;
-}
-.index-name_esc img {
-  padding-right: 40px;
-  width: 140px;
-  height: 100px;
-  vertical-align: -20px;
-}
-.index-name_esc span {
-  padding: 0 100px;
-  color: #00ecfc;
-  font-size: 80px;
-  line-height: 100px;
-}
-/*  */
-/*  */
-/*  */
-/*  */
 </style>
 <style>
 .ivu-input {

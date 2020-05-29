@@ -485,7 +485,7 @@ export default {
     },
     esc() {
       var editType = 0;
-      if(this.showShaoguan){
+      if(!Boolean(this.changeShaoguan)){
         editType = 0
       }else{
         editType = 1

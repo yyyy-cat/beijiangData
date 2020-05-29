@@ -1,5 +1,6 @@
 <template>
     <div class="charts">
+        <div class="right" @click="toTable">查看图表</div>
         <div class="charts-main">
              <div id='list' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
@@ -11,6 +12,7 @@ import axios from 'axios'
 import {mapState,mapGetters} from 'vuex'
 import yuenanUrl from "../assets/url";
 import shaoguanUrl from '../assets/s_url';
+import Varible from '../utils/varible'
 export default {
     name: 'Charts',
     data() {
@@ -20,7 +22,8 @@ export default {
             zzkthn: [],
             showShaoguan: false,
             updataUrl: yuenanUrl + '/ErpYn',
-            type: 0
+            type: 0,
+            optionsdata: {}
         }
     },
      computed: {
@@ -48,6 +51,7 @@ export default {
     },
      created() {
          this.type = this.$route.query.type
+          this.optionsdata = Varible.OPTIONS;
     this.showShaoguan = this.changeShaoguan;
      if(this.changeShaoguan != 'false'){
         this.updataUrl = shaoguanUrl + '/ErpSg'
@@ -69,10 +73,23 @@ export default {
       this.getGCNHZbktTuBiaoData()
   },
    methods: {
+    toTable() {
+        this.$router.go(-1);
+    },
     initOptions(seriesData, source, nameList) {
+        let opt = this.optionsdata;
         let options =  {
             dataset: {
                source: source
+            },
+             tooltip: {
+                trigger: 'axis', 
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999',
+                    }
+                }
             },
             grid: {
                 left: '3%',
@@ -91,7 +108,8 @@ export default {
                     axisLabel: {
                         interval: 0,
                         textStyle: { 
-                            fontSize : 60   
+                            fontSize : 60,
+                            color: opt.zts   
                             }
                     },
                 }
@@ -105,7 +123,8 @@ export default {
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 40   
+                            fontSize : 40,
+                            color: opt.zts    
                         }
                     }
                 },
@@ -117,7 +136,8 @@ export default {
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 40   
+                            fontSize : 40,
+                            color: opt.zts    
                         }
                     }
                 }
@@ -201,6 +221,7 @@ export default {
     setBaseOptions() {
         let _this = this;
         let seriesData = [];
+        let opt = this.optionsdata;
         if(Number(_this.type) == 0){
             //江染过程耗能
                 seriesData = [
@@ -208,21 +229,21 @@ export default {
                     name: '染色自来水标准用量',
                     type: 'bar',
                     itemStyle: {
-                        color: '#1e4d7a'
+                        color: opt.ql
                     }
                 },
                 {
                     name: '染色蒸汽标准用量',
                     type: 'bar',
                     itemStyle: {
-                        color: '#9bc4e7'
+                        color: opt.ls
                     }
                 },
                  {
                     name: '浆纱蒸汽标准用量',
                     type: 'bar',
                     itemStyle: {
-                         color: '#9bc4a6'
+                         color: opt.xj
                     }
                 },
                 {
@@ -232,7 +253,7 @@ export default {
                     yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: '#1e4d7a',
+                        color: opt.qlx,
                         width: 8
                     },
                     data: _this.toChangeData('ystonwm', _this.jrgchn)
@@ -244,7 +265,7 @@ export default {
                     yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: '#9bc4e7',
+                        color: opt.lsx,
                         width: 8
                     },
                     data: _this.toChangeData('zylzqtonwm', _this.jrgchn)
@@ -256,7 +277,7 @@ export default {
                     yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: '#9bc4a6',
+                        color: opt.xjx,
                         width: 8
                     },
                     data: _this.toChangeData('jsmwm', _this.jrgchn)
@@ -270,14 +291,14 @@ export default {
                     name: '自来水每小时用水标准',
                     type: 'bar',
                     itemStyle: {
-                        color: '#1e4d7a'
+                        color: opt.ql
                     }
                 },
                 {
                     name: '自来水每万米用水标准',
                     type: 'bar',
                     itemStyle: {
-                        color: '#9bc4e7'
+                       color: opt.ls
                     }
                 },
                 {
@@ -287,7 +308,7 @@ export default {
                     yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: '#1e4d7a',
+                        color: opt.qlx,
                         width: 8
                     },
                     data: _this.toChangeData('tonh', _this.zzkthn)
@@ -299,7 +320,7 @@ export default {
                     yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: '#9bc4e7',
+                        color: opt.lsx,
                         width: 8
                     },
                     data: _this.toChangeData('tonwm', _this.zzkthn)
@@ -312,21 +333,21 @@ export default {
                     name: '总用量自来水用量',
                     type: 'bar',
                     itemStyle: {
-                        color: '#1e4d7a'
+                        color: opt.ql
                     }
                 },
                 {
                     name: '总用量蒸汽用量',
                     type: 'bar',
                     itemStyle: {
-                        color: '#9bc4e7'
+                        color: opt.ls
                     }
                 },
                  {
                     name: '总用量天然气用量',
                     type: 'bar',
                     itemStyle: {
-                         color: '#9bc4a6'
+                         color: opt.xj
                     }
                 },
                 {
@@ -336,7 +357,7 @@ export default {
                     yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: '#1e4d7a',
+                        color: opt.qlx,
                         width: 8
                     },
                     data: _this.toChangeData('zyltrqmwm', _this.xrData)
@@ -348,7 +369,7 @@ export default {
                     yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: '#9bc4e7',
+                        color: opt.lsx,
                         width: 8
                     },
                     data: _this.toChangeData('zylzqtonwm', _this.xrData)
@@ -360,7 +381,7 @@ export default {
                     yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: '#9bc4a6',
+                        color: opt.xjx,
                         width: 8
                     },
                     data: _this.toChangeData('zyltrqmwm', _this.xrData)
@@ -409,13 +430,19 @@ export default {
 <style lang="less" scoped>
 .charts{
     display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
-    margin-top: 200px;
-    //  background: url(..\assets\Administration\other_bg.png);
+   padding-top: 200px;
+    background: url(..\assets\Administration\other_bg.png);
     .charts-main{
         width: 2500px;
         height: 3500px;
+    }
+    .right{
+        margin-left: 6700px;
+        font-size: 120px;
+        color: #00ecfc;
     }
 }
 </style>

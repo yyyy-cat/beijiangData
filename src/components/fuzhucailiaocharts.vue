@@ -1,17 +1,17 @@
 <template>
     <div class="charts">
-        <div class="charts-main">
+        <div class="right" @click="toTable">查看图表</div>
+        <div class="left">
+            <el-calendar>
+                <template
+                    slot="dateCell"
+                    class="name"
+                    slot-scope="{date, data}">
+                    <div class="calendar-day">{{ data.day.split('-').slice(1).join('-') }}</div>
+                    <div :id="'step' + data.day.split('-').slice(1).join('-')" :style="{width: '800px', height: '700px', margin: '0 auto', zIndex: '10'}" @click="toNextPage(data.day.split('-').slice(2).join('-'))"></div>
+                </template>
+            </el-calendar>
         </div>
-        <el-calendar>
-            <template
-            slot="dateCell"
-            class="name"
-            slot-scope="{date, data}">
-             <div class="calendar-day">{{ data.day.split('-').slice(1).join('-') }}</div>
-                <div :id="'step' + data.day.split('-').slice(1).join('-')" :style="{width: '800px', height: '700px', margin: '0 auto', zIndex: '10'}" @click="toNextPage(data.day.split('-').slice(2).join('-'))"></div>
-              
-        </template>
-        </el-calendar>
     </div>
 </template>
 
@@ -20,6 +20,7 @@ import axios from 'axios'
 import {mapState,mapGetters} from 'vuex'
 import yuenanUrl from "../assets/url";
 import shaoguanUrl from '../assets/s_url';
+import Varible from '../utils/varible'
 export default {
     name: 'Charts',
     data() {
@@ -29,7 +30,8 @@ export default {
             wData: [],//传入下一个页面的数据
             type: null,//上个页面判断渲染哪个图表的
             rsyl: [],
-            sjfl: []
+            sjfl: [],
+            optionsdata: {}
         
         }
     },
@@ -55,6 +57,7 @@ export default {
     }
     },
     created() {
+        this.optionsdata = Varible.OPTIONS;
         this.type = this.$route.query.type
         this.showShaoguan = this.changeShaoguan;
         if(this.changeShaoguan != 'false'){
@@ -72,6 +75,9 @@ export default {
        }
   },
    methods: {
+        toTable() {
+            this.$router.go(-1);
+        },
        toNextPage(id, data) {
            let _this = this
            let arr = []
@@ -108,6 +114,7 @@ export default {
     setBaseOptions() {
         let _this = this;
         let seriesData = [];
+        let opt = this.optionsdata;
         if(Number(_this.type) == 0){
             //原材料浆染投入产出
             seriesData =  [
@@ -115,7 +122,7 @@ export default {
                     name: '标准上染率',
                     type: 'bar',
                     itemStyle: {
-                        color: '#1e4d7a'
+                        color: opt.ql
                     },
                     data: _this.toSetData('mybzsr', _this.rsyl)
                 },
@@ -128,7 +135,7 @@ export default {
                     data: _this.toSetData('mysjsr', _this.rsyl),
                     lineStyle: {
                         width: 8,
-                        color: '#1e4d7a'
+                        color: opt.qlx
                     }
                 }
             ]
@@ -138,7 +145,7 @@ export default {
                     name: '标准上浆率',
                     type: 'bar',
                     itemStyle: {
-                        color: '#1e4d7a'
+                        color: opt.ql
                     },
                     data: _this.toSetData('fljybzsjl', _this.sjfl)
                 },
@@ -151,7 +158,7 @@ export default {
                     data: _this.toSetData('fljysjsjl', _this.sjfl),
                     lineStyle: {
                         width: 8,
-                        color: '#1e4d7a'
+                        color: opt.qlx
                     }
                 }
             ]
@@ -160,6 +167,7 @@ export default {
     },
     initOptions(setBaseOptions, source) {
         let _this = this;
+        let opt = this.optionsdata
         let options = {
             xAxis:  {
                     type: 'category',
@@ -169,7 +177,8 @@ export default {
                     data: source,
                     axisLabel: {
                         textStyle: { 
-                            fontSize : 30   
+                            fontSize : 30,
+                            color: opt.zts   
                             }
                     },
             },
@@ -179,7 +188,8 @@ export default {
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 30   
+                            fontSize : 30,
+                            color: opt.zts     
                             }
                     },
                     nameTextStyle: {
@@ -191,7 +201,8 @@ export default {
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 30   
+                            fontSize : 30,
+                            color: opt.zts     
                             }
                     },
                     nameTextStyle: {
@@ -259,18 +270,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.charts{
-    //  background: url(..\assets\Administration\other_bg.png);
-    .charts-main{
-        padding-left: 500px ;
-    }
-}
-
-/deep/.el-calendar{
-    width: 8200px;
-}
-
- /deep/.el-calendar-day{
-    height: 800px !important;
-}
+@import '../style/hasrl.less';
 </style>
