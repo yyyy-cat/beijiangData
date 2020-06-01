@@ -126,7 +126,7 @@
                 </el-table-column>
               </el-table-column>
               <el-table-column
-                label="自来水用量"
+                label="自来水实际用量"
                 align="center"
                 width="450">
                 <el-table-column
@@ -161,7 +161,7 @@
                 </el-table-column>
               </el-table-column>
               <el-table-column
-                label="蒸汽用量"
+                label="蒸汽实际用量"
                 align="center"
                 width="450">
                 <el-table-column
@@ -230,7 +230,7 @@
                 </el-table-column>
               </el-table-column>
               <el-table-column
-                label="蒸汽用量"
+                label="蒸汽实际用量"
                 align="center"
                 width="450">
                 <el-table-column

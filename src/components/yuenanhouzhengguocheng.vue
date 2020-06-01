@@ -373,7 +373,7 @@
               </el-table-column>
             </template>
 
-            <template v-if="show">
+            <template v-if="changeShaoguan == 'false'">
 
               <el-table-column
                 label="丝光能源用量"
@@ -490,6 +490,7 @@
                 </el-table-column>
               </el-table-column>
             </template>
+
           </el-table>
         </div>
         <div style="margin: 70px;overflow: hidden">
@@ -581,6 +582,7 @@ export default {
   },
   created() {
     this.showShaoguan = this.changeShaoguan;
+    console.log(this.showShaoguan)
      if(this.changeShaoguan != 'false'){
         this.updataUrl = shaoguanUrl + '/ErpSg'
       }else{

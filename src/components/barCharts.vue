@@ -94,7 +94,9 @@ export default {
                     crossStyle: {
                         color: '#999',
                     }
-                }
+                },
+                
+                extraCssText: 'font-size: 100px; line-height: 100px',
             },
             grid: {
                 left: '3%',

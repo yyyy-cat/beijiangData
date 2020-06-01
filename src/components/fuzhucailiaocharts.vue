@@ -258,7 +258,7 @@ export default {
         let setBaseOptions = _this.setBaseOptions()
         data.forEach((v, index) => {
             let source = []
-            let zjsj = '05-'+v.zjsj.slice(8,10);
+            let zjsj = v.zjsj.slice(5,10);
             v.list.map((k, idx) => {
                 let name = v.zjsj.slice(8,10)+ '-' + idx
                 source.push(name)

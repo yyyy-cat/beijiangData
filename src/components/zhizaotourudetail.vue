@@ -263,6 +263,11 @@ export default {
             dataset: {
                source: source
             },
+            // legend:{
+            //     tooltip:{
+            //         show:true
+            //     }
+            // },
              tooltip: {
                 trigger: 'axis', 
                 axisPointer: {
@@ -270,7 +275,9 @@ export default {
                     crossStyle: {
                         color: '#999',
                     }
-                }
+                },
+                 extraCssText: 'font-size: 100px; line-height: 100px',
+               
             },
             xAxis:  {
                     type: 'category',
