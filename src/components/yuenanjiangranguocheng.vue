@@ -235,19 +235,19 @@
                 width="450">
                 <el-table-column
                   prop="jsm"
-                  label="m³"
+                  label="ton"
                   align="center"
                   width="350">
                 </el-table-column>
                 <el-table-column
                   prop="jsmh"
-                  label="m³/H"
+                  label="ton/H"
                   align="center"
                   width="350">
                 </el-table-column>
                 <el-table-column
                   prop="jsmwm"
-                  label="m³/万米"
+                  label="ton/万米"
                   align="center"
                   width="350">
                 </el-table-column>
