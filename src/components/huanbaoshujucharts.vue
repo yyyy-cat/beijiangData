@@ -75,12 +75,13 @@ export default {
         this.$router.go(-1);
        },
     initOptions(seriesData, source, nameList) {
+        // console.log(source,"这是原来的数据")
         let opt = this.optionsdata
 
         let options =  {
-            dataset: {
-               source: source
-            },
+            // dataset: {
+            //    source: source
+            // },
              tooltip: {
                 trigger: 'axis', 
                 axisPointer: {
@@ -277,14 +278,16 @@ export default {
                     type: 'bar',
                     itemStyle: {
                         color: opt.ql
-                    }
+                    },
+                    data: _this.toChangeData('ysm', _this.hbsj)
                 },
                 {
                     name: '外排水量',
                     type: 'bar',
                     itemStyle: {
-                        color: opt.ls
-                    }
+                        color: opt.ls,
+                    },
+                    data: _this.toChangeData('wpm', _this.hbsj)
                 },
                 {
                     name: 'PH',
@@ -295,8 +298,35 @@ export default {
                     lineStyle: {
                         color: opt.qlx,
                         width: 8
+                        
                     },
                     data: _this.toChangeData('ph', _this.hbsj)
+                },
+                 {
+                    name: 'PH最小值',
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: opt.ql,
+                        width: 8,
+                        type:'dotted' 
+                    },
+                    data: _this.toChangeData('phbzmin', _this.hbsj)
+                },
+                  {
+                    name: 'PH最大值',
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: opt.ls,
+                        width: 8,
+                        type:'dotted' 
+                    },
+                    data: _this.toChangeData('phbzmax', _this.hbsj)
                 }
         ]
         
@@ -311,15 +341,17 @@ export default {
                     name: '万码原水量',
                     type: 'bar',
                     itemStyle: {
-                        color: opt.ql
-                    }
+                        color: opt.ql,
+                    },
+                    data: _this.toChangeData('ysm', _this.hbsj)
                 },
                 {
                     name: '外排水量',
                     type: 'bar',
                     itemStyle: {
                         color: opt.ls
-                    }
+                    },
+                    data: _this.toChangeData('wpm', _this.hbsj)
                 },
                 {
                     name: '外排水cod值',
@@ -332,6 +364,18 @@ export default {
                         width: 8
                     },
                     data: _this.toChangeData('cod', _this.hbsj)
+                },{
+                    name: '外排水cod值最大值',
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: opt.ls,
+                        width: 8,
+                         type:'dotted' 
+                    },
+                    data: _this.toChangeData('codbzmax', _this.hbsj)
                 }
         ]
         
@@ -347,14 +391,16 @@ export default {
                     type: 'bar',
                     itemStyle: {
                         color: opt.ql
-                    }
+                    },
+                    data: _this.toChangeData('ysm', _this.hbsj)
                 },
                 {
                     name: '外排水量',
                     type: 'bar',
                     itemStyle: {
                         color: opt.ls
-                    }
+                    },
+                    data: _this.toChangeData('wpm', _this.hbsj)
                 },
                 {
                     name: '外排水硫化物',
@@ -365,8 +411,22 @@ export default {
                     lineStyle: {
                         color: opt.qlx,
                         width: 8
+                       
                     },
                     data: _this.toChangeData('lhw', _this.hbsj)
+                },
+                  {
+                    name: '外排水硫化物最大值',
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: opt.ls,
+                        width: 8,
+                        type:'dotted' 
+                    },
+                    data: _this.toChangeData('bzmax', _this.hbsj)
                 }
         ]
         
@@ -390,6 +450,7 @@ export default {
                  return v.list
              })  
         })
+
         let seriesData = _this.setBaseOptions()
         let seriesData1 = _this.setBaseOptions1()
         let seriesData2 = _this.setBaseOptions2()
