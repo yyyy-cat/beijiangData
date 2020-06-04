@@ -1,7 +1,8 @@
 <template>
     <div class="charts">
          <span class="title-name">环保数据</span>
-        <div class="left">
+    <div class="left">
+        <div class="main">
         <div class="charts-main">
              <div id='list' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
@@ -11,13 +12,13 @@
          <div class="charts-main">
              <div id='list2' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
-
+        </div>
         <div class="ybp">
              <div id="gauge" :style="{width: '2000px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
              <div id="cod" :style="{width: '2000px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
              <div id="lhw" :style="{width: '2000px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
-        </div>
+    </div>
         <div class="right" @click="toTable">返回表格</div>
     </div>
 </template>
@@ -485,7 +486,7 @@ export default {
         myCharts2.setOption(_this.initOptions(seriesData2, source, nameList));
          myCharts2.on('click', function(params) {
             this.ph = nameData[params.dataIndex][0];
-            let phbzmax = nameData[params.dataIndex][0].codbzmax;
+            let phbzmax = nameData[params.dataIndex][0].bzmax;
                 if(params.seriesType == 'line' && params.seriesName == "外排水硫化物") {
                     _this.ybp(params.data, 'lhw', phbzmax,'0');
                 }
@@ -501,7 +502,7 @@ export default {
     flex-direction: column;
     position: relative;
     height: 100%;
-    width: 100%;
+    width: 8300px;
     padding-top: 200px;
     background: url(..\assets\Administration\other_bg.png);
     .title-name{
@@ -513,7 +514,8 @@ export default {
     }
     .left{
         display: flex;
-        flex-direction: column;
+        // flex-direction: column;
+        justify-content: space-between;
         .charts-main{
         width: 2500px;
         height: 1000px;
@@ -522,7 +524,7 @@ export default {
 
     .ybp{
         display: flex;
-        width: 100%;
+         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
