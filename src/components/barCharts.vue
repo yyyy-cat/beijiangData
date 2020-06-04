@@ -124,9 +124,6 @@ export default {
             yAxis: [
                 {
                     type: 'value',
-                    min: 0,
-                    max: 100,
-                    interval: 20,
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
@@ -137,9 +134,6 @@ export default {
                 },
                 {
                     type: 'value',
-                    min: 0,
-                    max: 100,
-                    interval: 20,
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 

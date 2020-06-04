@@ -93,7 +93,8 @@ export default {
         return arr
     },
     //仪表盘数据
-    ybpOptions(value, showName) {
+    ybpOptions(sj, value, showName) {
+        console.log(value,"数据",sj)
          let minx = (Number(value)-2).toFixed(2);
          let maxx = (Number(value)+2).toFixed(2);
             let options = {
@@ -114,7 +115,7 @@ export default {
                             fontSize: 70,
                         },
                     },
-                    data: [{value: Number(value), name: showName}],
+                    data: [{value: Number(sj), name: showName}],
                     axisLine: {             
                      lineStyle: { 
                         color: [[0.01, '#c23531'], [0.99,'#63869e'], [1, '#c23531']],
@@ -144,14 +145,14 @@ export default {
         };
         return options
     },
-    ybp(value, name, title) {
+    ybp(sj,value, name, title) {
         let _this = this;
         if(name == 'sjsrl'){
             let sjsrl = this.$echarts.init(document.getElementById('sjsrl'))
-            sjsrl.setOption(_this.ybpOptions(value, title), true);
+            sjsrl.setOption(_this.ybpOptions(sj,value, title), true);
         }else if(name == 'sjsrl2'){
             let sjsrl = this.$echarts.init(document.getElementById('sjsrl2'))
-            sjsrl.setOption(_this.ybpOptions(value, title), true);
+            sjsrl.setOption(_this.ybpOptions(sj, value, title), true);
         }
     }, 
     setBaseOptions() {
@@ -365,18 +366,20 @@ export default {
             myCharts.setOption(this.initOptions(setBaseOptions, xData, source));
 
              myCharts.on('click', function(params) {
+
                 if(_this.type == 0 && params.seriesType == 'line' && params.seriesName == "原纱利用率"){
-                    _this.ybp(params.data, 'sjsrl', params.seriesName);
+                    _this.ybp(params.data,params.data, 'sjsrl', params.seriesName);
+                    
                     _this.rsylcurrent = data[params.dataIndex];
                 }
                 if(_this.type == 1 && params.seriesType == 'line' && params.seriesName == "百米用纬"){
-                    _this.ybp(params.data, 'sjsrl2', params.seriesName);
+                    _this.ybp(params.data,source[params['dataIndex']]['1'], 'sjsrl2', params.seriesName);
                     _this.rsylcurrent2 = data[params.dataIndex];
                 }else if(_this.type == 1 && params.seriesType == 'line' && params.seriesName == "织成率"){
-                    _this.ybp(params.data, 'sjsrl', params.seriesName);
+                    _this.ybp(params.data,source[params['dataIndex']]['2'], 'sjsrl', params.seriesName);
                     _this.rsylcurrent = data[params.dataIndex];
                 }else if(_this.type == 2 && params.seriesType == 'line' && params.seriesName == "制成率") {
-                    _this.ybp(params.data, 'sjsrl', params.seriesName);
+                    _this.ybp(params.data,source[params['dataIndex']]['1'], 'sjsrl', params.seriesName);
                     _this.rsylcurrent = data[params.dataIndex];
                 }
                 

@@ -54,7 +54,7 @@ export default {
             }
         },
         hbsj: function(newData,oldData){
-            this.draw('ysmwm','wpmwm', this.hbsj)
+            this.draw('ysm','wpm', this.hbsj)
         },
     },
      created() {
@@ -76,6 +76,7 @@ export default {
        },
     initOptions(seriesData, source, nameList) {
         let opt = this.optionsdata
+
         let options =  {
             dataset: {
                source: source
@@ -262,7 +263,7 @@ export default {
          if(name == 'lhw'){
             let gauge = this.$echarts.init(document.getElementById('lhw'))
             this.ybpOptions().series[0].data[0].value = value;
-            showName = 'lhw';
+            showName = 's';
             gauge.setOption(this.ybpOptions(value, showName, max, min), true);
         }
     }, 
@@ -389,7 +390,6 @@ export default {
                  return v.list
              })  
         })
-       
         let seriesData = _this.setBaseOptions()
         let seriesData1 = _this.setBaseOptions1()
         let seriesData2 = _this.setBaseOptions2()

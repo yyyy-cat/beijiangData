@@ -72,7 +72,8 @@ export default {
         return arr
     },
     //仪表盘数据
-    ybpOptions(value, showName) {
+    ybpOptions(value, showName, name) {
+        console.log(name)
          let minx = (Number(value)-2).toFixed(2);
          let maxx = (Number(value)+2).toFixed(2);
             let options = {
@@ -93,7 +94,7 @@ export default {
                             fontSize: 70,
                         },
                     },
-                    data: [{value: Number(value), name: showName}],
+                    data: [{value: Number(name), name: showName}],
                     axisLine: {             
                      lineStyle: { 
                         color: [[0.01, '#c23531'], [0.99,'#63869e'], [1, '#c23531']],
@@ -123,13 +124,13 @@ export default {
         };
         return options
     },
-    ybp(value, name) {
+    ybp(value, name, xj) {
         let _this = this;
         let showName = ''
         if(name == 'sjsrl'){
             let sjsrl = this.$echarts.init(document.getElementById('sjsrl'))
             showName = '实际上浆率';
-            sjsrl.setOption(_this.ybpOptions(value, showName), true);
+            sjsrl.setOption(_this.ybpOptions(value, showName, xj), true);
         }
     }, 
     setBaseOptions() {
@@ -284,11 +285,12 @@ export default {
             myCharts.setOption(this.initOptions(setBaseOptions, xData, source));
 
              myCharts.on('click', function(params) {
+                 console.log(params.data)
                 if(_this.type == 0 && params.seriesType == 'line' && params.seriesName == "实际上染率") {
-                    _this.ybp(params.data, 'sjsrl');
+                    _this.ybp(source[params['dataIndex']]['1'], 'sjsrl', params.data);
                     _this.rsylcurrent = data[params.dataIndex];
                 }else if(_this.type == 1 && params.seriesType == 'line' && params.seriesName == "上浆率"){
-                    _this.ybp(params.data, 'sjsrl');
+                    _this.ybp(source[params['dataIndex']]['1'], 'sjsrl', params.data);
                     _this.rsylcurrent = data[params.dataIndex];
                 }
                 

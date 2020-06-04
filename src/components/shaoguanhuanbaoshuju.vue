@@ -278,13 +278,13 @@
                   width="280">
                 </el-table-column>
                 <el-table-column
-                  prop=""
+                  prop="wpmwm"
                   label="(m³/万码)"
                   align="center"
                   width="280">
                 </el-table-column>
                 <el-table-column
-                  prop=""
+                  prop="cl"
                   label="产量(万码)"
                   align="center"
                   width="280">
