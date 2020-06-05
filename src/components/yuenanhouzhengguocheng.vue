@@ -23,7 +23,7 @@
       </span>
     </div>
       <div class="right">
-        <img src="..\assets\production\sc_chart.png" alt  class="img" @click='toBarCharts'/>
+        <!-- <img src="..\assets\production\sc_chart.png" alt  class="img" @click='toBarCharts'/> -->
         <login></login>
     </div>
   </div>
@@ -517,8 +517,7 @@
         <div slot="tip" class="el-upload__tip" style="clear: both">只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
     </div>
-    <!-- <foot></foot> -->
-    <!-- <yuenanjiangranfoot></yuenanjiangranfoot> -->
+    <barcharts></barcharts>
     <yuenanjiangrangguochengfoot></yuenanjiangrangguochengfoot>
   </div>
 </template>
@@ -532,6 +531,7 @@ import yuenanjiangrangguochengfoot from "./yuenanjiangrangguochengfoot.vue";
 import login from "./login_assembly.vue";
 import Vue from 'vue';
 import {Upload,Button}from 'element-ui';
+import barcharts from './barCharts'
 
 Vue.use(Upload);
 Vue.use(Button);
@@ -564,7 +564,7 @@ export default {
       updataUrl: yuenanUrl + '/ErpYn'
     };
   },
-  components: { foot, login, yuenanjiangrangguochengfoot },
+  components: { foot, login, yuenanjiangrangguochengfoot, barcharts },
    computed: {
       ...mapGetters([
     'changeShaoguan'
@@ -778,17 +778,8 @@ this.show1=!this.show1;
 };
 </script>
 <style scoped lang='less'>
-.nav-main{
-  display: flex;
-  height: 292px;
-  align-items: center;
-  .right{
-  display: flex;
-  .img{
-    margin-right: 1600px;
-  }
-}
-}
+@import '../style/gctop.less';
+
 .ChemicalTable {
   margin: 200px auto 0;
   /* width: 1751px; */
@@ -1644,70 +1635,7 @@ a {
   line-height: 160px;
 }
 
-/* 头部 */
-.Administration {
-  position: relative;
-  width: 7680px;
-  height: 3240px;
-  background: url(..\assets\Administration\other_bg.png);
-}
-.index-top_nav {
-  overflow: hidden;
-  width: 3358px;
-  height: 292px;
-  margin: 0 auto;
-  background: url(../assets/index/top_nav.png);
-}
-/* .index-top_nav img {
-  display: block;
-  margin: 45px auto;
-  width: 1052px;
-  height: 168px;
-} */
-/* 返回首页 */
-.index-esc {
-  position: absolute;
-  top: 100px;
-  left: 640px;
-  width: 1000px;
-  height: 100px;
-}
-.index-esc img {
-  padding-right: 40px;
-  width: 140px;
-  height: 100px;
-  vertical-align: -20px;
-}
-.index-esc span {
-  padding: 0 100px;
-  color: #00ecfc;
-  font-size: 80px;
-  line-height: 100px;
-}
-/* 退出登陆 */
-.index-name_esc {
-  position: absolute;
-  top: 100px;
-  right: 400px;
-  width: 1000px;
-  height: 100px;
-}
-.index-name_esc img {
-  padding-right: 40px;
-  width: 140px;
-  height: 100px;
-  vertical-align: -20px;
-}
-.index-name_esc span {
-  padding: 0 100px;
-  color: #00ecfc;
-  font-size: 80px;
-  line-height: 100px;
-}
-/*  */
-/*  */
-/*  */
-/*  */
+
 </style>
 <style>
 .ivu-input {

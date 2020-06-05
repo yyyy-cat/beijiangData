@@ -288,8 +288,8 @@ export default {
                     type: 'slider',
                     show: true,
                     start: 0,
-                    end: 10,
-                    handleSize: 8
+                    end: 95,
+                    handleSize: 2
                 },
                 {
                     type: 'inside',
@@ -325,8 +325,9 @@ export default {
     draw(data) {
         let _this = this;
         let setBaseOptions = _this.setBaseOptions()
+        let source = []
         data.forEach((v, index) => {
-            let source = []
+            source=[]
             let zjsj = v.zjsj.slice(5,10);
             v.list.map((k, idx) => {
                 let name = v.zjsj.slice(8,10)+ '-' + idx

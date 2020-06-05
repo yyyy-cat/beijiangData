@@ -90,16 +90,17 @@ export default {
            }else if(Number(_this.type) == 1){
                data = this.sjfl
            }
+           
             data.forEach((n, idx) => {
                 if(n.zjsj.slice(8,10) == id) {
                      arr.push(n.list)
                 }
-        })
+         })
           this.$router.push({
               name: 'fuzhucailiaodetail',
               params: {
                   wdata: JSON.stringify(arr[0]),
-                  type: _this.type
+                  type: _this.type,
               }
           })
        },
@@ -256,8 +257,9 @@ export default {
     draw(data) {
         let _this = this;
         let setBaseOptions = _this.setBaseOptions()
+         let source = []
         data.forEach((v, index) => {
-            let source = []
+            source = []
             let zjsj = v.zjsj.slice(5,10);
             v.list.map((k, idx) => {
                 let name = v.zjsj.slice(8,10)+ '-' + idx

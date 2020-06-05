@@ -1,7 +1,7 @@
 <template>
     <div class="charts">
-         <span class="title-name">{{name}}</span>
-        <div class="right" @click="toTable">查看图表</div>
+         <!-- <span class="title-name">{{name}}</span> -->
+        <!-- <div class="right" @click="toTable">查看图表</div> -->
         <div class="charts-main">
              <div id='list' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
@@ -46,7 +46,7 @@ export default {
             this.draw('zylzlstonwm','zylzqtonwm', 'zyltrqmwm', this.xrData)
         },
         jrgchn: function(newdata, olddata) {
-             this.name = '将染过程耗能';
+             this.name = '浆染过程耗能';
             this.draw('ystonbz','ysmbz', 'jsmbz', this.jrgchn)
         },
         zzkthn: function(newdata, olddata) {
@@ -55,7 +55,7 @@ export default {
         }
     },
      created() {
-         this.type = this.$route.query.type
+         this.type = this.$route.query.type || 0
           this.optionsdata = Varible.OPTIONS;
     this.showShaoguan = this.changeShaoguan;
      if(this.changeShaoguan != 'false'){
@@ -73,9 +73,7 @@ export default {
        }else{
            this.getGCNHHzgcTuBiaoData();
        }
-       //this.getGCNHHzgcTuBiaoData();
-      // this.getGCNHJrgcTuBiaoData();
-      this.getGCNHZbktTuBiaoData()
+    //   this.getGCNHZbktTuBiaoData()
   },
    methods: {
     toTable() {
@@ -108,7 +106,7 @@ export default {
             xAxis: [
                 {
                     type: 'category',
-                    data: nameList,
+                    // data: nameList,
                     axisPointer: {
                         type: 'shadow'
                     },
@@ -148,8 +146,8 @@ export default {
                     type: 'slider',
                     show: true,
                     start: 0,
-                    end: 50,
-                    handleSize: 8
+                    end: 95,
+                    handleSize: 2
                 },
                 {
                     type: 'inside',
@@ -430,10 +428,11 @@ export default {
 .charts{
     display: flex;
     flex-direction: column;
-    height: 100%;
-    width: 100%;
-   padding-top: 200px;
-    background: url(..\assets\Administration\other_bg.png);
+    height: 1000px;
+    // height: 100%;
+    // width: 100%;
+//    padding-top: 200px;
+//     background: url(..\assets\Administration\other_bg.png);
     position: relative;
     .title-name{
         display: block;
@@ -445,6 +444,7 @@ export default {
     .charts-main{
         width: 2500px;
         height: 3500px;
+        margin-left: 500px; 
     }
     .right{
         font-size: 120px;

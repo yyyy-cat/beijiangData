@@ -15,7 +15,7 @@
       <span>返回</span>
     </div>
     <div class="right">
-        <img src="..\assets\production\sc_chart.png" alt  class="img" @click='toBarCharts'/>
+        <!-- <img src="..\assets\production\sc_chart.png" alt  class="img" @click='toBarCharts'/> -->
         <login></login>
     </div>
   </div>
@@ -142,8 +142,7 @@
         <div slot="tip" class="el-upload__tip" style="clear: both">只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
     </div>
-    <!-- <foot></foot> -->
-    <!-- <yuenanjiangranfoot></yuenanjiangranfoot> -->
+    <barcharts></barcharts>
     <yuenanjiangrangguochengfoot></yuenanjiangrangguochengfoot>
   </div>
 </template>
@@ -157,6 +156,7 @@ import yuenanjiangrangguochengfoot from "./yuenanjiangrangguochengfoot.vue";
 import login from "./login_assembly.vue";
 import Vue from 'vue';
 import {Upload,Button}from 'element-ui';
+import barcharts from './barCharts'
 
 Vue.use(Upload);
 Vue.use(Button);
@@ -187,7 +187,7 @@ export default {
       updataUrl: yuenanUrl + '/ErpYn'
     };
   },
-  components: { foot, login, yuenanjiangrangguochengfoot },
+  components: { foot, login, yuenanjiangrangguochengfoot, barcharts },
    computed: {
       ...mapGetters([
     'changeShaoguan'
@@ -400,7 +400,7 @@ export default {
 };
 </script>
 <style scoped lang='less'>
-@import '../style/top.less';
+@import '../style/gctop.less';
 #bgColor {
   background: transparent;
   margin: 200px 40px 0;

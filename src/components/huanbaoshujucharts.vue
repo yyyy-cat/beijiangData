@@ -142,8 +142,8 @@ export default {
                     type: 'slider',
                     show: true,
                     start: 0,
-                    end: 50,
-                    handleSize: 8
+                    end: 95,
+                    handleSize: 2
                 },
                 {
                     type: 'inside',
@@ -440,15 +440,17 @@ export default {
         let nameData =[]
         data.forEach((v, idx) => {
              let zjsj = v.zjsj;
+              v.name = zjsj + '-' + idx
              nameData.push(v.list)
              v.list.map((k, index) =>{
                  let dayData = []
                  k.name = zjsj + '-' + index
-                 nameList.push(k.name)
+                //  nameList.push(k.name)
                  dayData.push(k.name, k[str1], k[str2])
                 source.push(dayData)
                  return v.list
              })  
+             nameList.push(v.name)
         })
 
         let seriesData = _this.setBaseOptions()

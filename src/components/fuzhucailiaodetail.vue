@@ -187,6 +187,7 @@ export default {
             return seriesData
     },
      initOptions(seriesData, xData, source) {
+         
         let options = {
             dataset: {
                source: source
@@ -206,10 +207,11 @@ export default {
                     axisPointer: {
                         type: 'shadow'
                     },
-                    data: xData,
+                    // data: xAxisData,
                     axisLabel: {
                         textStyle: { 
-                            fontSize : 30   
+                            fontSize : 30,
+                            color: '#00ecfc'   
                             }
                     },
             },
@@ -219,7 +221,8 @@ export default {
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 30   
+                            fontSize : 30,
+                            color: '#00ecfc'   
                             }
                     },
                     nameTextStyle: {
@@ -231,7 +234,8 @@ export default {
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 30   
+                            fontSize : 30 ,
+                            color: '#00ecfc'  
                             }
                     },
                     nameTextStyle: {
@@ -244,8 +248,8 @@ export default {
                     type: 'slider',
                     show: true,
                     start: 0,
-                    end: 50,
-                    handleSize: 8
+                    end: 95,
+                    handleSize: 2
                 },
                 {
                     type: 'inside',
@@ -285,7 +289,6 @@ export default {
             myCharts.setOption(this.initOptions(setBaseOptions, xData, source));
 
              myCharts.on('click', function(params) {
-                 console.log(params.data)
                 if(_this.type == 0 && params.seriesType == 'line' && params.seriesName == "实际上染率") {
                     _this.ybp(source[params['dataIndex']]['1'], 'sjsrl', params.data);
                     _this.rsylcurrent = data[params.dataIndex];

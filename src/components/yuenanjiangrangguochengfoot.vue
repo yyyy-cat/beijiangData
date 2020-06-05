@@ -4,13 +4,13 @@
     <div class="foot-box">
       <ul>
         <li ref="yuenanransehualiao">
-          <router-link to="/yuenanjiangranguocheng">浆染过程耗能</router-link>
+          <router-link  :to="{path: '/yuenanjiangranguocheng', query: {type:0}}">浆染过程耗能</router-link>
         </li>
         <li ref="Administration">
-          <router-link to="/yuenanzhibukongtiao">织布空调耗能</router-link>
+          <router-link :to="{path: '/yuenanzhibukongtiao', query: {type:1}}">织布空调耗能</router-link>
         </li>
         <li ref="production">
-          <router-link to="/yuenanhouzhengguocheng">后整过程耗能</router-link>
+          <router-link :to="{path: '/yuenanhouzhengguocheng', query: {type:2}}">后整过程耗能</router-link>
         </li>
         <!--<li ref="history">-->
           <!--<router-link to="/history">历史数据分析</router-link>-->

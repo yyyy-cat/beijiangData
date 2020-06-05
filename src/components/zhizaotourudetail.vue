@@ -325,8 +325,8 @@ export default {
                     type: 'slider',
                     show: true,
                     start: 0,
-                    end: 50,
-                    handleSize: 8
+                    end: 95,
+                    handleSize: 2
                 },
                 {
                     type: 'inside',
