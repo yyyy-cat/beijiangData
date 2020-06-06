@@ -36,15 +36,19 @@ export default {
     },
     data() {
         return{
-            lData: this.$props.detailList,
+            lData: '',
             rsylcurrent: {}, //染色用料的当前数据
             optionsdata: {},
             name: ''
         }
     },
-    watch: {
+     watch: {
+        detailList: function(newdata, olddata){
+            this.lData = newdata
+        }
     },
     created() {
+        this.lData = this.$props.detailList
         this.type = this.$props.type
         this.optionsdata = Varible.OPTIONS;
     },

@@ -119,6 +119,7 @@ export default {
         })
         this.showDetail = true;
         this.detailList = JSON.stringify(arr[0])
+        
         //   this.$router.push({
         //       name: 'zhizaotourudetail',
         //       params: {

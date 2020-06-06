@@ -55,7 +55,7 @@ export default {
     },
     data() {
         return{
-             lData: this.$props.detailList,
+             lData: '',
             rsylcurrent: {}, //染色用料的当前数据
             rsylcurrent2: {}, //第二个实例
             optionsdata: {},
@@ -64,8 +64,12 @@ export default {
         }
     },
     watch: {
+        detailList: function(newdata, olddata){
+            this.lData = newdata
+        }
     },
     created() {
+        this.lData = this.$props.detailList
         this.type = this.$props.type;
         this.optionsdata = Varible.OPTIONS;
     },
