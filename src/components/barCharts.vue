@@ -85,6 +85,8 @@ export default {
             dataset: {
                source: source
             },
+            
+            backgroundColor:'rgba(128, 128, 128, 0.1)',
              tooltip: {
                 trigger: 'axis', 
                 axisPointer: {
@@ -432,7 +434,7 @@ export default {
     // height: 100%;
     // width: 100%;
 //    padding-top: 200px;
-//     background: url(..\assets\Administration\other_bg.png);
+    background: url(..\assets\Administration\other_bg.png);
     position: relative;
     .title-name{
         display: block;
