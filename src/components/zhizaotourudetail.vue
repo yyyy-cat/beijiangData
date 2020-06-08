@@ -1,10 +1,10 @@
 <template>
     <div class="charts">
-        <span class="title-name">{{name}}</span>
-        <div class="right" @click="toTable"> 查看日历图</div>
+        <!-- <span class="title-name">{{name}}</span>
+        <div class="right" @click="toTable"> 查看日历图</div> -->
         <div class="left">
             <div class="charts-main">
-                <div id='list' :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
+                <div id='list' :style="{width: '4760px', height: '1200px', margin: '0 auto', zIndex: '10',paddingTop: '800px'}"></div>
             </div>
             <div class="ybp" v-show='JSON.stringify(this.rsylcurrent) !== "{}"'>
                 <div class="info">
@@ -20,7 +20,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id="sjsrl" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
+                <div id="sjsrl" :style="{width: '1200px', height: '1200px', margin: '0 auto', zIndex: '10'}"></div>
             </div>
 
             <div class="ybp" v-show='JSON.stringify(this.rsylcurrent2) !== "{}"'>
@@ -37,7 +37,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id="sjsrl2" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
+                <div id="sjsrl2" :style="{width: '1200px', height: '1200px', margin: '0 auto', zIndex: '10'}"></div>
             </div>
         </div>
     </div>
@@ -48,20 +48,25 @@ import axios from 'axios'
 import Varible from '../utils/varible'
 export default {
     name: 'Charts',
+    props:{
+        detailList: String,
+        type: String
+        
+    },
     data() {
         return{
-            lData: this.$route.params.wdata,
-            type: null,
+             lData: this.$props.detailList,
             rsylcurrent: {}, //染色用料的当前数据
             rsylcurrent2: {}, //第二个实例
             optionsdata: {},
-            name: ''
+            name: '',
+            
         }
     },
     watch: {
     },
     created() {
-        this.type = this.$route.params.type;
+        this.type = this.$props.type;
         this.optionsdata = Varible.OPTIONS;
     },
    mounted() {
@@ -94,7 +99,6 @@ export default {
     },
     //仪表盘数据
     ybpOptions(sj, value, showName) {
-        console.log(value,"数据",sj)
          let minx = (Number(value)-2).toFixed(2);
          let maxx = (Number(value)+2).toFixed(2);
             let options = {
@@ -164,12 +168,14 @@ export default {
                 { 
                     name: '整经长度',
                     type: 'bar',
+                    barWidth : 100,
                     itemStyle: {
                         color: opt.ql
                     }
                 },
                 { 
                     name: '出轴长度',
+                    barWidth : 100,
                     type: 'bar',
                     itemStyle: {
                         color: opt.ls
@@ -194,6 +200,7 @@ export default {
             { 
                 name: '百米用纬标准',
                 type: 'bar',
+                barWidth : 100,
                 itemStyle: {
                     color: opt.ql
                 }
@@ -201,6 +208,7 @@ export default {
              { 
                 name: '织成率标准',
                 type: 'bar',
+                barWidth : 100,
                 itemStyle: {
                     color: opt.ls
                 }
@@ -237,6 +245,7 @@ export default {
             { 
                 name: '标准制成率',
                 type: 'bar',
+                barWidth : 100,
                 itemStyle: {
                     color: opt.ql
                 }
@@ -264,11 +273,6 @@ export default {
             dataset: {
                source: source
             },
-            // legend:{
-            //     tooltip:{
-            //         show:true
-            //     }
-            // },
              tooltip: {
                 trigger: 'axis', 
                 axisPointer: {

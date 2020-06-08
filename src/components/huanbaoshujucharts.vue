@@ -495,7 +495,14 @@ export default {
   } 
 }
 </script>
-
+<style lang="less">
+body, html{
+    height: 100%;
+}
+#app{
+    height: 100%;
+}
+</style>
 <style lang="less" scoped>
 .charts{
     display: flex;

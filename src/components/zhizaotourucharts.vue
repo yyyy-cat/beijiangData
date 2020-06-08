@@ -3,17 +3,22 @@
         <span class="title-name">{{name}}</span>
         <div class="right" @click="toTable">查看图表</div>
         <div class="left">
-            <el-calendar>
+            <el-scrollbar style="height: 1360px;">
+           <el-calendar>
                 <template
                     slot="dateCell"
                     class="name"
-                    slot-scope="{date, data}">
+                    slot-scope="{date, data}"
+                    >
                     <div class="calendar-day">{{ data.day.split('-').slice(1).join('-') }}</div>
-                        <div :id="'step' + data.day.split('-').slice(1).join('-')" :style="{width: '800px', height: '700px', margin: '0 auto', zIndex: '10'}" @click="toNextPage(data.day.split('-').slice(2).join('-'))"></div>
+                        <div :id="'step' + data.day.split('-').slice(1).join('-')" :style="{width: '600px', height: '470px', margin: '0 auto', zIndex: '10'}" @click="toNextPage(data.day.split('-').slice(2).join('-'))"></div>
                 </template>
             </el-calendar>
+            </el-scrollbar>
         </div>
-      
+        <div class="main">
+            <Detail :detailList='detailList' :type='type' v-if="showDetail"/>
+        </div>
     </div>
 </template>
 
@@ -22,7 +27,8 @@ import axios from 'axios'
 import {mapState,mapGetters} from 'vuex'
 import yuenanUrl from "../assets/url";
 import shaoguanUrl from '../assets/s_url';
-import Varible from '../utils/varible'
+import Varible from '../utils/varible';
+import Detail from './zhizaotourudetail'
 export default {
     name: 'Charts',
     data() {
@@ -35,9 +41,14 @@ export default {
             type: null,//上个页面判断渲染哪个图表的值
             hztrcc: [],
             optionsdata: {},
-            name: ''
+            name: '',
+            detailList: [],
+            showDetail: false
         
         }
+    },
+    components: {
+        Detail
     },
     computed: {
       ...mapGetters([
@@ -106,13 +117,15 @@ export default {
                      arr.push(n.list)
                 }
         })
-          this.$router.push({
-              name: 'zhizaotourudetail',
-              params: {
-                  wdata: JSON.stringify(arr[0]),
-                  type: _this.type
-              }
-          })
+        this.showDetail = true;
+        this.detailList = JSON.stringify(arr[0])
+        //   this.$router.push({
+        //       name: 'zhizaotourudetail',
+        //       params: {
+        //           wdata: JSON.stringify(arr[0]),
+        //           type: _this.type
+        //       }
+        //   })
        },
     getYCLZbTuBiaoData() {
         axios.post(this.updataUrl+'/api/getYCLZbTuBiaoData').then(res => {
@@ -342,8 +355,13 @@ export default {
   } 
 }
 </script>
-
+<style lang="less" >
+html,body,#app{
+    height: 100%;
+}
+</style>
 <style lang="less" scoped>
 @import '../style/hasrl.less';
+
 
 </style>

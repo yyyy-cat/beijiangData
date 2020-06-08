@@ -1,10 +1,8 @@
 <template>
     <div class="charts">
-        <span class="title-name">{{name}}</span>
-        <div class="right" @click="toTable"> 查看日历图</div>
         <div class="left">
             <div class="charts-main">
-                <div id='list' :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
+                <div id='list' :style="{width: '4760px', height: '1200px', margin: '0 auto', zIndex: '10', paddingTop: '800px'}"></div>
             </div>
             <div class="ybp" v-show='JSON.stringify(this.rsylcurrent) !== "{}"'>
                 <div class="info">
@@ -20,7 +18,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id="sjsrl" :style="{width: '3500px', height: '3500px', margin: '0 auto', zIndex: '10'}"></div>
+                <div id="sjsrl" :style="{width: '1200px', height: '1200px', margin: '0 auto', zIndex: '10'}"></div>
             </div>
         </div>
     </div>
@@ -31,10 +29,14 @@ import axios from 'axios'
 import Varible from '../utils/varible'
 export default {
     name: 'Charts',
+     props:{
+        detailList: String,
+        type: String
+        
+    },
     data() {
         return{
-            lData: this.$route.params.wdata,
-            type: null,
+            lData: this.$props.detailList,
             rsylcurrent: {}, //染色用料的当前数据
             optionsdata: {},
             name: ''
@@ -43,7 +45,7 @@ export default {
     watch: {
     },
     created() {
-        this.type = this.$route.params.type
+        this.type = this.$props.type
         this.optionsdata = Varible.OPTIONS;
     },
    mounted() {
@@ -59,9 +61,6 @@ export default {
      
   },
    methods: {
-    toTable() {
-        this.$router.go(-1);
-    },
     changeOptions(name) {
         let data = JSON.parse(this.lData);
         let arr = []
@@ -142,6 +141,7 @@ export default {
                 { 
                     name: '标准上染率',
                     type: 'bar',
+                    barWidth : 150,
                     itemStyle: {
                         color: opt.ql
                     }
@@ -165,6 +165,7 @@ export default {
             { 
                 name: '标准上浆率',
                 type: 'bar',
+                barWidth : 150,
                 itemStyle: {
                     color: opt.ql
                 }

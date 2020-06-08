@@ -227,6 +227,7 @@ export default {
                 {
                     name: '染色自来水标准用量',
                     type: 'bar',
+                    barWidth : 100,
                     itemStyle: {
                         color: opt.ql
                     }
@@ -234,6 +235,7 @@ export default {
                 {
                     name: '染色蒸汽标准用量',
                     type: 'bar',
+                    barWidth : 100,
                     itemStyle: {
                         color: opt.ls
                     }
@@ -241,6 +243,7 @@ export default {
                  {
                     name: '浆纱蒸汽标准用量',
                     type: 'bar',
+                    barWidth : 100,
                     itemStyle: {
                          color: opt.xj
                     }
@@ -289,6 +292,7 @@ export default {
                 {
                     name: '自来水每小时用水标准',
                     type: 'bar',
+                    barWidth : 100,
                     itemStyle: {
                         color: opt.ql
                     }
@@ -296,6 +300,7 @@ export default {
                 {
                     name: '自来水每万米用水标准',
                     type: 'bar',
+                    barWidth : 100,
                     itemStyle: {
                        color: opt.ls
                     }
@@ -303,6 +308,7 @@ export default {
                 {
                     name: '自来水实际每小时用水',
                     type: 'line',
+                    barWidth : 100,
                     smooth: 0.5,
                     yAxisIndex: 1,
                     symbolSize: 20, 
@@ -331,6 +337,7 @@ export default {
                 {
                     name: '总用量自来水用量',
                     type: 'bar',
+                    barWidth : 100,
                     itemStyle: {
                         color: opt.ql
                     }
@@ -338,6 +345,7 @@ export default {
                 {
                     name: '总用量蒸汽用量',
                     type: 'bar',
+                    barWidth : 100,
                     itemStyle: {
                         color: opt.ls
                     }
@@ -345,6 +353,7 @@ export default {
                  {
                     name: '总用量天然气用量',
                     type: 'bar',
+                    barWidth : 100,
                     itemStyle: {
                          color: opt.xj
                     }

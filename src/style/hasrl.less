@@ -3,9 +3,10 @@
     flex-direction: column;
     background: url(..\assets\Administration\other_bg.png) no-repeat;
     background-size: 100% 100%;
-    justify-content: center;
+    // justify-content: center;
     align-items: center;
     position: relative;
+    height: 100%;
     .title-name{
         display: block;
         font-size: 120px;
@@ -13,7 +14,9 @@
         margin-top: 100px;
     }
     .left{
-        width: 90%
+        width: 4790px;
+        height: 1360px;
+        margin-top: 78px;
     }
     .right{
         font-size: 120px;
@@ -36,5 +39,14 @@
     color: #00ecfc;
 }
  /deep/.el-calendar-day{
-    height: 800px !important;
+    height: 680px !important;
+    width: 680px;
+    margin: 0 auto;
+}
+/deep/.next{
+    display: none;
+}
+
+/deep/.el-scrollbar__wrap {
+   overflow-x: hidden;
 }
