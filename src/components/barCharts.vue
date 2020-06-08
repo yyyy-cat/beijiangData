@@ -2,8 +2,8 @@
     <div class="charts">
          <!-- <span class="title-name">{{name}}</span> -->
         <!-- <div class="right" @click="toTable">查看图表</div> -->
-        <div class="charts-main">
-             <div id='list' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+        <div class="charts-main" :style="{marginLeft: l}">
+             <div id='list' :style="{width: h, height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
     </div>
 </template>
@@ -25,7 +25,9 @@ export default {
             updataUrl: yuenanUrl + '/ErpYn',
             type: 0,
             optionsdata: {},
-            name: ''
+            name: '',
+            h: '6731px',
+            l: '500px'
         }
     },
      computed: {
@@ -55,7 +57,11 @@ export default {
         }
     },
      created() {
-         this.type = this.$route.query.type || 0
+         this.type = this.$route.query.type || 0;
+         if(this.type == '1'){
+             this.h = '4000px';
+             this.l = ''
+         }
           this.optionsdata = Varible.OPTIONS;
     this.showShaoguan = this.changeShaoguan;
      if(this.changeShaoguan != 'false'){
@@ -181,22 +187,13 @@ export default {
     getGCNHJrgcTuBiaoData() {
         axios.post(this.updataUrl + '/api/getGCNHJrgcTuBiaoData').then((res => {
             let arr =res.data.data
-            //  arr.map((v, idx) => {
-            //      let name = v.zjsj.slice(8,10)
-            //     v.zjsj = name;
-            //     return arr
-            //   })
+          
             this.jrgchn = res.data.data
         }))
     },
      getGCNHZbktTuBiaoData() {
         axios.post(this.updataUrl + '/api/getGCNHZbktTuBiaoData').then((res => {
-            // let arr =res.data.data
-            //  arr.map((v, idx) => {
-            //      let name = v.zjsj.slice(8,10)
-            //     v.zjsj = name;
-            //     return arr
-            //   })
+           
             this.zzkthn = res.data.data
         }))
     },
@@ -461,7 +458,7 @@ export default {
     .charts-main{
         width: 2500px;
         height: 3500px;
-        margin-left: 500px; 
+        // margin-left: 500px; 
     }
     .right{
         font-size: 120px;

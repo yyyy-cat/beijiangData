@@ -51,6 +51,7 @@
         </label>
         <button id="ChemicalFind" @click="tijiao()">查询</button>
       </div>
+      <div class="row">
       <barcharts></barcharts>
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height="1500"></Table>-->
@@ -124,6 +125,7 @@
             <!--<Page :total="pageAll" :current="1" @on-change="xuanran" page-size="20"></Page>-->
           </div>
         </div>
+      </div>
       </div>
     </div>
     <div v-show="None">
@@ -402,9 +404,15 @@ export default {
 </script>
 <style scoped lang='less'>
 @import '../style/gctop.less';
+.row{
+  display: flex;
+  margin-top: 500px;
+  padding: 0 500px
+
+}
 #bgColor {
   background: transparent;
-  margin: 50px 40px 0;
+  margin: 200px 40px 0;
   padding: 16px;
 }
 
@@ -610,7 +618,8 @@ a {
 }
 
 .ChemicalTable {
-  margin: 50px auto 0;
+  /* margin: 50px auto 0; */
+   margin: 70px 0 0 1900px;
   width: 2300px;
 }
 .ChemicalFindBox {

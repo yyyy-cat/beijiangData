@@ -63,7 +63,7 @@
       <barcharts></barcharts>
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height="1500"></Table>-->
-        <div id="building-top"  style="position: relative">
+        <div id="building-top" >
           <button @click="handlpe()">
             <img src="./展开.png" alt="" style="cursor: pointer;position: absolute;top: -150px;right: 0;background:#ffffff " title="显示隐藏数据">
           </button>
@@ -74,6 +74,7 @@
             :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
+            height='1000px'
             style="width: 100%;text-align: center;color: black;height: 1000px; background:rgba(255,255,255,0)">
             <el-table-column
               label="基本资料"
@@ -1710,6 +1711,13 @@ a {
     left: 640px;
     width: 1060px;
     height: 100px;
+}
+#building-top{
+position: relative; overflow: auto;
+}
+
+/deep/.el-table{
+  position: absolute; width: auto; max-width: none;
 }
 #building-top .el-table__empty-block{
   background: #01AAED;

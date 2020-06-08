@@ -65,7 +65,6 @@
             :row-style="{background: '#040A53',margin:'200px',height:'1000px;',color:'#ffffff'}"
             border
             ref="table"
-           
             height="1000"
             style="width: 100%;text-align: center;color: black;">
             <el-table-column
@@ -1472,6 +1471,14 @@ a {
     width: 1060px;
     height: 100px;
 }
+#building-top{
+position: relative; overflow: auto;
+}
+
+/deep/.el-table{
+  position: absolute; width: auto; max-width: none;
+}
+ 
 #building-top .el-table__empty-block{
   background: #01AAED;
 }

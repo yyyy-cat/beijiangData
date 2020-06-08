@@ -410,10 +410,9 @@ export default {
             //放大的图 xData横坐标数据
          let myCharts = this.$echarts.init(document.getElementById('list'));
             myCharts.setOption(this.initOptions(setBaseOptions, xData, source));
-
+               
              myCharts.on('click', function(params) {
                  let a = params['dataIndex']
-                 
                 if(_this.type == 0 && params.seriesType == 'line' && params.seriesName == "原纱利用率"){
                     _this.ybp(params.data,params.data, 'sjsrl', params.seriesName);
                     
