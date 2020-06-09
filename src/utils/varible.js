@@ -1,10 +1,10 @@
 const OPTIONS = {
-    ql: '#7fd1d7',
-    qlx: '#e79578',
-    ls: '#7ab351',
-    lsx: '#e79578',
-    xj: '#01b1bd',
-    xjx: '#67dfe7',
+    ql: '#52FBC2',
+    qlx: '#E1BB02',
+    ls: '#00A8FF',
+    lsx: '#FF9500',
+    xj: '#01FF0E',
+    xjx: '#00E9FE',
     zts: '#00ecfc'
 
 }

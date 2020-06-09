@@ -4,22 +4,22 @@
     <div class="left">
         <div class="main">
         <div class="charts-main">
-             <div id='list' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+             <div id='list' :style="{width: '6731px', height: '900px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
          <div class="charts-main">
-             <div id='list1' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+             <div id='list1' :style="{width: '6731px', height: '900px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
          <div class="charts-main">
-             <div id='list2' :style="{width: '6731px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+             <div id='list2' :style="{width: '6731px', height: '900px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
         </div>
         <div class="ybp">
-             <div id="gauge" :style="{width: '2000px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
-             <div id="cod" :style="{width: '2000px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
-             <div id="lhw" :style="{width: '2000px', height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+             <div id="gauge" :style="{width: '2000px', height: '1000px', margin: '0 auto', zIndex: '10', left: '150px',padingTop: '20px'}"></div>
+             <div id="cod" :style="{width: '2000px', height: '1000px', margin: '0 auto', zIndex: '10', left: '150px'}"></div>
+             <div id="lhw" :style="{width: '2000px', height: '1000px', margin: '0 auto', zIndex: '10', left: '150px'}"></div>
         </div>
     </div>
-        <div class="right" @click="toTable">返回表格</div>
+        <div class="right" @click="toTable">返回</div>
     </div>
 </template>
 
@@ -67,9 +67,13 @@ export default {
         }else{
             this.updataUrl = yuenanUrl+'/ErpYn'
         }
+        
   },
    mounted() {
        this.getGHBTuBiaoData();
+       this.ybp(0.139, 'lhw',  0.5,'0');
+       this.ybp(56.3, 'cod', 200,'0');
+       this.ybp(8.01, 'gauge', 9,'6');
   },
    methods: {
        toTable() {
@@ -99,7 +103,7 @@ export default {
                 bottom: '9%',
                 show:true,
                 containLabel: true
-                },
+            },
             xAxis: [
                 {
                     type: 'category',
@@ -118,22 +122,28 @@ export default {
             ],
             yAxis: [
                 {
+                    name: '立方米',
+                    nameTextStyle: {
+                        color: opt.zts,
+                        fontSize: 40,
+                        lineHeight: 50
+                    },
                     type: 'value',
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
                             fontSize : 40,
-                            color: opt.zts    
+                            color: opt.zts     
                         }
                     }
                 },
                 {
-                    type: 'value',
+                    // type: 'value',
                     axisLabel: {
-                        formatter: '{value}',
+                        // formatter: '{value}',
                         textStyle: { 
                             fontSize : 40,
-                            color: opt.zts   
+                            color: 'none'   
                         }
                     }
                 }
@@ -168,6 +178,7 @@ export default {
 
         return options
     },
+  
     getGHBTuBiaoData() {
         //环保数据
         axios.post(this.updataUrl + '/api/getGHBTuBiaoData').then((res => {
@@ -441,11 +452,11 @@ export default {
         let nameData =[]
         data.forEach((v, idx) => {
              let zjsj = v.zjsj;
-              v.name = zjsj + '-' + idx
+              v.name = zjsj
              nameData.push(v.list)
              v.list.map((k, index) =>{
                  let dayData = []
-                 k.name = zjsj + '-' + index
+                 k.name = zjsj 
                 //  nameList.push(k.name)
                  dayData.push(k.name, k[str1], k[str2])
                 source.push(dayData)
@@ -467,6 +478,7 @@ export default {
             let phbzmin = nameData[params.dataIndex][0].phbzmin;
             let phbzmax = nameData[params.dataIndex][0].phbzmax;
                 if(params.seriesType == 'line' && params.seriesName == "PH") {
+                   
                     _this.ybp(params.data, 'gauge', phbzmax, phbzmin);
                 }
             });
@@ -478,6 +490,7 @@ export default {
             this.ph = nameData[params.dataIndex][0];
             let phbzmax = nameData[params.dataIndex][0].codbzmax;
                 if(params.seriesType == 'line' && params.seriesName == "外排水cod值") {
+                     
                     _this.ybp(params.data, 'cod', phbzmax,'0');
                 }
             });
@@ -488,6 +501,7 @@ export default {
             this.ph = nameData[params.dataIndex][0];
             let phbzmax = nameData[params.dataIndex][0].bzmax;
                 if(params.seriesType == 'line' && params.seriesName == "外排水硫化物") {
+                   
                     _this.ybp(params.data, 'lhw', phbzmax,'0');
                 }
             });
@@ -495,28 +509,20 @@ export default {
   } 
 }
 </script>
-<style lang="less">
-body, html{
-    height: 100%;
-}
-#app{
-    height: 100%;
-}
-</style>
 <style lang="less" scoped>
 .charts{
     display: flex;
     flex-direction: column;
     position: relative;
-    height: 100%;
-    width: 8300px;
-    padding-top: 200px;
+    height: 3240px;
+    width: 7680px;
+    padding-top: 100px;
     background: url(..\assets\Administration\other_bg.png);
     .title-name{
         display: block;
         font-size: 120px;
         color: #00ecfc;
-        margin-top: 100px;
+        margin-top: 50px;
         margin: 0 auto;
     }
     .left{

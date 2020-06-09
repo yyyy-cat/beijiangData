@@ -73,7 +73,6 @@ export default {
        }else{
            this.getGCNHHzgcTuBiaoData();
        }
-    //   this.getGCNHZbktTuBiaoData()
   },
    methods: {
     toTable() {
@@ -99,16 +98,16 @@ export default {
                 extraCssText: 'font-size: 100px; line-height: 100px',
             },
             grid: {
-                left: '3%',
-                right: '4%',  //距离右侧边距
-                bottom: '9%',
+                left: '0%',
+                right: '0%',  //距离右侧边距
+                bottom: '0%',
                 show:true,
                 containLabel: true
                 },
             xAxis: [
                 {
                     type: 'category',
-                    // data: nameList,
+                    data: nameList,
                     axisPointer: {
                         type: 'shadow'
                     },
@@ -124,6 +123,12 @@ export default {
             yAxis: [
                 {
                     type: 'value',
+                     name: this.setDw(),
+                     nameTextStyle: {
+                        color: opt.zts,
+                        fontSize: 40,
+                        lineHeight: 50
+                    },
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
@@ -138,7 +143,7 @@ export default {
                         formatter: '{value}',
                         textStyle: { 
                             fontSize : 40,
-                            color: opt.zts    
+                            color: 'none'    
                         }
                     }
                 }
@@ -216,7 +221,15 @@ export default {
         })
         return day
     },
-
+       setDw() {
+        let name = '吨(万米)'
+        if(Number(this.type) == 0){
+            name = '吨(万米)'
+        }else if(Number(this.type) == 1){
+            name = '吨(万米)'
+        }
+        return name
+    },
     setBaseOptions() {
         let _this = this;
         let seriesData = [];
@@ -230,7 +243,8 @@ export default {
                     barWidth : 100,
                     itemStyle: {
                         color: opt.ql
-                    }
+                    },
+                    data: _this.toChangeData('ystonbz', _this.jrgchn)
                 },
                 {
                     name: '染色蒸汽标准用量',
@@ -238,7 +252,8 @@ export default {
                     barWidth : 100,
                     itemStyle: {
                         color: opt.ls
-                    }
+                    },
+                    data: _this.toChangeData('ysmbz', _this.jrgchn)
                 },
                  {
                     name: '浆纱蒸汽标准用量',
@@ -246,7 +261,8 @@ export default {
                     barWidth : 100,
                     itemStyle: {
                          color: opt.xj
-                    }
+                    },
+                    data: _this.toChangeData('jsmbz', _this.jrgchn)
                 },
                 {
                     name: '染色自来水用量',
@@ -295,7 +311,8 @@ export default {
                     barWidth : 100,
                     itemStyle: {
                         color: opt.ql
-                    }
+                    },
+                    data: _this.toChangeData('tonhbz', _this.zzkthn)
                 },
                 {
                     name: '自来水每万米用水标准',
@@ -303,7 +320,8 @@ export default {
                     barWidth : 100,
                     itemStyle: {
                        color: opt.ls
-                    }
+                    },
+                    data: _this.toChangeData('tonwmbz', _this.zzkthn)
                 },
                 {
                     name: '自来水实际每小时用水',
@@ -335,28 +353,31 @@ export default {
             //后整数据
           seriesData = [
                 {
-                    name: '总用量自来水用量',
+                    name: '标准总用量自来水用量',
                     type: 'bar',
                     barWidth : 100,
                     itemStyle: {
                         color: opt.ql
-                    }
+                    },
+                    // data: _this.toChangeData('bzwmzls', _this.xrData)
                 },
                 {
-                    name: '总用量蒸汽用量',
+                    name: '标准总用量蒸汽用量',
                     type: 'bar',
                     barWidth : 100,
                     itemStyle: {
                         color: opt.ls
-                    }
+                    },
+                    // data: _this.toChangeData('bzwmzq', _this.xrData)
                 },
                  {
-                    name: '总用量天然气用量',
+                    name: '标准总用量天然气用量',
                     type: 'bar',
                     barWidth : 100,
                     itemStyle: {
                          color: opt.xj
-                    }
+                    },
+                    // data: _this.toChangeData('bzwmtrq', _this.xrData)
                 },
                 {
                     name: '总用量自来水用量',

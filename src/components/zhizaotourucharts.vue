@@ -1,9 +1,9 @@
 <template>
     <div class="charts">
         <span class="title-name">{{name}}</span>
-        <div class="right" @click="toTable">查看图表</div>
+        <div class="right" @click="toTable">返回</div>
         <div class="left">
-            <el-scrollbar style="height: 1360px;">
+            <el-scrollbar style="height: 900px">
            <el-calendar>
                 <template
                     slot="dateCell"
@@ -17,7 +17,7 @@
             </el-scrollbar>
         </div>
         <div class="main">
-            <Detail :detailList='detailList' :type='type' v-if="showDetail"/>
+            <Detail :detailList='detailList' :type='type'/>
         </div>
     </div>
 </template>
@@ -38,11 +38,11 @@ export default {
             xrData: [],
             wData: [],//传入下一个页面的数据
             jrtrcc: [],
-            type: null,//上个页面判断渲染哪个图表的值
+            type: 0,//上个页面判断渲染哪个图表的值
             hztrcc: [],
             optionsdata: {},
             name: '',
-            detailList: [],
+            detailList: JSON.stringify([{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005348A","sjtrcd":"11600","syl":95,"jsczzc":"11600"},{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005348A","sjtrcd":"11600","syl":95,"jsczzc":"11600"},{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005349A","sjtrcd":"11600","syl":95,"jsczzc":"11525"},{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005349A","sjtrcd":"11600","syl":95,"jsczzc":"11525"},{"zjsj":"2020-06-01","scdh":"GZ2004-010","pz":"S2R","gh":"2005274C","sjtrcd":"12600","syl":95,"jsczzc":"12535"},{"zjsj":"2020-06-01","scdh":"GZ2004-010","pz":"S2R","gh":"2005275C","sjtrcd":"12600","syl":95,"jsczzc":"12530"}]),
             showDetail: false
         
         }
@@ -56,6 +56,15 @@ export default {
         ])
     },
     watch: {
+        type: function() {
+              if(Number(this.type) == 0) {
+              this.detailList = JSON.stringify([{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005348A","sjtrcd":"11600","syl":95,"jsczzc":"11600"},{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005348A","sjtrcd":"11600","syl":95,"jsczzc":"11600"},{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005349A","sjtrcd":"11600","syl":95,"jsczzc":"11525"},{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005349A","sjtrcd":"11600","syl":95,"jsczzc":"11525"},{"zjsj":"2020-06-01","scdh":"GZ2004-010","pz":"S2R","gh":"2005274C","sjtrcd":"12600","syl":95,"jsczzc":"12535"},{"zjsj":"2020-06-01","scdh":"GZ2004-010","pz":"S2R","gh":"2005275C","sjtrcd":"12600","syl":95,"jsczzc":"12530"}])
+       }else if(Number(this.type) == 1){
+           this.detailList = JSON.stringify([{"sjrq":"2020-06-01","scdh":"GZ2003-010","pz":"S1A","gh":"2005351C","baimiyongwei":"6.2441","baimiyongweibiaozhun":"5","zhichenglv":"5","zhichenglvbiaozhun":"5"},{"sjrq":"2020-06-01","scdh":"GZ2003-010","pz":"S1A","gh":"2005352C","baimiyongwei":"6.40369","baimiyongweibiaozhun":"6.29","zhichenglv":"95.2091","zhichenglvbiaozhun":"94"},{"sjrq":"2020-06-01","scdh":"GZ2003-029","pz":"A3428","gh":"2005345D","baimiyongwei":"11.2739","baimiyongweibiaozhun":"10.41","zhichenglv":"93.9925","zhichenglvbiaozhun":"92"},{"sjrq":"2020-06-01","scdh":"GZ2003-170","pz":"S1B","gh":"2005353C","baimiyongwei":"13.1236","baimiyongweibiaozhun":"12.92","zhichenglv":"95.0442","zhichenglvbiaozhun":"94"},{"sjrq":"2020-06-01","scdh":"NH2002-054","pz":"BS0624A00","gh":"2005326W","baimiyongwei":"12.2404","baimiyongweibiaozhun":"12.71","zhichenglv":"94.8637","zhichenglvbiaozhun":"92"},{"sjrq":"2020-06-01","scdh":"NH2003-012","pz":"BS0624B43","gh":"2005328W","baimiyongwei":"12.0897","baimiyongweibiaozhun":"12.44","zhichenglv":"93.6073","zhichenglvbiaozhun":"92"},{"sjrq":"2020-06-01","scdh":"NH2003-013/\nNH2003-014","pz":"BS0624B43","gh":"2005327W","baimiyongwei":"12.6281","baimiyongweibiaozhun":"12.71","zhichenglv":"93.4994","zhichenglvbiaozhun":"92"}])
+       }else{
+          this.detailList = JSON.stringify([{"scdh":"GZ1906-086 ","pz":"RA3479-9E3","gh":"2005352D","hzrq":"2020-06-01","bzzcl":0,"sjzcl":0},{"scdh":"GZ1906-124","pz":"RA3479-9E3","gh":"2005353D","hzrq":"2020-06-01","bzzcl":0,"sjzcl":84.89},{"scdh":"GZ1906-189 ","pz":"RA3479-9E3","gh":"2005351D","hzrq":"2020-06-01","bzzcl":84.5,"sjzcl":83.33},{"scdh":"GZ1907-105","pz":"RA3479-9E3","gh":"2005355D","hzrq":"2020-06-01","bzzcl":84,"sjzcl":85.2},{"scdh":"GZ1907-149 ","pz":"A3428","gh":"2005345D","hzrq":"2020-06-01","bzzcl":84,"sjzcl":84.79},{"scdh":"GZ1907-149 ","pz":"RA3479-9E3","gh":"2005354D","hzrq":"2020-06-01","bzzcl":84,"sjzcl":85.55}])
+       }
+        },
         xrData: function(nelData, oldData) {
             this.name = '织造投入产出数据';
             this.draw(this.xrData);
@@ -119,14 +128,6 @@ export default {
         })
         this.showDetail = true;
         this.detailList = JSON.stringify(arr[0])
-        
-        //   this.$router.push({
-        //       name: 'zhizaotourudetail',
-        //       params: {
-        //           wdata: JSON.stringify(arr[0]),
-        //           type: _this.type
-        //       }
-        //   })
        },
     getYCLZbTuBiaoData() {
         axios.post(this.updataUrl+'/api/getYCLZbTuBiaoData').then(res => {
@@ -356,11 +357,7 @@ export default {
   } 
 }
 </script>
-<style lang="less" >
-html,body,#app{
-    height: 100%;
-}
-</style>
+
 <style lang="less" scoped>
 @import '../style/hasrl.less';
 

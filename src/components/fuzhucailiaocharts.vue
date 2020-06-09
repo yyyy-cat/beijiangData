@@ -1,10 +1,10 @@
 <template>
     <div class="charts">
         <span class="title-name">{{name}}</span>
-        <div class="right" @click="toTable">查看图表</div>
+        <div class="right" @click="toTable">返回</div>
      
         <div class="left">
-        <el-scrollbar style="height: 1360px;">
+        <el-scrollbar style="height: 900px">
             <el-calendar>
                 <template
                     slot="dateCell"
@@ -17,7 +17,7 @@
              </el-scrollbar>
         </div>
         <div class="main">
-            <Detail :detailList='detailList' :type='type' v-if="showDetail"/>
+            <Detail :detailList='detailList' :type='type' />
         </div>
     </div>
 </template>
@@ -40,8 +40,9 @@ export default {
             rsyl: [],
             sjfl: [],
             optionsdata: {},
+            type: 0,
             name: '',
-            detailList: [],
+            detailList: JSON.stringify([{"scdh":"GZ1912-384","pz":"S2R","gh":"2005333/2005334E","rssj":"2020-06-01","mybzsr":"2.15","mysjsr":"2.15632"},{"scdh":"GZ1912-384","pz":"S2R","gh":"2005333/2005334E","rssj":"2020-06-01","mybzsr":"2.15","mysjsr":"2.22"},{"scdh":"GZ2001-098","pz":"A3479E-1R","gh":"2005312/2005313D","rssj":"2020-06-01","mybzsr":"2.75","mysjsr":"2.90032"},{"scdh":"GZ2001-098","pz":"A3479E-1R","gh":"2005314/2005315D","rssj":"2020-06-01","mybzsr":"2.75","mysjsr":"2.88"}]),
             showDetail: false
         
         }
@@ -55,6 +56,13 @@ export default {
         ])
     },
     watch: {
+        type: function() {
+            if(Number(this.type) == 0) {
+                this.detailList = JSON.stringify([{"scdh":"GZ1912-384","pz":"S2R","gh":"2005333/2005334E","rssj":"2020-06-01","mybzsr":"0","mysjsr":"0"},{"scdh":"GZ1912-384","pz":"S2R","gh":"2005333/2005334E","rssj":"2020-06-01","mybzsr":"2.15","mysjsr":"2.22"},{"scdh":"GZ2001-098","pz":"A3479E-1R","gh":"2005312/2005313D","rssj":"2020-06-01","mybzsr":"2.75","mysjsr":"2.90032"},{"scdh":"GZ2001-098","pz":"A3479E-1R","gh":"2005314/2005315D","rssj":"2020-06-01","mybzsr":"2.75","mysjsr":"2.88"}])
+            }else if(Number(this.type) == 1){
+                this.detailList = JSON.stringify([{"scdh":"GZ2001-004","pz":"RA3479-9E3","gh":"2005351D","jssj":"2020-06-01","fljybzsjl":"8.06572","fljysjsjl":"8.06572"},{"scdh":"GZ2001-004","pz":"RA3479-9E3","gh":"2005352D","jssj":"2020-06-01","fljybzsjl":"9.78836","fljysjsjl":"9.78836"},{"scdh":"GZ2001-004","pz":"RA3479-9E3","gh":"2005353D","jssj":"2020-06-01","fljybzsjl":"7.2964","fljysjsjl":"7.2964"},{"scdh":"GZ2001-004","pz":"RA3479-9E3","gh":"2005354D","jssj":"2020-06-01","fljybzsjl":"6.35474","fljysjsjl":"6.35474"},{"scdh":"GZ2001-004","pz":"RA3479-9E3","gh":"2005355D","jssj":"2020-06-01","fljybzsjl":"9.0748","fljysjsjl":"9.0748"}])
+            }
+        },
         rsyl: function(nelData, oldData) {
             this.name = '染色用料数据';
             this.draw(this.rsyl);
@@ -110,6 +118,7 @@ export default {
          })
         this.showDetail = true;
         this.detailList = JSON.stringify(arr[0])
+        console.log(this.detailList)
         //   this.$router.push({
         //       name: 'fuzhucailiaodetail',
         //       params: {
@@ -288,11 +297,6 @@ export default {
   } 
 }
 </script>
-<style lang="less" >
-html,body,#app{
-    height: 100%;
-}
-</style>
 <style lang="less" scoped>
 @import '../style/hasrl.less';
 </style>

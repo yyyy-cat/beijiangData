@@ -575,7 +575,7 @@ export default {
 @import '../style/top.less';
 .ChemicalTable {
   margin: 0 auto 0;
-  width: 6301px;
+  width: 7080px;
 }
 
 #bgColor {

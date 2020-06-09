@@ -2,11 +2,13 @@
     <div class="charts">
         <div class="left">
             <div class="charts-main">
-                <div id='list' :style="{width: '4760px', height: '1200px', margin: '0 auto', zIndex: '10', paddingTop: '800px'}"></div>
+                <div id='list' :style="{width: '6049px', height: '1855px',margin: '0 auto', zIndex: '10', paddingTop: '78px'}"></div>
             </div>
-            <div class="ybp" v-show='JSON.stringify(this.rsylcurrent) !== "{}"'>
+            <div class="ybp">
+                
+                <div id="sjsrl" :style="{width: '1400px', height: '1855px', zIndex: '10'}"></div>
                 <div class="info">
-                    <div class="data">基本信息</div>
+                    <!-- <div class="data">基本信息</div> -->
                     <table border="1">
                         <tr>
                             <th>缸号</th>
@@ -18,7 +20,6 @@
                         </tr>
                     </table>
                 </div>
-                <div id="sjsrl" :style="{width: '1200px', height: '1200px', margin: '0 auto', zIndex: '10'}"></div>
             </div>
         </div>
     </div>
@@ -45,6 +46,14 @@ export default {
      watch: {
         detailList: function(newdata, olddata){
             this.lData = newdata
+             if(Number(this.type) == 0) {
+            this.name = '染色用料数据';
+            this.draw('mybzsr');
+                    }
+            else if(Number(this.type) == 1) {
+                    this.name = '上浆辅料数据';
+                    this.draw('fljybzsjl');
+                }
         }
     },
     created() {
@@ -53,6 +62,7 @@ export default {
         this.optionsdata = Varible.OPTIONS;
     },
    mounted() {
+    this.ybp(0, 'sjsrl', 0);
     if(Number(this.type) == 0) {
             this.name = '染色用料数据';
             this.draw('mybzsr');
@@ -76,7 +86,6 @@ export default {
     },
     //仪表盘数据
     ybpOptions(value, showName, name) {
-        console.log(name)
          let minx = (Number(value)-2).toFixed(2);
          let maxx = (Number(value)+2).toFixed(2);
             let options = {
@@ -191,11 +200,27 @@ export default {
         }
             return seriesData
     },
+     setDw() {
+        let name = 'OWF %'
+        if(Number(this.type) == 0){
+            name = 'OWF %'
+        }else if(Number(this.type) == 1){
+            name = '上浆率'
+        }
+        return name
+    },
      initOptions(seriesData, xData, source) {
          
         let options = {
             dataset: {
                source: source
+            },
+             grid: {
+                left: '1%',
+                right: '1%',  //距离右侧边距
+                bottom: '1%',
+                show:true,
+                containLabel: true
             },
               tooltip: {
                 trigger: 'axis', 
@@ -223,28 +248,29 @@ export default {
             yAxis: [
                 {
                     type: 'value',
+                     name: this.setDw(),
+                     nameTextStyle: {
+                        color: '#00ecfc',
+                        fontSize: 40,
+                        lineHeight: 50
+                    },
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
                             fontSize : 30,
                             color: '#00ecfc'   
                             }
-                    },
-                    nameTextStyle: {
-                        fontSize: 30,
-                    },
+                    }
                 },
                 {
                     type: 'value',
+                   
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
                             fontSize : 30 ,
-                            color: '#00ecfc'  
+                            color: 'none'  
                             }
-                    },
-                    nameTextStyle: {
-                        fontSize: 30,
                     },
                 }
             ],

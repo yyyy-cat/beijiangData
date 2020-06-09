@@ -6,7 +6,8 @@
     // justify-content: center;
     align-items: center;
     position: relative;
-    height: 100%;
+    height: 3240px;
+    width: 7680px;
     .title-name{
         display: block;
         font-size: 120px;
@@ -14,8 +15,8 @@
         margin-top: 100px;
     }
     .left{
-        width: 4790px;
-        height: 1360px;
+        width: 7350px;
+        height: 900px;
         margin-top: 78px;
     }
     .right{
@@ -24,6 +25,12 @@
         position: absolute;
         top: 100px;
         left: 6700px;
+    }
+
+    .main{
+        width: 7350px;
+        height: 1200px;
+        margin-top: 78px;
     }
 }
 
@@ -49,4 +56,12 @@
 
 /deep/.el-scrollbar__wrap {
    overflow-x: hidden;
+}
+/deep/.el-calendar-table td.is-selected{
+     background: none; 
+     border: 2px solid #00A8FF;
+     z-index: 10;
+}
+/deep/.el-calendar-table .el-calendar-day:hover {
+    background: none;
 }

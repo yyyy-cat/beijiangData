@@ -2,13 +2,15 @@
     <div class="charts">
         <!-- <span class="title-name">{{name}}</span>
         <div class="right" @click="toTable"> 查看日历图</div> -->
-        <div class="left">
-            <div class="charts-main">
-                <div id='list' :style="{width: '4760px', height: '1200px', margin: '0 auto', zIndex: '10',paddingTop: '800px'}"></div>
+        <div class="left">    
+            <div class="charts-main" >
+                <div id='list' :style="{width: w, height: '1855px', zIndex: '10',paddingTop: '78px'}"></div>
             </div>
-            <div class="ybp" v-show='JSON.stringify(this.rsylcurrent) !== "{}"'>
-                <div class="info">
-                    <div class="data">基本信息</div>
+            <div class="ybp" >
+              <!-- v-show='JSON.stringify(this.rsylcurrent) !== "{}"' -->
+                <div id="sjsrl" :style="{width: '1400px', height: '1855px',  zIndex: '10', marginLeft: p}"></div>
+                  <div class="info" :style="{marginLeft: p, width: '400px'}">
+                    <!-- <div class="data">基本信息</div> -->
                     <table border="1">
                         <tr>
                             <th>缸号</th>
@@ -20,12 +22,12 @@
                         </tr>
                     </table>
                 </div>
-                <div id="sjsrl" :style="{width: '1200px', height: '1200px', margin: '0 auto', zIndex: '10'}"></div>
             </div>
-
-            <div class="ybp" v-show='JSON.stringify(this.rsylcurrent2) !== "{}"'>
-                <div class="info">
-                    <div class="data">基本信息</div>
+                <!-- v-if="type == '1'" -->
+            <div class="ybp" v-show="type == '1'">
+                <div id="sjsrl2" :style="{width: '1400px', height: '1855px',  zIndex: '10'}"></div>
+             <div class="info">
+                    <!-- <div class="data">基本信息</div> -->
                     <table border="1">
                         <tr>
                             <th>缸号</th>
@@ -37,7 +39,6 @@
                         </tr>
                     </table>
                 </div>
-                <div id="sjsrl2" :style="{width: '1200px', height: '1200px', margin: '0 auto', zIndex: '10'}"></div>
             </div>
         </div>
     </div>
@@ -60,20 +61,42 @@ export default {
             rsylcurrent2: {}, //第二个实例
             optionsdata: {},
             name: '',
+            w: '6049px',
+            p: '1000px'
             
         }
     },
     watch: {
         detailList: function(newdata, olddata){
-            this.lData = newdata
+            this.lData = newdata;
+               if(Number(this.type) == 0) {
+            this.name = '浆染投入产出数据';
+            this.draw('sjtrcd', 'jsczzc');
+        }
+        else if(Number(this.type) == 1) {
+                this.name = '织造投入产出数据';
+                this.draw('baimiyongweibiaozhun','zhichenglvbiaozhun');
+            }else{
+                this.name = '后整投入产出数据'
+                this.draw('bzzcl');
+            }
         }
     },
     created() {
+        
         this.lData = this.$props.detailList
         this.type = this.$props.type;
         this.optionsdata = Varible.OPTIONS;
+        if(this.type == '1') {
+            this.w = '4750px';
+            this.p = '0px'
+        }
     },
    mounted() {
+       this.ybp(0,0, 'sjsrl', 0);
+       this.ybp(0,0, 'sjsrl2', 0);
+                    
+     this.rsylcurrent = [0,1,2];
     if(Number(this.type) == 0) {
             this.name = '浆染投入产出数据';
             this.draw('sjtrcd', 'jsczzc');
@@ -109,7 +132,7 @@ export default {
             tooltip: {
                 formatter: '{a} <br/>{b} : {c}%'
             },
-            radius: '85%',
+            radius: '100%',
             series: [
                    
                 {
@@ -271,11 +294,29 @@ export default {
         }
             return seriesData
     },
+    setDw() {
+        let name = '米'
+        if(Number(this.type) == 0){
+            name = '米'
+        }else if(Number(this.type) == 1){
+            name = 'KG'
+        }else{
+            name = '%'
+        }
+        return name
+    },
      initOptions(seriesData, xData, source) {
          let opt = this.optionsdata;
         let options = {
             dataset: {
                source: source
+            },
+             grid: {
+                left: '1%',
+                right: '0%',  //距离右侧边距
+                bottom: '1%',
+                show:true,
+                containLabel: true
             },
              tooltip: {
                 trigger: 'axis', 
@@ -304,6 +345,12 @@ export default {
             yAxis: [
                 {
                     type: 'value',
+                    name: this.setDw(),
+                     nameTextStyle: {
+                        color: opt.zts,
+                        fontSize: 40,
+                        lineHeight: 50
+                    },
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
@@ -311,16 +358,14 @@ export default {
                             color: opt.zts     
                             }
                     },
-                    nameTextStyle: {
-                        fontSize: 30,
-                    },
                 },
                 {
                     type: 'value',
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 30   
+                            fontSize : 30,
+                            color: 'none'   
                             }
                     },
                     nameTextStyle: {
@@ -374,7 +419,7 @@ export default {
             myCharts.setOption(this.initOptions(setBaseOptions, xData, source));
 
              myCharts.on('click', function(params) {
-
+                 console.log(source[params['dataIndex']],"参数数据")
                 if(_this.type == 0 && params.seriesType == 'line' && params.seriesName == "原纱利用率"){
                     _this.ybp(params.data,params.data, 'sjsrl', params.seriesName);
                     
