@@ -419,7 +419,8 @@ export default {
             myCharts.setOption(this.initOptions(setBaseOptions, xData, source));
 
              myCharts.on('click', function(params) {
-                 console.log(source[params['dataIndex']],"参数数据")
+                 let a = params['dataIndex']
+                 
                 if(_this.type == 0 && params.seriesType == 'line' && params.seriesName == "原纱利用率"){
                     _this.ybp(params.data,params.data, 'sjsrl', params.seriesName);
                     
@@ -429,7 +430,8 @@ export default {
                     _this.ybp(params.data,source[params['dataIndex']]['1'], 'sjsrl2', params.seriesName);
                     _this.rsylcurrent2 = data[params.dataIndex];
                 }else if(_this.type == 1 && params.seriesType == 'line' && params.seriesName == "织成率"){
-                    _this.ybp(params.data,source[params['dataIndex']]['2'], 'sjsrl', params.seriesName);
+                    // console.log(source['6'],"参数数据5555")
+                    _this.ybp(params.data,source[a]['2'], 'sjsrl', params.seriesName);
                     _this.rsylcurrent = data[params.dataIndex];
                 }else if(_this.type == 2 && params.seriesType == 'line' && params.seriesName == "制成率") {
                     _this.ybp(params.data,source[params['dataIndex']]['1'], 'sjsrl', params.seriesName);
