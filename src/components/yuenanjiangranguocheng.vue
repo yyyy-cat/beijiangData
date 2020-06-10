@@ -1,5 +1,6 @@
 <template>
   <!-- 管控中心 -->
+      <!-- height: 3240px; -->
   <div class="Administration" v-on:dblclick="shuangji()">
     <!-- 顶部logo -->
   <div class="nav-main">
@@ -18,6 +19,7 @@
           <login></login>
       </div>
   </div>
+  
     <div id="bgColor">
       <!-- <h1>数据管控标准</h1> -->
 
@@ -51,17 +53,20 @@
           <i class="layui-icon">&#xe615;</i> 查询
         </button>
       </div>
+      <barcharts></barcharts>
       <div class="ChemicalTable">
+         <!-- height="1500" -->
         <!--<Table :columns="historyColumns" :data="historyData" height="1500"></Table>-->
         <div id="building-top">
           <el-table
             :data="historyData"
             :span-method="arraySpanMethod"
             :header-cell-style="{background:'#040A53'}"
-            :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
+            :row-style="{background: '#040A53',margin:'200px',height:'1000px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1500"
+           
+            height="1000"
             style="width: 100%;text-align: center;color: black;">
             <el-table-column
               label="基本资料"
@@ -255,11 +260,10 @@
             </el-table-column>
           </el-table>
         </div>
-        <div style="margin: 70px;overflow: hidden">
+        <!-- <div style="margin: 10px;overflow: hidden">
           <div style="float: right;">
-            <!--<Page :total="pageAll" :current="1" @on-change="xuanran" page-size="20"></Page>-->
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div v-show="None">
@@ -279,7 +283,7 @@
         <div slot="tip" class="el-upload__tip" style="clear: both">只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
     </div>
-      <barcharts></barcharts>
+      
     <!-- <foot></foot> -->
      <yuenanjiangrangguochengfoot></yuenanjiangrangguochengfoot>
   </div>
@@ -539,8 +543,8 @@ export default {
 <style scoped lang='less'>
 @import '../style/gctop.less';
 .ChemicalTable {
-  margin: 200px auto 0;
-  width: 6651px;
+  margin: 60px auto 0;
+  width: 6780px;
 }
 .ChemicalFindBox {
   height: 60px;
@@ -569,7 +573,8 @@ export default {
 
 #bgColor {
   background: transparent;
-  margin: 200px 40px 0;
+  // margin: 200px 40px 0;
+    margin: 50px 40px 0;
   padding: 16px;
 }
 

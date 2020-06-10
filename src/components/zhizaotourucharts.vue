@@ -263,7 +263,7 @@ export default {
                     axisPointer: {
                         type: 'shadow'
                     },
-                    data: source,
+                    data:  source,
                     axisLabel: {
                         textStyle: { 
                             fontSize : 30,
@@ -345,7 +345,8 @@ export default {
             source=[]
             let zjsj = v.zjsj.slice(5,10);
             v.list.map((k, idx) => {
-                let name = v.zjsj.slice(8,10)+ '-' + idx
+                // v.zjsj.slice(8,10)+ '-' + 
+                let name = idx
                 source.push(name)
             })
             let myCharts = this.$echarts.init(document.getElementById(`step${zjsj}`));

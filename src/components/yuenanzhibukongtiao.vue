@@ -51,6 +51,7 @@
         </label>
         <button id="ChemicalFind" @click="tijiao()">查询</button>
       </div>
+      <barcharts></barcharts>
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height="1500"></Table>-->
         <div id="building-top">
@@ -61,7 +62,7 @@
             :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1500"
+            height="1000"
             style="width: 100%;text-align: center;color: black;">
             <el-table-column
             prop="rq"
@@ -142,7 +143,7 @@
         <div slot="tip" class="el-upload__tip" style="clear: both">只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
     </div>
-    <barcharts></barcharts>
+    
     <yuenanjiangrangguochengfoot></yuenanjiangrangguochengfoot>
   </div>
 </template>
@@ -403,7 +404,7 @@ export default {
 @import '../style/gctop.less';
 #bgColor {
   background: transparent;
-  margin: 200px 40px 0;
+  margin: 50px 40px 0;
   padding: 16px;
 }
 
@@ -609,7 +610,7 @@ a {
 }
 
 .ChemicalTable {
-  margin: 200px auto 0;
+  margin: 50px auto 0;
   width: 2300px;
 }
 .ChemicalFindBox {

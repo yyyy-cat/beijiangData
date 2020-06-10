@@ -4,12 +4,12 @@
             <div class="charts-main">
                 <div id='list' :style="{width: '6049px', height: '1855px',margin: '0 auto', zIndex: '10', paddingTop: '78px'}"></div>
             </div>
-            <div class="ybp">
+            <div class="ybp" >
                 
-                <div id="sjsrl" :style="{width: '1400px', height: '1855px', zIndex: '10'}"></div>
-                <div class="info">
+                <div id="sjsrl" :style="{width: '1400px', height: '1855px', zIndex: '10', marginLeft: '1200px'}"></div>
+                <div class="info" :style="{marginLeft: '2000px'}">
                     <!-- <div class="data">基本信息</div> -->
-                    <table border="1">
+                    <table border="1" class="main">
                         <tr>
                             <th>缸号</th>
                             <th>{{rsylcurrent.gh}}</th>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+// :style="{width: '600px', marginLeft: '1550px'}"
 import axios from 'axios'
 import Varible from '../utils/varible'
 export default {
@@ -237,7 +238,7 @@ export default {
                     axisPointer: {
                         type: 'shadow'
                     },
-                    // data: xAxisData,
+                    data: xData,
                     axisLabel: {
                         textStyle: { 
                             fontSize : 30,
@@ -286,17 +287,6 @@ export default {
                     type: 'inside',
                     start: 0,
                     end: 100
-                },
-                {
-                    type: 'slider',
-                    show: true,
-                    yAxisIndex: 0,
-                    filterMode: 'empty',
-                    width: 12,
-                    height: '70%',
-                    handleSize: 8,
-                    showDataShadow: false,
-                    left: '93%'
                 }
             ],
             series: seriesData,
@@ -311,7 +301,8 @@ export default {
           let source = []//柱状图数据
             data.map((item, idx) => {
                 let data = []
-                xData.push(idx)
+                 let a = '第'+ Number(idx+1) + '条数据'
+                xData.push(a)
                 data.push(idx,item[str1], item[str2])
                 source.push(data)
             });

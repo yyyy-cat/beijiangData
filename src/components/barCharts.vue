@@ -160,17 +160,6 @@ export default {
                     type: 'inside',
                     start: 0,
                     end: 100
-                },
-                {
-                    type: 'slider',
-                    show: true,
-                    yAxisIndex: 0,
-                    filterMode: 'empty',
-                    width: 12,
-                    height: '70%',
-                    handleSize: 8,
-                    showDataShadow: false,
-                    left: '93%'
                 }
             ],
             series: seriesData
@@ -181,33 +170,33 @@ export default {
     getGCNHHzgcTuBiaoData() {
         axios.post(this.updataUrl + '/api/getGCNHHzgcTuBiaoData').then((res => {
             let arr =res.data.data
-             arr.map((v, idx) => {
-                 let name = v.zjsj.slice(8,10)
-                v.zjsj = name;
-                return arr
-              })
+            //  arr.map((v, idx) => {
+            //      let name = v.zjsj.slice(8,10)
+            //     v.zjsj = name;
+            //     return arr
+            //   })
             this.xrData = res.data.data
         }))
     },
     getGCNHJrgcTuBiaoData() {
         axios.post(this.updataUrl + '/api/getGCNHJrgcTuBiaoData').then((res => {
             let arr =res.data.data
-             arr.map((v, idx) => {
-                 let name = v.zjsj.slice(8,10)
-                v.zjsj = name;
-                return arr
-              })
+            //  arr.map((v, idx) => {
+            //      let name = v.zjsj.slice(8,10)
+            //     v.zjsj = name;
+            //     return arr
+            //   })
             this.jrgchn = res.data.data
         }))
     },
      getGCNHZbktTuBiaoData() {
         axios.post(this.updataUrl + '/api/getGCNHZbktTuBiaoData').then((res => {
-            let arr =res.data.data
-             arr.map((v, idx) => {
-                 let name = v.zjsj.slice(8,10)
-                v.zjsj = name;
-                return arr
-              })
+            // let arr =res.data.data
+            //  arr.map((v, idx) => {
+            //      let name = v.zjsj.slice(8,10)
+            //     v.zjsj = name;
+            //     return arr
+            //   })
             this.zzkthn = res.data.data
         }))
     },
@@ -428,12 +417,11 @@ export default {
         let source = []
         data.forEach((v, idx) => {
              let zjsj = v.zjsj;
-             
             //  String bzwmzls; //标准万米用量自来水用量String bzwmzq; //标准万米用量蒸汽用量String bzwmtrq; //标准万米用量天然气用量
              v.list.map((k, index) =>{
                  
                  let dayData = []
-                 k.name = zjsj + '-' + index
+                 k.name = zjsj.slice(5,10)+ '-' + index
                  nameList.push(k.name)
                 //  dayData.push(k.name, k.bzwmzls, k.bzwmzq, k.bzwmtrq)
                 if(str3 == '') {
@@ -461,11 +449,8 @@ export default {
     display: flex;
     flex-direction: column;
     height: 1000px;
-    // height: 100%;
-    // width: 100%;
-//    padding-top: 200px;
-    background: url(..\assets\Administration\other_bg.png);
     position: relative;
+    margin-top: 50px;
     .title-name{
         display: block;
         font-size: 120px;

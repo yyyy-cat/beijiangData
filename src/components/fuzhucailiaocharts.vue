@@ -118,14 +118,6 @@ export default {
          })
         this.showDetail = true;
         this.detailList = JSON.stringify(arr[0])
-        console.log(this.detailList)
-        //   this.$router.push({
-        //       name: 'fuzhucailiaodetail',
-        //       params: {
-        //           wdata: JSON.stringify(arr[0]),
-        //           type: _this.type,
-        //       }
-        //   })
        },
     getFZCLRsylTuBiaoData() {
         axios.post(this.updataUrl+'/api/getFZCLRsylTuBiaoData').then(res => {
@@ -285,10 +277,12 @@ export default {
             source = []
             let zjsj = v.zjsj.slice(5,10);
             v.list.map((k, idx) => {
-                let name = v.zjsj.slice(8,10)+ '-' + idx
+                //  let name = v.zjsj.slice(8,10)+ '-' + idx
+                let name =  idx
                 source.push(name)
             })
             let myCharts = this.$echarts.init(document.getElementById(`step${zjsj}`));
+            
             if(v.list.length > 0) {
                 myCharts.setOption(this.initOptions(setBaseOptions,source));
             }

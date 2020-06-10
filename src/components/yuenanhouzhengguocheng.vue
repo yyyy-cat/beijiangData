@@ -60,6 +60,7 @@
           <i class="layui-icon">&#xe615;</i> 查询
         </button>
       </div>
+      <barcharts></barcharts>
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height="1500"></Table>-->
         <div id="building-top"  style="position: relative">
@@ -73,8 +74,7 @@
             :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1500"
-            style="width: 100%;text-align: center;color: black;height: 1670px; background:rgba(255,255,255,0)">
+            style="width: 100%;text-align: center;color: black;height: 1000px; background:rgba(255,255,255,0)">
             <el-table-column
               label="基本资料"
               align="center"
@@ -517,7 +517,7 @@
         <div slot="tip" class="el-upload__tip" style="clear: both">只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
     </div>
-    <barcharts></barcharts>
+    
     <yuenanjiangrangguochengfoot></yuenanjiangrangguochengfoot>
   </div>
 </template>
@@ -781,8 +781,8 @@ this.show1=!this.show1;
 @import '../style/gctop.less';
 
 .ChemicalTable {
-  margin: 200px auto 0;
-  /* width: 1751px; */
+  margin: 150px auto 0;
+  width: 6651px;
 }
 .ChemicalFindBox {
   height: 60px;
@@ -811,7 +811,7 @@ this.show1=!this.show1;
 
 #bgColor {
   background: transparent;
-  margin: 200px 40px 0;
+  margin: 50px 40px 0;
   padding: 16px;
 }
 

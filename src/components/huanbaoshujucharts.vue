@@ -3,7 +3,7 @@
          <span class="title-name">环保数据</span>
     <div class="left">
         <div class="main">
-        <div class="charts-main">
+        <div class="charts-main" :style="{ height: '900px'}">
              <div id='list' :style="{width: '6731px', height: '900px', margin: '0 auto', zIndex: '10'}"></div>
         </div>
          <div class="charts-main">
@@ -160,17 +160,6 @@ export default {
                     type: 'inside',
                     start: 0,
                     end: 100
-                },
-                {
-                    type: 'slider',
-                    show: true,
-                    yAxisIndex: 0,
-                    filterMode: 'empty',
-                    width: 12,
-                    height: '70%',
-                    handleSize: 8,
-                    showDataShadow: false,
-                    left: '93%'
                 }
             ],
             series: seriesData
@@ -183,11 +172,11 @@ export default {
         //环保数据
         axios.post(this.updataUrl + '/api/getGHBTuBiaoData').then((res => {
             let arr =res.data.data
-             arr.map((v, idx) => {
-                 let name = v.zjsj.slice(8,10)
-                v.zjsj = name;
-                return arr
-              })
+            //  arr.map((v, idx) => {
+            //      let name = v.zjsj.slice(8,10)
+            //     v.zjsj = name;
+            //     return arr
+            //   })
             this.hbsj = res.data.data
         }))
     },
@@ -286,7 +275,7 @@ export default {
         let opt = this.optionsdata
         let seriesData = [
                 {
-                    name: '万码原水量',
+                    name: '原水量',
                     type: 'bar',
                     itemStyle: {
                         color: opt.ql
@@ -350,7 +339,7 @@ export default {
         let opt = this.optionsdata
         let seriesData = [
                 {
-                    name: '万码原水量',
+                    name: '原水量',
                     type: 'bar',
                     itemStyle: {
                         color: opt.ql,
@@ -399,7 +388,7 @@ export default {
         let opt = this.optionsdata;
         let seriesData = [
                 {
-                    name: '万码原水量',
+                    name: '原水量',
                     type: 'bar',
                     itemStyle: {
                         color: opt.ql
@@ -452,7 +441,7 @@ export default {
         let nameData =[]
         data.forEach((v, idx) => {
              let zjsj = v.zjsj;
-              v.name = zjsj
+              v.name = zjsj.slice(5,10)
              nameData.push(v.list)
              v.list.map((k, index) =>{
                  let dayData = []

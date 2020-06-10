@@ -8,12 +8,12 @@
             </div>
             <div class="ybp" >
               <!-- v-show='JSON.stringify(this.rsylcurrent) !== "{}"' -->
-                <div id="sjsrl" :style="{width: '1400px', height: '1855px',  zIndex: '10', marginLeft: p}"></div>
-                  <div class="info" :style="{marginLeft: p, width: '400px'}">
+                <div id="sjsrl" :style="{width: '1400px', height: '1855px',  zIndex: '10',marginLeft: x}"></div>
+                  <div class="info" :style="{marginLeft: p}">
                     <!-- <div class="data">基本信息</div> -->
-                    <table border="1">
+                    <table border="1"  class="main">
                         <tr>
-                            <th>缸号</th>
+                            <td>缸号</td>
                             <th>{{rsylcurrent.gh}}</th>
                         </tr>
                         <tr>
@@ -26,11 +26,11 @@
                 <!-- v-if="type == '1'" -->
             <div class="ybp" v-show="type == '1'">
                 <div id="sjsrl2" :style="{width: '1400px', height: '1855px',  zIndex: '10'}"></div>
-             <div class="info">
+             <div class="info" :style="{marginLeft: p}">
                     <!-- <div class="data">基本信息</div> -->
-                    <table border="1">
+                    <table border="1" class="main">
                         <tr>
-                            <th>缸号</th>
+                            <td>缸号</td>
                             <th>{{rsylcurrent2.gh}}</th>
                         </tr>
                         <tr>
@@ -62,7 +62,8 @@ export default {
             optionsdata: {},
             name: '',
             w: '6049px',
-            p: '1000px'
+            p: '2000px',
+            x: '1200px'
             
         }
     },
@@ -89,7 +90,8 @@ export default {
         this.optionsdata = Varible.OPTIONS;
         if(this.type == '1') {
             this.w = '4750px';
-            this.p = '0px'
+            this.p = '750px';
+            this.x = ''
         }
     },
    mounted() {
@@ -360,12 +362,13 @@ export default {
                     },
                 },
                 {
+                    show : false,
                     type: 'value',
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
                             fontSize : 30,
-                            color: 'none'   
+                            color: opt.zts    
                             }
                     },
                     nameTextStyle: {
@@ -385,17 +388,6 @@ export default {
                     type: 'inside',
                     start: 0,
                     end: 100
-                },
-                {
-                    type: 'slider',
-                    show: true,
-                    yAxisIndex: 0,
-                    filterMode: 'empty',
-                    width: 12,
-                    height: '70%',
-                    handleSize: 8,
-                    showDataShadow: false,
-                    left: '93%'
                 }
             ],
             series: seriesData,
@@ -410,7 +402,8 @@ export default {
           let source = []//柱状图数据
             data.map((item, idx) => {
                 let data = []
-                xData.push(idx)
+                let a = '第'+ Number(idx+1) + '条数据'
+                xData.push(a)
                 data.push(idx,item[str1], item[str2])
                 source.push(data)
             });
