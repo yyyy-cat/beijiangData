@@ -26,6 +26,7 @@
 
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height="1500"></Table>-->
+        <!-- height="2200"之前设置的高度 -->
         <div id="building-top">
           <el-table
             :data="historyData"
@@ -34,7 +35,6 @@
             :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            height="2200"
             style="width: 100%;text-align: center;color: black;background: none">
             <el-table-column
               prop="rq"
