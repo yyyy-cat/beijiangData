@@ -64,6 +64,7 @@
             :header-cell-style="{background:'#040A53'}"
             :row-style="{background: 'none',margin:'200px',height:'1000px;',color:'#ffffff'}"
             border
+            height='1000'
             ref="table"
             style="width: 100%;text-align: center;color: black;background:none">
             <el-table-column
@@ -742,7 +743,7 @@ h2 {
             margin-left: 24px;
         } */
 </style>
-<style>
+<style scoped>
 .layui-table-cell {
   height: 60px;
   line-height: 60px;

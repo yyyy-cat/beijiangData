@@ -70,7 +70,7 @@
           <el-table
             :data="historyData"
             :span-method="arraySpanMethod"
-            height="1000"
+            height='1000'
             :header-cell-style="{background:'#040A53'}"
             :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
@@ -782,7 +782,7 @@ this.show1=!this.show1;
 @import '../style/gctop.less';
 
 .ChemicalTable {
-  margin: 150px auto 0;
+  margin: 60px auto 0;
   width: 6651px;
 }
 .ChemicalFindBox {
@@ -982,7 +982,7 @@ h2 {
             margin-left: 24px;
         } */
 </style>
-<style>
+<style scoped>
 .layui-table-cell {
   height: 60px;
   line-height: 60px;
@@ -1638,7 +1638,7 @@ a {
 
 
 </style>
-<style>
+<style scoped>
 .ivu-input {
   font-size: 60px;
   background: transparent;
@@ -1714,13 +1714,12 @@ a {
 }
 #building-top{
 position: relative; overflow: auto;
-height: 1000px;
 width: 6800px;
 }
 
-/deep/.el-table{
+/* /deep/.el-table{
   position: absolute; width: auto; max-width: none;
-}
+} */
 #building-top .el-table__empty-block{
   background: #01AAED;
 }
@@ -1736,16 +1735,16 @@ width: 6800px;
 .cell{
   padding: 20px !important;
 }
-.is-scrolling-left{
+/* .is-scrolling-left{
   height: 1100px !important;
 }
 .is-scrolling-middle{
   height: 1100px !important;
-}
+} */
 
-.is-scrolling-right{
+/* .is-scrolling-right{
   height: 1100px !important;
-}
+} */
 /*::-webkit-scrollbar {display:none}*/
 </style>
 

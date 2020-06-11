@@ -70,11 +70,11 @@
             :data="historyData"
             :span-method="arraySpanMethod"
             :header-cell-style="{background:'#040A53'}"
-            :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
+            :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
             height="1500"
-            style="width: 100%;text-align: center;color: black;">
+            style="width: 100%;text-align: center;color: black;background:none">
             <el-table-column
               label="基本资料"
               align="center"
@@ -1687,7 +1687,8 @@ import shaoguanUrl from '../assets/s_url';
   .Administration {
     position: relative;
     width: 7680px;
-    height: 3240px;
+    height: 3000px;
+    /* height: 3240px; */
     background: url(..\assets\Administration\other_bg.png);
   }
   .index-top_nav {
