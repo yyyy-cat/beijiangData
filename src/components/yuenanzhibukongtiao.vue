@@ -60,11 +60,11 @@
             :data="historyData"
             :span-method="arraySpanMethod"
             :header-cell-style="{background:'#040A53'}"
-            :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
+            :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
             height="1000"
-            style="width: 100%;text-align: center;color: black;">
+            style="width: 100%;text-align: center;color: black;background: none">
             <el-table-column
             prop="rq"
             label="日期"
@@ -582,7 +582,7 @@ h2 {
             margin-left: 24px;
         } */
 </style>
-<style>
+<style scoped>
 .layui-table-cell {
   height: 60px;
   line-height: 60px;
@@ -1267,7 +1267,7 @@ a {
 }
 
 </style>
-<style>
+<style scoped>
 .ivu-input {
   font-size: 60px;
   background: transparent;
@@ -1340,6 +1340,9 @@ a {
     left: 640px;
     width: 1060px;
     height: 100px;
+}
+#building-top{
+    width: 2250px;
 }
 #building-top .el-table__empty-block{
   background: #01AAED;

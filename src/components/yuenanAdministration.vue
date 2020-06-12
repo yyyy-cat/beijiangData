@@ -1,5 +1,6 @@
 <template>
   <!-- 管控中心 -->
+      <!---->
   <div class="Administration" v-on:dblclick="shuangji()">
     <!-- 顶部logo -->
     <div class="index-top_nav">
@@ -37,15 +38,17 @@
           <button @click="handlpe()">
             <img src="./展开.png" alt="" style="cursor: pointer;position: absolute;top: -150px;right: 0;background:#ffffff " title="显示隐藏数据">
           </button>
+          <!-- #040A53表格背景色 -->
+          <!-- :header-cell-style="{background:'#040A53'}" -->
           <el-table
             :data="historyData"
             :span-method="arraySpanMethod"
             :header-cell-style="{background:'#040A53'}"
-            :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
+            :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
             height="1500"
-            style="width: 100%;text-align: center;color: black;height: 1600px; background:rgba(255,255,255,0)">
+            style="width: 100%;text-align: center;color: black;height: 1600px; background:none">
             <el-table-column
               label="基础信息"
               align="center"
@@ -533,8 +536,9 @@ export default {
 <style scoped>
 #bgColor {
   background: transparent;
-  margin: 200px 40px 0;
+   margin: 200px auto 0;
   padding: 16px;
+  width: 6800px; 
 }
 
 .layui-table-body {

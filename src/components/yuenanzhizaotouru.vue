@@ -59,11 +59,11 @@
             :data="historyData"
             :span-method="arraySpanMethod"
             :header-cell-style="{background:'#040A53'}"
-            :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
+            :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
             height="1500"
-            style="width: 100%;text-align: center;color: black;height: 1670px; background:rgba(255,255,255,0)">
+            style="width: 100%;text-align: center;color: black;height: 1670px; background:none">
             <el-table-column
               label="基础信息"
               align="center"
@@ -604,7 +604,7 @@ export default {
 @import '../style/top.less';
 .ChemicalTable {
   margin: 200px auto 0;
-  width: 7451px;
+  // width: 7451px;
 }
 .ChemicalFindBox {
   height: 60px;
@@ -632,9 +632,10 @@ export default {
 }
 
 #bgColor {
-  background: transparent;
-  margin: 200px 40px 0;
-  padding: 16px;
+    background: transparent;
+    margin: 200px auto 0;
+    padding: 16px;
+    width: 6800px; 
 }
 
 .layui-table-body {

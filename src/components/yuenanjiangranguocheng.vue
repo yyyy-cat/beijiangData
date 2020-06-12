@@ -62,11 +62,10 @@
             :data="historyData"
             :span-method="arraySpanMethod"
             :header-cell-style="{background:'#040A53'}"
-            :row-style="{background: '#040A53',margin:'200px',height:'1000px;',color:'#ffffff'}"
+            :row-style="{background: 'none',margin:'200px',height:'1000px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1000"
-            style="width: 100%;text-align: center;color: black;">
+            style="width: 100%;text-align: center;color: black;background:none">
             <el-table-column
               label="基本资料"
               align="center"
@@ -1472,7 +1471,8 @@ a {
     height: 100px;
 }
 #building-top{
-position: relative; overflow: auto;
+    position: relative; overflow: auto;
+    height: 1000px;
 }
 
 /deep/.el-table{

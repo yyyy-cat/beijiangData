@@ -71,7 +71,7 @@
             :data="historyData"
             :span-method="arraySpanMethod"
             :header-cell-style="{background:'#040A53'}"
-            :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
+            :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
             height="1500"
@@ -782,9 +782,10 @@
     color: white;
   }
   #bgColor {
-    background: transparent;
-    margin: 200px 40px 0;
-    padding: 16px;
+      background: transparent;
+      margin: 200px auto 0;
+      padding: 16px;
+      width: 6800px; 
   }
 
   .layui-table-body {
@@ -953,7 +954,7 @@
               margin-left: 24px;
           } */
 </style>
-<style>
+<style scoped>
   .layui-table-cell {
     height: 60px;
     line-height: 60px;
@@ -1610,7 +1611,7 @@
   /* 头部 */
   
 </style>
-<style>
+<style >
   .ivu-input {
     font-size: 60px;
     background: transparent;

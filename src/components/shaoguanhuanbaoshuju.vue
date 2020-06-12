@@ -30,11 +30,11 @@
             :data="historyData"
             :span-method="arraySpanMethod"
             :header-cell-style="{background:'#040A53'}"
-            :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
+            :row-style="{background:'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
             height="2200"
-            style="width: 100%;text-align: center;color: black;">
+            style="width: 100%;text-align: center;color: black;background:none">
             <el-table-column
               prop="rq"
               label="日期"
