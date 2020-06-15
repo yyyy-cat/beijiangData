@@ -30,10 +30,11 @@
             :data="historyData"
             :span-method="arraySpanMethod"
             :header-cell-style="{background:'#040A53'}"
-            :row-style="{background:'none',margin:'200px',height:'200px;',color:'#ffffff'}"
+            :row-style="{background:'#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
+            height='1500'
             ref="table"
-            style="width: 100%;text-align: center;color: black;background:none">
+            style="width: 100%;text-align: center;color: black;background:#040A53">
             <el-table-column
               prop="rq"
               label="日期"
@@ -353,7 +354,8 @@ export default {
       timeSart: "",
       timeEnd: "",
        showShaoguan: false,
-      updataUrl: yuenanUrl + '/ErpYn'
+      updataUrl: yuenanUrl + '/ErpYn',
+      gd: ''
     };
   },
   components: { foot, login, yuenanjiangranfoot },
@@ -464,7 +466,7 @@ export default {
 
 
       axios.post(this.updataUrl + "/api/getGhbData", usp).then(res => {
-
+        this.gd = res.data.total
         this.historyData = res.data.data;
         this.pageAll = res.data.pageTotle;
       });
@@ -490,6 +492,7 @@ export default {
         params.append("timeEnd", this.timeEnd);
        
         axios.post(this.updataUrl + "/api/getGhbData", params).then(res => {
+           this.gd = res.data.total
           this.historyData = res.data.data;
           this.pageAll = res.data.pageTotle;
           this.dom = this.$refs.table.bodyWrapper;
@@ -519,6 +522,7 @@ export default {
       } else {
         
         axios.post(this.updataUrl + "/api/getGhbData", params).then(res => {
+           this.gd = res.data.total
           this.historyData = res.data.data;
           this.pageAll = res.data.pageTotle;
           this.dom = this.$refs.table.bodyWrapper;
@@ -1404,7 +1408,7 @@ a {
 }
 
 </style>
-<style>
+<style scoped>
 .ivu-input {
   font-size: 60px;
   background: transparent;
@@ -1492,6 +1496,15 @@ a {
 }
 .cell{
   padding: 20px !important;
+}
+.is-scrolling-left{
+  height: 500px !important;
+}
+.is-scrolling-middle{
+  height: 500px !important;
+}
+.is-scrolling-right{
+  height: 500px !important;
 }
 /*::-webkit-scrollbar {display:none}*/
 </style>

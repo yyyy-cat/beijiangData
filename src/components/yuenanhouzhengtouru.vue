@@ -60,7 +60,7 @@
             border
             ref="table"
             page-size="20"
-            height="1500"
+            height="1550"
             style="width: 100%;text-align: center;color: black;height: 1670px; background:none">
             <el-table-column
               label="基础信息"
@@ -673,7 +673,7 @@ h2 {
             margin-left: 24px;
         } */
 </style>
-<style>
+<style scoped>
 .layui-table-cell {
   height: 60px;
   line-height: 60px;
@@ -1327,7 +1327,7 @@ a {
   line-height: 160px;
 }
 </style>
-<style>
+<style scoped>
 .ivu-input {
   font-size: 60px;
   background: transparent;

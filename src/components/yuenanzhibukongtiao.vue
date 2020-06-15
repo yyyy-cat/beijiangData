@@ -63,7 +63,6 @@
             :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1000"
             style="width: 100%;text-align: center;color: black;background: none">
             <el-table-column
             prop="rq"
@@ -1342,7 +1341,7 @@ a {
     height: 100px;
 }
 #building-top{
-    width: 2250px;
+    width: 2280px;
 }
 #building-top .el-table__empty-block{
   background: #01AAED;
@@ -1353,12 +1352,18 @@ a {
 #building-top .is-group {
   background: #01AAED;
 }
-.el-table__body tr:hover>td {
+/deep/.el-table__body tr:hover>td {
   background-color: #134087 !important;
 }
 .cell{
   padding: 20px !important;
 }
+/* .is-scrolling-left{
+  height: 500 !important;
+}
+.is-scrolling-right{
+  height: 500 !important;
+} */
 /*::-webkit-scrollbar {display:none}*/
 </style>
 

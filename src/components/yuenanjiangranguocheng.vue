@@ -1397,7 +1397,7 @@ a {
   line-height: 160px;
 }
 </style>
-<style>
+<style scoped>
 .ivu-input {
   font-size: 60px;
   background: transparent;

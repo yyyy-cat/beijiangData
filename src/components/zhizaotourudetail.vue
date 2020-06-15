@@ -4,11 +4,11 @@
         <div class="right" @click="toTable"> 查看日历图</div> -->
         <div class="left">    
             <div class="charts-main" >
-                <div id='list' :style="{width: w, height: '1855px', zIndex: '10',paddingTop: '78px'}"></div>
+                <div id='list' :style="{width: w, height: '1600px', zIndex: '10',paddingTop: '78px'}"></div>
             </div>
             <div class="ybp" >
               <!-- v-show='JSON.stringify(this.rsylcurrent) !== "{}"' -->
-                <div id="sjsrl" :style="{width: '1400px', height: '1855px',  zIndex: '10',marginLeft: x}"></div>
+                <div id="sjsrl" :style="{width: '1400px', height: '1200px',  zIndex: '10',marginLeft: x}"></div>
                   <div class="info" :style="{marginLeft: p}">
                     <!-- <div class="data">基本信息</div> -->
                     <table border="1"  class="main">
@@ -25,7 +25,7 @@
             </div>
                 <!-- v-if="type == '1'" -->
             <div class="ybp" v-show="type == '1'">
-                <div id="sjsrl2" :style="{width: '1400px', height: '1855px',  zIndex: '10'}"></div>
+                <div id="sjsrl2" :style="{width: '1400px', height: '1200px',  zIndex: '10'}"></div>
              <div class="info" :style="{marginLeft: p}">
                     <!-- <div class="data">基本信息</div> -->
                     <table border="1" class="main">

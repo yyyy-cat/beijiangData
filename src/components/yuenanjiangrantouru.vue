@@ -55,18 +55,12 @@
         <button id="ChemicalFind" @click="tijiao()">
           <i class="layui-icon">&#xe615;</i> 查询
         </button>
+         <button @click="handlpe()"> 扩展</button>
       </div>
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height="1500"></Table>-->
         <div id="building-top"  style="position: relative">
-          <button @click="handlpe()">
-            <img src="./展开.png" alt="" style="cursor: pointer;position: absolute;top: -150px;right: 0;background:#ffffff " title="显示隐藏数据">
-            <!--<div style="cursor: pointer;position: absolute;top: -150px;right: 0;background:#ffffff " >-->
-              <!--<span @click="handlp()">1</span> <br><br><br>-->
-              <!--<span  @click="handlpe()">2</span><br><br>-->
-              <!--<span @click="handlpe1()">3</span><br><br>-->
-            <!--</div>-->
-          </button>
+         
           <el-table
             :data="historyData"
             :span-method="arraySpanMethod"
@@ -753,26 +747,13 @@
 </script>
 <style scoped lang='less'>
 @import '../style/top.less';
+@import '../style/zk.less';
   .ChemicalTable {
     margin: 200px auto 0;
     /* width: 1751px; */
   }
-  .ChemicalFindBox {
-    height: 60px;
-    line-height: 60px;
-    color: white;
-    font-size: 60px;
-    width: 4000px;
-    margin: 200px auto 0;
-  }
-  .ChemicalFindBox input {
-    width: 400px;
-    background: #000836;
-    height: 80px;
-    line-height: 80px;
-    color: white;
-    font-size: 60px;
-  }
+
+ 
   #ChemicalFind {
     width: 250px;
     height: 80px;
@@ -807,12 +788,12 @@
     display: inline-block;
   }
 
-  .ChemicalFindBox {
-    /* font-size: 20px; */
-    height: 30px;
-    padding: 18px 0;
-    /* display: none; */
-  }
+  // .ChemicalFindBox {
+  //   /* font-size: 20px; */
+  //   height: 30px;
+  //   padding: 18px 0;
+  //   /* display: none; */
+  // }
 
   .findA1,
   .findA2,
@@ -1611,7 +1592,7 @@
   /* 头部 */
   
 </style>
-<style >
+<style scoped>
   .ivu-input {
     font-size: 60px;
     background: transparent;
@@ -1694,9 +1675,12 @@
   #building-top .is-group {
     background: #01AAED;
   }
-  .el-table__body tr:hover>td {
+  .el-table tbody tr:hover>td { 
+   background: #134087 !important;
+}
+  /* .el-table__body tr:hover>td {
     background-color: #134087 !important;
-  }
+  } */
   .cell{
     padding: 20px !important;
   }

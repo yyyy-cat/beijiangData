@@ -35,20 +35,20 @@
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height = "1500"></Table>-->
         <div id="building-top"  style="position: relative">
-          <button @click="handlpe()">
-            <img src="./展开.png" alt="" style="cursor: pointer;position: absolute;top: -150px;right: 0;background:#ffffff " title="显示隐藏数据">
-          </button>
+          <button @click="handlpe()" style="cursor: pointer;position: absolute;top: -150px;right: 0;width: 250px;
+      height: 80px;line-height: 80px; background: none; color: #fff" >展开</button>
           <!-- #040A53表格背景色 -->
           <!-- :header-cell-style="{background:'#040A53'}" -->
           <el-table
             :data="historyData"
             :span-method="arraySpanMethod"
             :header-cell-style="{background:'#040A53'}"
-            :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
+            :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
-            ref="table"
             height="1500"
-            style="width: 100%;text-align: center;color: black;height: 1600px; background:none">
+            ref="table"
+            style="width: 100%;text-align: center;color: black; background:#040A53">
+            
             <el-table-column
               label="基础信息"
               align="center"
@@ -411,7 +411,8 @@ export default {
       xia: 0, //下一页或者上一页的第一项索引值
       historyData: [],
       showShaoguan: false,
-      updataUrl: yuenanUrl + '/ErpYn'
+      updataUrl: yuenanUrl + '/ErpYn',
+      gd: ''
       
     };
   },
@@ -483,6 +484,7 @@ export default {
         //   pageSize:page
         // }
       }).then(res => {
+        this.gd = res.data.total
         this.historyData = res.data.data;
         this.pageAll = res.data.pageTotle;
         this.dom = this.$refs.table.bodyWrapper;
@@ -1544,7 +1546,6 @@ a {
 .cell{
   padding: 20px !important;
 }
-
 </style>
 
 

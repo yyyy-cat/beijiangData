@@ -1687,7 +1687,7 @@ import shaoguanUrl from '../assets/s_url';
   .Administration {
     position: relative;
     width: 7680px;
-    height: 3000px;
+    height: 3067px;
     /* height: 3240px; */
     background: url(..\assets\Administration\other_bg.png);
   }

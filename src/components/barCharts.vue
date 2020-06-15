@@ -418,7 +418,7 @@ export default {
              v.list.map((k, index) =>{
                  
                  let dayData = []
-                 k.name = zjsj.slice(5,10)+ '-' + index
+                 k.name = zjsj.slice(5,10)+ '-' + Number(index+1)
                  nameList.push(k.name)
                 //  dayData.push(k.name, k.bzwmzls, k.bzwmzq, k.bzwmtrq)
                 if(str3 == '') {

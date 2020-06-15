@@ -47,13 +47,12 @@
         <button id="ChemicalFind" @click="tijiao()">
           <i class="layui-icon">&#xe615;</i> 查询
         </button>
+          <button @click="handlpe()">扩展</button>
       </div>
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height="1500"></Table>-->
         <div id="building-top"  style="position: relative">
-          <button @click="handlpe()">
-            <img src="./展开.png" alt="" style="cursor: pointer;position: absolute;top: -150px;right: 0;background:#ffffff " title="显示隐藏数据">
-          </button>
+        
           <el-table
 
             :data="historyData"
@@ -602,25 +601,10 @@ export default {
 </script>
 <style scoped lang='less'>
 @import '../style/top.less';
+@import '../style/zk.less';
 .ChemicalTable {
   margin: 200px auto 0;
   // width: 7451px;
-}
-.ChemicalFindBox {
-  height: 60px;
-  line-height: 60px;
-  color: white;
-  font-size: 60px;
-  width: 4000px;
-  margin: 0 auto 0;
-}
-.ChemicalFindBox input {
-  width: 400px;
-  background: #000836;
-  height: 80px;
-  line-height: 80px;
-  color: white;
-  font-size: 60px;
 }
 #ChemicalFind {
   width: 250px;

@@ -2,11 +2,11 @@
     <div class="charts">
         <div class="left">
             <div class="charts-main">
-                <div id='list' :style="{width: '6049px', height: '1855px',margin: '0 auto', zIndex: '10', paddingTop: '78px'}"></div>
+                <div id='list' :style="{width: '6049px', height: '1600px',margin: '0 auto', zIndex: '10', paddingTop: '78px'}"></div>
             </div>
             <div class="ybp" >
                 
-                <div id="sjsrl" :style="{width: '1400px', height: '1855px', zIndex: '10', marginLeft: '1200px'}"></div>
+                <div id="sjsrl" :style="{width: '1400px', height: '1200px', zIndex: '10', marginLeft: '1200px'}"></div>
                 <div class="info" :style="{marginLeft: '2000px'}">
                     <!-- <div class="data">基本信息</div> -->
                     <table border="1" class="main">
