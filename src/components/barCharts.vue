@@ -4,6 +4,7 @@
         <!-- <div class="right" @click="toTable">查看图表</div> -->
         <div class="charts-main" :style="{marginLeft: l}">
              <div id='list' :style="{width: h, height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+            <div id='list1' :style="{width: h, height: '800px', margin: '50px auto 0', zIndex: '10'}"></div>
         </div>
     </div>
 </template>
@@ -159,13 +160,13 @@ export default {
                     type: 'slider',
                     show: true,
                     start: 0,
-                    end: 95,
+                    end: 20,
                     handleSize: 2
                 },
                 {
                     type: 'inside',
                     start: 0,
-                    end: 100
+                    end: 20
                 }
             ],
             series: seriesData
@@ -216,6 +217,41 @@ export default {
         }
         return name
     },
+      setBaseOptionsH() {
+        let _this = this;
+        let seriesData = [];
+        let opt = this.optionsdata;
+        if(Number(_this.type) == 1) {
+            //织造
+                seriesData = [
+                {
+                    name: '自来水每小时用水标准',
+                    type: 'bar',
+                    barWidth : 100,
+                    itemStyle: {
+                        color: opt.ql
+                    },
+                    data: _this.toChangeData('tonhbz', _this.zzkthn)
+                },
+                {
+                    name: '自来水实际每小时用水',
+                    type: 'line',
+                    barWidth : 100,
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: opt.qlx,
+                        width: 8
+                    },
+                    data: _this.toChangeData('tonh', _this.zzkthn)
+                }
+        ]
+        }
+        
+        return seriesData
+   
+   },
     setBaseOptions() {
         let _this = this;
         let seriesData = [];
@@ -291,15 +327,7 @@ export default {
         }else if(Number(_this.type) == 1) {
             //织造
                 seriesData = [
-                {
-                    name: '自来水每小时用水标准',
-                    type: 'bar',
-                    barWidth : 100,
-                    itemStyle: {
-                        color: opt.ql
-                    },
-                    data: _this.toChangeData('tonhbz', _this.zzkthn)
-                },
+               
                 {
                     name: '自来水每万米用水标准',
                     type: 'bar',
@@ -308,19 +336,6 @@ export default {
                        color: opt.ls
                     },
                     data: _this.toChangeData('tonwmbz', _this.zzkthn)
-                },
-                {
-                    name: '自来水实际每小时用水',
-                    type: 'line',
-                    barWidth : 100,
-                    smooth: 0.5,
-                    yAxisIndex: 1,
-                    symbolSize: 20, 
-                    lineStyle: {
-                        color: opt.qlx,
-                        width: 8
-                    },
-                    data: _this.toChangeData('tonh', _this.zzkthn)
                 },
                   {
                     name: '自来水实际每万米用水',
@@ -433,9 +448,13 @@ export default {
         })
        
         let seriesData = _this.setBaseOptions()
-        
+        let seriesDatah= _this.setBaseOptionsH();
         let myCharts = this.$echarts.init(document.getElementById('list'));
         myCharts.setOption(_this.initOptions(seriesData, source, nameList));
+        if(this.type == 1){
+        let myCharts1 = this.$echarts.init(document.getElementById('list1'));
+        myCharts1.setOption(_this.initOptions(seriesDatah, source, nameList));
+        }
     }
   } 
 }

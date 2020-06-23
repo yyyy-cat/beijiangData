@@ -140,8 +140,16 @@ export default {
             seriesData =  [
                 { 
                     name: '标准上染率',
-                    type: 'bar',
-                    itemStyle: {
+                    // type: 'bar',由柱状图转变成了折线图
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 10, 
+                    // itemStyle: {
+                    //     color: opt.ql
+                    // },
+                     lineStyle: {
+                        width: 8,
                         color: opt.ql
                     },
                     data: _this.toSetData('mybzsr', _this.rsyl)
@@ -161,14 +169,14 @@ export default {
             ]
         }else if(_this.type == 1) {
             seriesData =  [
-                { 
-                    name: '标准上浆率',
-                    type: 'bar',
-                    itemStyle: {
-                        color: opt.ql
-                    },
-                    data: _this.toSetData('fljybzsjl', _this.sjfl)
-                },
+                // { 
+                //     name: '标准上浆率',
+                //     type: 'bar',
+                //     itemStyle: {
+                //         color: opt.ql
+                //     },
+                //     data: _this.toSetData('fljybzsjl', _this.sjfl)
+                // },
                 {
                     name: '实际上浆率',
                     type: 'line',
@@ -221,8 +229,7 @@ export default {
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 30,
-                            color: opt.zts     
+                            fontSize : 30   
                             }
                     },
                     nameTextStyle: {

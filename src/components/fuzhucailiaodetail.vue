@@ -154,9 +154,15 @@ export default {
           seriesData =  [
                 { 
                     name: '标准上染率',
-                    type: 'bar',
-                    barWidth : 150,
-                    itemStyle: {
+                    // type: 'bar',
+                    // barWidth : 150,
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 40, 
+                    data: _this.changeOptions('mybzsr'),
+                    lineStyle: {
+                        width: 8,
                         color: opt.ql
                     }
                 },
@@ -176,14 +182,14 @@ export default {
         }
         else if(Number(_this.type) == 1) {
             seriesData = [
-            { 
-                name: '标准上浆率',
-                type: 'bar',
-                barWidth : 150,
-                itemStyle: {
-                    color: opt.ql
-                }
-            },
+            // { 
+            //     name: '标准上浆率',
+            //     type: 'bar',
+            //     barWidth : 150,
+            //     itemStyle: {
+            //         color: opt.ql
+            //     }
+            // },
             {
                 name: '上浆率',
                 type: 'line',

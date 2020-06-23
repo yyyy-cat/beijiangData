@@ -101,6 +101,7 @@ export default {
                 left: '3%',
                 right: '4%',  //距离右侧边距
                 bottom: '9%',
+                top: '10%',
                 show:true,
                 containLabel: true
             },
@@ -123,16 +124,16 @@ export default {
             yAxis: [
                 {
                     name: '立方米',
+                    nameLocation: 'end',
                     nameTextStyle: {
                         color: opt.zts,
-                        fontSize: 40,
-                        lineHeight: 50
+                        fontSize: 50,
                     },
                     type: 'value',
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 40,
+                            fontSize : 50,
                             color: opt.zts     
                         }
                     }

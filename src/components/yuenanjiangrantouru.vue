@@ -65,7 +65,7 @@
             :data="historyData"
             :span-method="arraySpanMethod"
             :header-cell-style="{background:'#040A53'}"
-            :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
+            :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
             height="1500"
@@ -311,6 +311,7 @@
     </el-table-column>
   </el-table-column>
   <el-table-column
+ 
     v-if="show3"
 
     label="原料使用率"
@@ -752,8 +753,6 @@
     margin: 200px auto 0;
     /* width: 1751px; */
   }
-
- 
   #ChemicalFind {
     width: 250px;
     height: 80px;
@@ -1678,9 +1677,12 @@
   .el-table tbody tr:hover>td { 
    background: #134087 !important;
 }
-  /* .el-table__body tr:hover>td {
+/deep/.el-table__body tr.current-row>td{
+   background-color: #134087 !important;
+}
+  .el-table__body tr:hover>td {
     background-color: #134087 !important;
-  } */
+  }
   .cell{
     padding: 20px !important;
   }

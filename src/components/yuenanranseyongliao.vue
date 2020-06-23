@@ -61,6 +61,7 @@
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height="1500"></Table>-->
         <div id="building-top">
+          <button class='spread' @click="tospread">展开</button>
           <el-table
             :data="historyData"
             :span-method="arraySpanMethod"
@@ -262,6 +263,8 @@
               </el-table-column>
             </el-table-column>
             <el-table-column
+             v-if="spread"
+             key='1'
               label="染色辅料实际投入总量"
               align="center"
               width="450">
@@ -390,10 +393,8 @@ import shaoguanUrl from '../assets/s_url';
         pageNum:1,
         pageSize: 10,
         xia: 0, //下一页或者上一页的第一项索引值
-
         historyData: [],
         str: Object,
-
         scdh: "",
         pz: "",
         gh: "",
@@ -401,7 +402,8 @@ import shaoguanUrl from '../assets/s_url';
         timeSart: "",
         timeEnd: "",
         showShaoguan: false,
-        updataUrl: yuenanUrl + '/ErpYn'
+        updataUrl: yuenanUrl + '/ErpYn',
+        spread: false //控制是否展开
       };
     },
     components: { foot, login, yuenanjiangranfoot },
@@ -454,7 +456,10 @@ import shaoguanUrl from '../assets/s_url';
     },
 
     methods: {
-       toCharts() {
+      tospread() {
+        this.spread = !this.spread;
+      },
+      toCharts() {
         this.$router.push('/fuzhucailiaocharts?type=' + 0)
       },
       arraySpanMethod({row, column, rowIndex, columnIndex}) {
@@ -650,7 +655,7 @@ import shaoguanUrl from '../assets/s_url';
    background: transparent;
     margin: 200px auto 0;
     padding: 16px;
-    width: 6800px; 
+    width: 6500px; 
   }
 
   .layui-table-body {
@@ -819,7 +824,7 @@ import shaoguanUrl from '../assets/s_url';
               margin-left: 24px;
           } */
 </style>
-<style>
+<style scoped lang='less'>
   .layui-table-cell {
     height: 60px;
     line-height: 60px;
@@ -842,7 +847,7 @@ import shaoguanUrl from '../assets/s_url';
     background: transparent;
   }
 </style>
-<style scoped>
+<style scoped lang='less'>
   * {
     margin: 0;
     padding: 0;
@@ -1473,7 +1478,7 @@ import shaoguanUrl from '../assets/s_url';
     line-height: 160px;
   }
 </style>
-<style>
+<style scoped lang='less'>
   .ivu-input {
     font-size: 60px;
     background: transparent;
@@ -1547,14 +1552,28 @@ import shaoguanUrl from '../assets/s_url';
     width: 1060px;
     height: 100px;
   }
-  #building-top .el-table__empty-block{
-    background: #01AAED;
-  }
-  #building-top .el-table__empty-text{
-    color:#c00050;
-  }
-  #building-top .is-group {
-    background: #01AAED;
+  #building-top{
+    position: relative;
+    .spread{
+        cursor: pointer;
+        position: absolute;
+        top: -150px;
+        right: 0;
+        width: 250px;
+        height: 80px;
+        line-height: 80px; 
+        background: none;
+        color: #fff
+    }
+    .el-table__empty-block{
+      background: #01AAED;
+    }
+    .el-table__empty-text{
+      color:#c00050;
+    }
+    .is-group {
+      background: #01AAED;
+    }
   }
   .el-table__body tr:hover>td {
     background-color: #134087 !important;
