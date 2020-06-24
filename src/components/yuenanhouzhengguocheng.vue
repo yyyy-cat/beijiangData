@@ -64,9 +64,7 @@
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height="1500"></Table>-->
         <div id="building-top" >
-          <button @click="handlpe()">
-            <img src="./展开.png" alt="" style="cursor: pointer;position: absolute;top: -150px;right: 0;background:#ffffff " title="显示隐藏数据">
-          </button>
+          <button class='spread' @click="tospread">展开</button>
           <el-table
             :data="historyData"
             :span-method="arraySpanMethod"
@@ -211,7 +209,7 @@
               </el-table-column>
               </el-table-column>
             </el-table-column>
-            <template v-if="show1">
+            <template v-if="spread">
               <el-table-column
                 label="烧毛退浆能源用量"
                 align="center"
@@ -562,7 +560,8 @@ export default {
       timeSart: "",
       timeEnd: "",
       showShaoguan: false,
-      updataUrl: yuenanUrl + '/ErpYn'
+      updataUrl: yuenanUrl + '/ErpYn',
+      spread: false //控制是否展开
     };
   },
   components: { foot, login, yuenanjiangrangguochengfoot, barcharts },
@@ -615,6 +614,9 @@ export default {
     clearInterval(this.str);
   },
   methods: {
+    tospread() {
+        this.spread = !this.spread;
+    },
     toBarCharts() {
       this.$router.push('/barCharts?type='+ 2)
     },
@@ -782,8 +784,9 @@ this.show1=!this.show1;
 @import '../style/gctop.less';
 
 .ChemicalTable {
-  margin: 60px auto 0;
+  margin: 160px auto 0;
   width: 6651px;
+  position: relative;
 }
 .ChemicalFindBox {
   height: 60px;
@@ -1638,7 +1641,7 @@ a {
 
 
 </style>
-<style scoped>
+<style scoped lang='less'>
 .ivu-input {
   font-size: 60px;
   background: transparent;
@@ -1712,23 +1715,31 @@ a {
     width: 1060px;
     height: 100px;
 }
-#building-top{
-position: relative; overflow: auto;
-width: 6800px;
-}
+ #building-top{
+   overflow: auto;
+    width: 6800px;
+    .spread{
+        cursor: pointer;
+        position: absolute;
+        top: -100px;
+        right: 0;
+        width: 250px;
+        height: 80px;
+        line-height: 80px; 
+        background: #000836;
+        color: #fff
+    }
+    .el-table__empty-block{
+      background: #01AAED;
+    }
+    .el-table__empty-text{
+      color:#c00050;
+    }
+    .is-group {
+      background: #01AAED;
+    }
+  }
 
-/* /deep/.el-table{
-  position: absolute; width: auto; max-width: none;
-} */
-#building-top .el-table__empty-block{
-  background: #01AAED;
-}
-#building-top .el-table__empty-text{
-  color:#c00050;
-}
-#building-top .is-group {
-  background: #01AAED;
-}
 .el-table__body tr:hover>td {
   background-color: #134087 !important;
 }

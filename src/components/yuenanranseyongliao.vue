@@ -1562,7 +1562,7 @@ import shaoguanUrl from '../assets/s_url';
         width: 250px;
         height: 80px;
         line-height: 80px; 
-        background: none;
+        background: #000836;
         color: #fff
     }
     .el-table__empty-block{

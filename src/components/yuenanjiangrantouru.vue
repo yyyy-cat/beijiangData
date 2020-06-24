@@ -1591,7 +1591,7 @@
   /* 头部 */
   
 </style>
-<style scoped>
+<style >
   .ivu-input {
     font-size: 60px;
     background: transparent;
@@ -1676,9 +1676,6 @@
   }
   .el-table tbody tr:hover>td { 
    background: #134087 !important;
-}
-/deep/.el-table__body tr.current-row>td{
-   background-color: #134087 !important;
 }
   .el-table__body tr:hover>td {
     background-color: #134087 !important;

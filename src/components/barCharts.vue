@@ -1,9 +1,12 @@
 <template>
     <div class="charts">
-         <!-- <span class="title-name">{{name}}</span> -->
-        <!-- <div class="right" @click="toTable">查看图表</div> -->
+        <div class="but" v-if="type == 2"> 
+            <button class="shui" @click="toShui('标准总用量自来水用量', '总用量自来水用量', 'zylzlstonwm', '#52FBC2', 'bzwmzls', '#E1BB02')">水</button>
+             <button class="shui" @click="toShui('标准总用量蒸汽用量', '总用量蒸汽用量', 'zylzqtonwm','#00A8FF', 'bzwmzq','#FF9500')">蒸汽</button>
+              <button class="shui" @click="toShui('标准总用量天然气用量', '总用量天然气用量', 'zyltrqmwm','#01FF0E', 'bzwmtrq','#00E9FE')">天然气</button>
+        </div>
         <div class="charts-main" :style="{marginLeft: l}">
-             <div id='list' :style="{width: h, height: '1000px', margin: '0 auto', zIndex: '10'}"></div>
+             <div id='list' :style="{width: h, height: '900px', margin: '0 auto', zIndex: '10'}"></div>
             <div id='list1' :style="{width: h, height: '800px', margin: '50px auto 0', zIndex: '10'}"></div>
         </div>
     </div>
@@ -28,7 +31,8 @@ export default {
             optionsdata: {},
             name: '',
             h: '6731px',
-            l: '500px'
+            l: '500px',
+            changeData: false
         }
     },
      computed: {
@@ -46,7 +50,7 @@ export default {
         },
         xrData: function(newData,oldData){
             this.name = '后整过程耗能';
-            this.draw('zylzlstonwm','zylzqtonwm', 'zyltrqmwm', this.xrData)
+             this.draw('bzwmzls','bzwmzq', 'bzwmtrq', this.xrData)
         },
         jrgchn: function(newdata, olddata) {
              this.name = '浆染过程耗能';
@@ -82,6 +86,41 @@ export default {
        }
   },
    methods: {
+    toChangeShui(bzylName, sjylName, name, color, bzdata, linecolor) {
+        let _this = this;
+        let seriesData = [];
+        let opt = this.optionsdata;
+         seriesData = [
+                {
+                    name: bzylName,
+                    type: 'bar',
+                    barWidth : 100,
+                    itemStyle: {
+                        color: color
+                    },
+                    data: _this.toChangeData(bzdata, _this.xrData)
+                },
+                     {
+                    name: sjylName,
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: linecolor,
+                        width: 8
+                    },
+                    data: _this.toChangeData(name, _this.xrData)
+                },
+        ]
+        return seriesData
+    },
+    toShui(bzylName, sjylName, name, color, bzdata, linecolor) {
+        this.changeData = true;
+        let data = this.toChangeShui(bzylName, sjylName, name, color, bzdata, linecolor)
+        this.getGCNHHzgcTuBiaoData();
+        this.draw('bzwmzls','bzwmzq', 'bzwmtrq', this.xrData, data)
+    },
     toTable() {
         this.$router.go(-1);
     },
@@ -208,7 +247,7 @@ export default {
         })
         return day
     },
-       setDw() {
+    setDw() {
         let name = '吨(万米)'
         if(Number(this.type) == 0){
             name = '吨(万米)'
@@ -354,43 +393,13 @@ export default {
             //后整数据
           seriesData = [
                 {
-                    name: '标准总用量自来水用量',
-                    type: 'bar',
-                    barWidth : 100,
-                    itemStyle: {
-                        color: opt.ql
-                    },
-                    // data: _this.toChangeData('bzwmzls', _this.xrData)
-                },
-                {
                     name: '标准总用量蒸汽用量',
                     type: 'bar',
                     barWidth : 100,
                     itemStyle: {
                         color: opt.ls
                     },
-                    // data: _this.toChangeData('bzwmzq', _this.xrData)
-                },
-                 {
-                    name: '标准总用量天然气用量',
-                    type: 'bar',
-                    barWidth : 100,
-                    itemStyle: {
-                         color: opt.xj
-                    },
-                    // data: _this.toChangeData('bzwmtrq', _this.xrData)
-                },
-                {
-                    name: '总用量自来水用量',
-                    type: 'line',
-                    smooth: 0.5,
-                    yAxisIndex: 1,
-                    symbolSize: 20, 
-                    lineStyle: {
-                        color: opt.qlx,
-                        width: 8
-                    },
-                    data: _this.toChangeData('zyltrqmwm', _this.xrData)
+                    data: _this.toChangeData('bzwmzq', _this.xrData)
                 },
                   {
                     name: '总用量蒸汽用量',
@@ -404,18 +413,6 @@ export default {
                     },
                     data: _this.toChangeData('zylzqtonwm', _this.xrData)
                 },
-                 {
-                    name: '总用量天然气用量',
-                    type: 'line',
-                    smooth: 0.5,
-                    yAxisIndex: 1,
-                    symbolSize: 20, 
-                    lineStyle: {
-                        color: opt.xjx,
-                        width: 8
-                    },
-                    data: _this.toChangeData('zyltrqmwm', _this.xrData)
-                },
         ]
         }
         
@@ -423,13 +420,12 @@ export default {
    
    },
     
-    draw(str1,str2,str3, data) {
+    draw(str1,str2,str3, data, changeName) {
         let _this = this;
         let nameList = [];
         let source = []
         data.forEach((v, idx) => {
              let zjsj = v.zjsj;
-            //  String bzwmzls; //标准万米用量自来水用量String bzwmzq; //标准万米用量蒸汽用量String bzwmtrq; //标准万米用量天然气用量
              v.list.map((k, index) =>{
                  
                  let dayData = []
@@ -446,11 +442,17 @@ export default {
                  return v.list
              })  
         })
-       
+
         let seriesData = _this.setBaseOptions()
         let seriesDatah= _this.setBaseOptionsH();
-        let myCharts = this.$echarts.init(document.getElementById('list'));
-        myCharts.setOption(_this.initOptions(seriesData, source, nameList));
+        if(this.changeData) {
+             let myCharts = this.$echarts.init(document.getElementById('list'));
+            myCharts.setOption(_this.initOptions(changeName, source, nameList));
+        }else{
+             let myCharts = this.$echarts.init(document.getElementById('list'));
+            myCharts.setOption(_this.initOptions(seriesData, source, nameList));
+        }
+       
         if(this.type == 1){
         let myCharts1 = this.$echarts.init(document.getElementById('list1'));
         myCharts1.setOption(_this.initOptions(seriesDatah, source, nameList));
@@ -466,7 +468,7 @@ export default {
     flex-direction: column;
     height: 1000px;
     position: relative;
-    margin-top: 50px;
+    margin-top: 150px;
     .title-name{
         display: block;
         font-size: 120px;
@@ -484,6 +486,22 @@ export default {
         color: #00ecfc;
         position: absolute;
         left: 6700px;
+    }
+}
+.but{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 400px;
+
+    .shui{
+        font-size: 50px;
+        background: #000836;
+        border: 1px solid #fff;
+        color: #fff;
+        width: 250px;
+        height: 80px;
+        line-height: 80px;
+        margin:0 100px 20px;
     }
 }
 </style>
