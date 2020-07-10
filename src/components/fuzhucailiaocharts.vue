@@ -42,9 +42,10 @@ export default {
             optionsdata: {},
             type: 0,
             name: '',
-            detailList: JSON.stringify([{"scdh":"GZ1912-384","pz":"S2R","gh":"2005333/2005334E","rssj":"2020-06-01","mybzsr":"2.15","mysjsr":"2.15632"},{"scdh":"GZ1912-384","pz":"S2R","gh":"2005333/2005334E","rssj":"2020-06-01","mybzsr":"2.15","mysjsr":"2.22"},{"scdh":"GZ2001-098","pz":"A3479E-1R","gh":"2005312/2005313D","rssj":"2020-06-01","mybzsr":"2.75","mysjsr":"2.90032"},{"scdh":"GZ2001-098","pz":"A3479E-1R","gh":"2005314/2005315D","rssj":"2020-06-01","mybzsr":"2.75","mysjsr":"2.88"}]),
-            showDetail: false
-        
+            detailList: '',
+            showDetail: false,
+            detailList1: [],
+            detailList2: []
         }
     },
      components: {
@@ -56,20 +57,15 @@ export default {
         ])
     },
     watch: {
-        type: function() {
-            if(Number(this.type) == 0) {
-                this.detailList = JSON.stringify([{"scdh":"GZ1912-384","pz":"S2R","gh":"2005333/2005334E","rssj":"2020-06-01","mybzsr":"0","mysjsr":"0"},{"scdh":"GZ1912-384","pz":"S2R","gh":"2005333/2005334E","rssj":"2020-06-01","mybzsr":"2.15","mysjsr":"2.22"},{"scdh":"GZ2001-098","pz":"A3479E-1R","gh":"2005312/2005313D","rssj":"2020-06-01","mybzsr":"2.75","mysjsr":"2.90032"},{"scdh":"GZ2001-098","pz":"A3479E-1R","gh":"2005314/2005315D","rssj":"2020-06-01","mybzsr":"2.75","mysjsr":"2.88"}])
-            }else if(Number(this.type) == 1){
-                this.detailList = JSON.stringify([{"scdh":"GZ2001-004","pz":"RA3479-9E3","gh":"2005351D","jssj":"2020-06-01","fljybzsjl":"8.06572","fljysjsjl":"8.06572"},{"scdh":"GZ2001-004","pz":"RA3479-9E3","gh":"2005352D","jssj":"2020-06-01","fljybzsjl":"9.78836","fljysjsjl":"9.78836"},{"scdh":"GZ2001-004","pz":"RA3479-9E3","gh":"2005353D","jssj":"2020-06-01","fljybzsjl":"7.2964","fljysjsjl":"7.2964"},{"scdh":"GZ2001-004","pz":"RA3479-9E3","gh":"2005354D","jssj":"2020-06-01","fljybzsjl":"6.35474","fljysjsjl":"6.35474"},{"scdh":"GZ2001-004","pz":"RA3479-9E3","gh":"2005355D","jssj":"2020-06-01","fljybzsjl":"9.0748","fljysjsjl":"9.0748"}])
-            }
-        },
         rsyl: function(nelData, oldData) {
             this.name = '染色用料数据';
             this.draw(this.rsyl);
+            this.detailList =  JSON.stringify(this.detailList1)
         },
         sjfl: function(nelData, oldData) {
             this.name = '上浆辅料数据';
             this.draw(this.sjfl);
+            this.detailList =  JSON.stringify(this.detailList2)
         },
      showShaoguan: function(newdata,olddata){
 
@@ -121,14 +117,14 @@ export default {
        },
     getFZCLRsylTuBiaoData() {
         axios.post(this.updataUrl+'/api/getFZCLRsylTuBiaoData').then(res => {
-            //原材料数据织造投入产出
           this.rsyl = res.data.data;
+          this.detailList1 = res.data.data[0].list;
         });
     },
      getFZCLSjflTuBiaoData() {
-        axios.post(this.updataUrl+'/api/getFZCLSjflTuBiaoData').then(res => {
-            //原材料浆染投入产出
+        axios.post(this.updataUrl+'/api/getFZCLSjflTuBiaoData').then(res => {  
           this.sjfl = res.data.data;
+          this.detailList2 = res.data.data[0].list;
         });
     },
     setBaseOptions() {

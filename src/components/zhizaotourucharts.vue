@@ -42,8 +42,11 @@ export default {
             hztrcc: [],
             optionsdata: {},
             name: '',
-            detailList: JSON.stringify([{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005348A","sjtrcd":"11600","syl":95,"jsczzc":"11600"},{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005348A","sjtrcd":"11600","syl":95,"jsczzc":"11600"},{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005349A","sjtrcd":"11600","syl":95,"jsczzc":"11525"},{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005349A","sjtrcd":"11600","syl":95,"jsczzc":"11525"},{"zjsj":"2020-06-01","scdh":"GZ2004-010","pz":"S2R","gh":"2005274C","sjtrcd":"12600","syl":95,"jsczzc":"12535"},{"zjsj":"2020-06-01","scdh":"GZ2004-010","pz":"S2R","gh":"2005275C","sjtrcd":"12600","syl":95,"jsczzc":"12530"}]),
-            showDetail: false
+            detailList: '',
+            showDetail: false,
+            detailList1: [],//浆染放大图的数据
+            detailList2: [],//织造传入放大图的数据
+            detailList3: [],//后整传入放大图的数据
         
         }
     },
@@ -56,26 +59,20 @@ export default {
         ])
     },
     watch: {
-        type: function() {
-              if(Number(this.type) == 0) {
-              this.detailList = JSON.stringify([{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005348A","sjtrcd":"11600","syl":95,"jsczzc":"11600"},{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005348A","sjtrcd":"11600","syl":95,"jsczzc":"11600"},{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005349A","sjtrcd":"11600","syl":95,"jsczzc":"11525"},{"zjsj":"2020-06-01","scdh":"GZ2002-324","pz":"S1","gh":"2005349A","sjtrcd":"11600","syl":95,"jsczzc":"11525"},{"zjsj":"2020-06-01","scdh":"GZ2004-010","pz":"S2R","gh":"2005274C","sjtrcd":"12600","syl":95,"jsczzc":"12535"},{"zjsj":"2020-06-01","scdh":"GZ2004-010","pz":"S2R","gh":"2005275C","sjtrcd":"12600","syl":95,"jsczzc":"12530"}])
-       }else if(Number(this.type) == 1){
-           this.detailList = JSON.stringify([{"sjrq":"2020-06-01","scdh":"GZ2003-010","pz":"S1A","gh":"2005351C","baimiyongwei":"6.2441","baimiyongweibiaozhun":"5","zhichenglv":"5","zhichenglvbiaozhun":"5"},{"sjrq":"2020-06-01","scdh":"GZ2003-010","pz":"S1A","gh":"2005352C","baimiyongwei":"6.40369","baimiyongweibiaozhun":"6.29","zhichenglv":"95.2091","zhichenglvbiaozhun":"94"},{"sjrq":"2020-06-01","scdh":"GZ2003-029","pz":"A3428","gh":"2005345D","baimiyongwei":"11.2739","baimiyongweibiaozhun":"10.41","zhichenglv":"93.9925","zhichenglvbiaozhun":"92"},{"sjrq":"2020-06-01","scdh":"GZ2003-170","pz":"S1B","gh":"2005353C","baimiyongwei":"13.1236","baimiyongweibiaozhun":"12.92","zhichenglv":"95.0442","zhichenglvbiaozhun":"94"},{"sjrq":"2020-06-01","scdh":"NH2002-054","pz":"BS0624A00","gh":"2005326W","baimiyongwei":"12.2404","baimiyongweibiaozhun":"12.71","zhichenglv":"94.8637","zhichenglvbiaozhun":"92"},{"sjrq":"2020-06-01","scdh":"NH2003-012","pz":"BS0624B43","gh":"2005328W","baimiyongwei":"12.0897","baimiyongweibiaozhun":"12.44","zhichenglv":"93.6073","zhichenglvbiaozhun":"92"},{"sjrq":"2020-06-01","scdh":"NH2003-013/\nNH2003-014","pz":"BS0624B43","gh":"2005327W","baimiyongwei":"12.6281","baimiyongweibiaozhun":"12.71","zhichenglv":"93.4994","zhichenglvbiaozhun":"92"}])
-       }else{
-          this.detailList = JSON.stringify([{"scdh":"GZ1906-086 ","pz":"RA3479-9E3","gh":"2005352D","hzrq":"2020-06-01","bzzcl":0,"sjzcl":0},{"scdh":"GZ1906-124","pz":"RA3479-9E3","gh":"2005353D","hzrq":"2020-06-01","bzzcl":0,"sjzcl":84.89},{"scdh":"GZ1906-189 ","pz":"RA3479-9E3","gh":"2005351D","hzrq":"2020-06-01","bzzcl":84.5,"sjzcl":83.33},{"scdh":"GZ1907-105","pz":"RA3479-9E3","gh":"2005355D","hzrq":"2020-06-01","bzzcl":84,"sjzcl":85.2},{"scdh":"GZ1907-149 ","pz":"A3428","gh":"2005345D","hzrq":"2020-06-01","bzzcl":84,"sjzcl":84.79},{"scdh":"GZ1907-149 ","pz":"RA3479-9E3","gh":"2005354D","hzrq":"2020-06-01","bzzcl":84,"sjzcl":85.55}])
-       }
-        },
         xrData: function(nelData, oldData) {
             this.name = '织造投入产出数据';
             this.draw(this.xrData);
+            this.detailList = JSON.stringify(this.detailList2)
         },
         jrtrcc: function(nelData, oldData) {
             this.name = '浆染投入产出数据';
             this.draw(this.jrtrcc);
+            this.detailList =  JSON.stringify(this.detailList1)
         },
         hztrcc: function(nelData, oldData) {
             this.name = '后整投入产出数据'
             this.draw(this.hztrcc);
+            this.detailList = JSON.stringify(this.detailList3)
         },
      showShaoguan: function(newdata,olddata){
 
@@ -133,19 +130,22 @@ export default {
         axios.post(this.updataUrl+'/api/getYCLZbTuBiaoData').then(res => {
             //原材料数据织造投入产出
           this.xrData = res.data.data;
+          this.detailList2 = res.data.data[0].list
+         
         });
     },
      getYCLJrTuBiaoData() {
         axios.post(this.updataUrl+'/api/getYCLJrTuBiaoData').then(res => {
             //原材料浆染投入产出
           this.jrtrcc = res.data.data;
-          
+          this.detailList1 =  res.data.data[0].list;
         });
     },
     getYCLHzTuBiaoData() {
         axios.post(this.updataUrl+'/api/getYCLHzTuBiaoData').then(res => {
             //原材料后整投入产出数据
           this.hztrcc = res.data.data;
+          this.detailList3 = this.hztrcc[0].list
         });
     },
     setBaseOptions() {
@@ -185,14 +185,17 @@ export default {
                 }
             ]
         }else if(_this.type == 1) {
+//             String jingzhouchangdu;经轴长度baimiyongweibiaozhun
+// String peibuchangdu;胚布长度zhichenglvbiaozhun
+
             seriesData =  [
                 { 
-                    name: '百米用纬标准',
+                    name: '经轴长度',
                     type: 'bar',
                     itemStyle: {
                         color: opt.ql
                     },
-                    data: _this.toSetData('baimiyongweibiaozhun', _this.xrData)
+                    data: _this.toSetData('jingzhouchangdu', _this.xrData)
                 },
                 {
                     name: '织成率标准',
@@ -200,7 +203,7 @@ export default {
                     itemStyle: {
                         color: opt.ls
                     },
-                    data: _this.toSetData('zhichenglvbiaozhun', _this.xrData)
+                    data: _this.toSetData('peibuchangdu', _this.xrData)
                 },
                 {
                     name: '织成率',
@@ -229,14 +232,26 @@ export default {
                 }
             ]
         }else{
+            // 	图表柱状图改为收胚长度、成品总长
+//             String shoupeichangdu;收配长度
+// String chengpinzongchang;产品总长;
+
           seriesData =  [
             { 
-                name: '标准制成率',
+                name: '收胚长度',
                 type: 'bar',
                 itemStyle: {
                     color: opt.ql
                 },
-                data: _this.toSetData('bzzcl', _this.hztrcc)
+                data: _this.toSetData('shoupeichangdu', _this.hztrcc)
+            },
+             { 
+                name: '成品总长',
+                type: 'bar',
+                itemStyle: {
+                    color: opt.ls
+                },
+                data: _this.toSetData('chengpinzongchang', _this.hztrcc)
             },
             {
                 name: '制成率',
