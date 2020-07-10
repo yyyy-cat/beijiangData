@@ -2,24 +2,29 @@
   <!-- 管控中心 -->
   <div class="Administration" v-on:dblclick="shuangji()">
     <!-- 顶部logo -->
-  <div class="nav-main">
-    <div class="index-top_nav">
-      <p style="text-align: center; font-family: 庞门正道标题体; font-size: 180px;color:#00ecfc; letter-spacing:15px;">
-        <img src="..\assets\Administration\nav_logo.png" style="vertical-align: middle;margin-top: -37px;"/>
-        <span>环保数据</span>
-      </p>
-    </div>
-    <!-- 返回主页 -->
-    <div class="index-esc" @click="esc">
+    <div class="nav-main">
+      <div class="index-top_nav">
+        <p
+          style="text-align: center; font-family: 庞门正道标题体; font-size: 180px;color:#00ecfc; letter-spacing:15px;"
+        >
+          <img
+            src="..\assets\Administration\nav_logo.png"
+            style="vertical-align: middle;margin-top: -37px;"
+          />
+          <span>环保数据</span>
+        </p>
+      </div>
+      <!-- 返回主页 -->
+      <div class="index-esc" @click="esc">
         <img src="..\assets\Administration\home.png" alt />
-      <span>返回</span>
+        <span>返回</span>
+      </div>
+      <div class="right">
+        <img src="..\assets\production\sc_chart.png" alt class="img" @click="toCharts" />
+        <!-- 显示用户登陆和退出 -->
+        <login></login>
+      </div>
     </div>
-     <div class="right">
-        <img src="..\assets\production\sc_chart.png" alt  class="img" @click="toCharts"/>
-      <!-- 显示用户登陆和退出 -->
-      <login></login>
-    </div>
-  </div>
 
     <div id="bgColor">
       <!-- <h1>数据管控标准</h1> -->
@@ -34,199 +39,57 @@
             :header-cell-style="{background:'#040A53'}"
             :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
-            height='1500'
+            height="1500"
             ref="table"
-            style="width: 100%;text-align: center;color: black;background: #040A53">
-            <el-table-column
-              prop="rq"
-              label="日期"
-              align="center"
-              width="400">
-            </el-table-column>
-            <el-table-column
-              label="原水数据"
-              align="center"
-              width="450">
-              <el-table-column
-                label="原水量"
-                align="center"
-                width="300">
-                <el-table-column
-                  prop="ysm"
-                  label="m³"
-                  align="center"
-                  width="300">
-                </el-table-column>
-                <el-table-column
-                  prop="ysmh"
-                  label="(m³/H)"
-                  align="center"
-                  width="300">
-                </el-table-column>
-                <el-table-column
-                  prop="ysmwm"
-                  label="(m³/万码)"
-                  align="center"
-                  width="300">
-                </el-table-column>
+            style="width: 100%;text-align: center;color: black;background: #040A53"
+          >
+            <el-table-column prop="rq" label="日期" align="center" width="400"></el-table-column>
+            <el-table-column label="原水数据" align="center" width="450">
+              <el-table-column label="原水量" align="center" width="300">
+                <el-table-column prop="ysm" label="m³" align="center" width="300"></el-table-column>
+                <el-table-column prop="ysmh" label="(m³/H)" align="center" width="300"></el-table-column>
+                <el-table-column prop="ysmwm" label="(m³/万码)" align="center" width="300"></el-table-column>
               </el-table-column>
-              <el-table-column
-                prop="ysph"
-                label="pH"
-                align="center"
-                width="450">
+              <el-table-column prop="ysph" label="pH" align="center" width="450"></el-table-column>
+              <el-table-column label="COD" align="center" width="450">
+                <el-table-column prop="yscod" label="mg/L" align="center" width="320"></el-table-column>
               </el-table-column>
-              <el-table-column
-                label="COD"
-                align="center"
-                width="450">
-                <el-table-column
-                  prop="yscod"
-                  label="mg/L"
-                  align="center"
-                  width="320">
-                </el-table-column>
+              <el-table-column label="氨氮" align="center" width="450">
+                <el-table-column prop="ysad" label="mg/L" align="center" width="450"></el-table-column>
               </el-table-column>
-              <el-table-column
-                label="氨氮"
-                align="center"
-                width="450">
-                <el-table-column
-                  prop="ysad"
-                  label="mg/L"
-                  align="center"
-                  width="450">
-                </el-table-column>
+              <el-table-column label="色度" align="center" width="320">
+                <el-table-column prop="yssd" label="倍" align="center" width="320"></el-table-column>
               </el-table-column>
-              <el-table-column
-                label="色度"
-                align="center"
-                width="320">
-                <el-table-column
-                  prop="yssd"
-                  label="倍"
-                  align="center"
-                  width="320">
-                </el-table-column>
+              <el-table-column label="温度" align="center" width="280">
+                <el-table-column prop="yswd" label="℃" align="center" width="320"></el-table-column>
               </el-table-column>
-              <el-table-column
-                label="温度"
-                align="center"
-                width="280">
-                <el-table-column
-                  prop="yswd"
-                  label="℃"
-                  align="center"
-                  width="320">
-                </el-table-column>
-              </el-table-column>
-              <el-table-column
-                label="硫化物"
-                align="center"
-                width="320">
-                <el-table-column
-                  prop="yslhw"
-                  label="mg/L"
-                  align="center"
-                  width="320">
-                </el-table-column>
+              <el-table-column label="硫化物" align="center" width="320">
+                <el-table-column prop="yslhw" label="mg/L" align="center" width="320"></el-table-column>
               </el-table-column>
             </el-table-column>
-            <el-table-column
-              label="处理后外排数据"
-              align="center"
-              width="320">
-              <el-table-column
-                prop="ph"
-                label="pH"
-                align="center"
-                width="280">
+            <el-table-column label="处理后外排数据" align="center" width="320">
+              <el-table-column prop="ph" label="pH" align="center" width="280"></el-table-column>
+              <el-table-column label="COD" align="center" width="280">
+                <el-table-column prop="cod" label="mg/L" align="center" width="280"></el-table-column>
               </el-table-column>
-              <el-table-column
-                label="COD"
-                align="center"
-                width="280">
-                <el-table-column
-                  prop="cod"
-                  label="mg/L"
-                  align="center"
-                  width="280">
-                </el-table-column>
+              <el-table-column label="氨氮" align="center" width="280">
+                <el-table-column prop="ad" label="mg/L" align="center" width="280"></el-table-column>
               </el-table-column>
-              <el-table-column
-                label="氨氮"
-                align="center"
-                width="280">
-                <el-table-column
-                  prop="ad"
-                  label="mg/L"
-                  align="center"
-                  width="280">
-                </el-table-column>
+              <el-table-column label="色度" align="center" width="280">
+                <el-table-column prop="sd" label="倍" align="center" width="280"></el-table-column>
               </el-table-column>
-              <el-table-column
-                label="色度"
-                align="center"
-                width="280">
-                <el-table-column
-                  prop="sd"
-                  label="倍"
-                  align="center"
-                  width="280">
-                </el-table-column>
+              <el-table-column label="温度" align="center" width="280">
+                <el-table-column prop="wd" label="℃" align="center" width="280"></el-table-column>
               </el-table-column>
-              <el-table-column
-                label="温度"
-                align="center"
-                width="280">
-                <el-table-column
-                  prop="wd"
-                  label="℃"
-                  align="center"
-                  width="280">
-                </el-table-column>
+              <el-table-column label="硫化物" align="center" width="450">
+                <el-table-column prop="lhw" label="mg/L" align="center" width="280"></el-table-column>
               </el-table-column>
-              <el-table-column
-                label="硫化物"
-                align="center"
-                width="450">
-                <el-table-column
-                  prop="lhw"
-                  label="mg/L"
-                  align="center"
-                  width="280">
-                </el-table-column>
+              <el-table-column label="外排水量" align="center" width="280">
+                <el-table-column prop="wpm" label="m³" align="center" width="280"></el-table-column>
+                <el-table-column prop="wpmh" label="(m³/H)" align="center" width="280"></el-table-column>
+                <el-table-column prop="wpmwm" label="(m³/万码)" align="center" width="280"></el-table-column>
+                <el-table-column prop="cl" label="产量(万码)" align="center" width="280"></el-table-column>
               </el-table-column>
-              <el-table-column
-                label="外排水量"
-                align="center"
-                width="280">
-                <el-table-column
-                  prop="wpm"
-                  label="m³"
-                  align="center"
-                  width="280">
-                </el-table-column>
-                <el-table-column
-                  prop="wpmh"
-                  label="(m³/H)"
-                  align="center"
-                  width="280">
-                </el-table-column>
-                <el-table-column
-                  prop="wpmwm"
-                  label="(m³/万码)"
-                  align="center"
-                  width="280">
-                </el-table-column>
-                <el-table-column
-                  prop="cl"
-                  label="产量(万码)"
-                  align="center"
-                  width="280">
-                </el-table-column>
-              </el-table-column>
-
             </el-table-column>
           </el-table>
         </div>
@@ -248,9 +111,20 @@
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :file-list="fileList"
-        :auto-upload="false">
-        <el-button slot="trigger" size="small" type="primary" style="width: 240px;height: 80px;float: left;">选取文件</el-button>
-        <el-button style="margin-left: 10px;width: 240px;height: 80px;float: left" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+        :auto-upload="false"
+      >
+        <el-button
+          slot="trigger"
+          size="small"
+          type="primary"
+          style="width: 240px;height: 80px;float: left;"
+        >选取文件</el-button>
+        <el-button
+          style="margin-left: 10px;width: 240px;height: 80px;float: left"
+          size="small"
+          type="success"
+          @click="submitUpload"
+        >上传到服务器</el-button>
         <div slot="tip" class="el-upload__tip" style="clear: both">只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
     </div>
@@ -259,9 +133,9 @@
   </div>
 </template>
 <script>
-import {mapState,mapGetters} from 'vuex'
+import { mapState, mapGetters } from "vuex";
 import yuenanUrl from "../assets/url";
-import shaoguanUrl from '../assets/s_url';
+import shaoguanUrl from "../assets/s_url";
 import axios from "axios";
 import foot from "./foot.vue";
 import yuenanjiangranfoot from "./yuenanjiangranfoot.vue";
@@ -270,14 +144,14 @@ export default {
   data() {
     return {
       fileList: [],
-      None:false,
+      None: false,
       // 总页数
       pageAll: 0,
       // 初始化信息总条数
       dataCount: 0,
       // 每页显示多少条
       pageSize: 10,
-      pageNum:1,
+      pageNum: 1,
       xia: 0, //下一页或者上一页的第一项索引值
       historyData: [],
       str: Object,
@@ -289,33 +163,30 @@ export default {
       // sh: "",
       timeSart: "",
       timeEnd: "",
-       showShaoguan: false,
-      updataUrl: yuenanUrl + '/ErpYn'
+      showShaoguan: false,
+      updataUrl: yuenanUrl + "/ErpYn"
     };
   },
   components: { foot, login, yuenanjiangranfoot },
   computed: {
-      ...mapGetters([
-    'changeShaoguan'
-  ])
-   },
-    watch:{
-    showShaoguan: function(newdata,olddata){
-
-      if(newdata != 'false'){
-        this.updataUrl = shaoguanUrl + '/ErpSg'
-      }else{
-        this.updataUrl = yuenanUrl+'/ErpYn'
+    ...mapGetters(["changeShaoguan"])
+  },
+  watch: {
+    showShaoguan: function(newdata, olddata) {
+      if (newdata != "false") {
+        this.updataUrl = shaoguanUrl + "/ErpSg";
+      } else {
+        this.updataUrl = yuenanUrl + "/ErpYn";
       }
     }
   },
   created() {
     this.showShaoguan = this.changeShaoguan;
-     if(this.changeShaoguan != 'false'){
-        this.updataUrl = shaoguanUrl + '/ErpSg'
-      }else{
-        this.updataUrl = yuenanUrl+'/ErpYn'
-      }
+    if (this.changeShaoguan != "false") {
+      this.updataUrl = shaoguanUrl + "/ErpSg";
+    } else {
+      this.updataUrl = yuenanUrl + "/ErpYn";
+    }
   },
   mounted() {
     this.xuanran(1);
@@ -336,18 +207,15 @@ export default {
     });
   },
   beforeDestroy() {
-
     clearInterval(this.str);
   },
   methods: {
-      toCharts() {
-        this.$router.push('/huanbaoshujucharts?type=' + 0)
-      },
-    arraySpanMethod({row, column, rowIndex, columnIndex}) {
-
+    toCharts() {
+      this.$router.push("/huanbaoshujucharts?type=" + 0);
     },
-    shuangji(){
-      this.None=!this.None;
+    arraySpanMethod({ row, column, rowIndex, columnIndex }) {},
+    shuangji() {
+      this.None = !this.None;
     },
     submitUpload() {
       this.$refs.upload.submit();
@@ -368,7 +236,6 @@ export default {
     tijiao() {
       this.timeSart = $("#timeSart").val();
       this.timeEnd = $("#timeEnd").val();
-      
 
       if (this.timeSart == "" && this.timeEnd != "") {
         // alert("开始时间和结束时间必须都填写")
@@ -399,9 +266,7 @@ export default {
       usp.append("timeSart", this.timeSart);
       usp.append("timeEnd", this.timeEnd);
 
-
       axios.post(this.updataUrl + "/api/getGhbData", usp).then(res => {
-
         this.historyData = res.data.data;
         this.pageAll = res.data.pageTotle;
       });
@@ -425,78 +290,87 @@ export default {
         params.append("gh", this.gh);
         params.append("timeSart", this.timeSart);
         params.append("timeEnd", this.timeEnd);
-       
+
         axios.post(this.updataUrl + "/api/getGhbData", params).then(res => {
           this.historyData = res.data.data;
           this.pageAll = res.data.pageTotle;
           this.dom = this.$refs.table.bodyWrapper;
-          this.dom.addEventListener('scroll', () => {
+          this.dom.addEventListener("scroll", () => {
             let scrollTop = this.dom.scrollTop;
             // 变量windowHeight是可视区的高度
             let windowHeight = this.dom.clientHeight || this.dom.clientHeight;
             // 变量scrollHeight是滚动条的总高度
             let scrollHeight = this.dom.scrollHeight || this.dom.scrollHeight;
-            const scrollDistance =this.dom.scrollHeight - this.dom.scrollTop - this.dom.clientHeight;
-            params.delete("pageNum")
-            if(scrollDistance <=0){//等于0证明已经到底，可以请求接口
-              if(this.pageNum < this.pageAll){//当前页数小于总页数就请求
-                this.pageNum++;//当前页数自增
-                params.append("pageNum",this.pageNum)
+            const scrollDistance =
+              this.dom.scrollHeight -
+              this.dom.scrollTop -
+              this.dom.clientHeight;
+            params.delete("pageNum");
+            if (scrollDistance <= 0) {
+              //等于0证明已经到底，可以请求接口
+              if (this.pageNum < this.pageAll) {
+                //当前页数小于总页数就请求
+                this.pageNum++; //当前页数自增
+                params.append("pageNum", this.pageNum);
 
                 //请求接口的代码
-                axios.post(this.updataUrl + "/api/getGhbData", params).then(res => {
-
-                  this.historyData = this.historyData.concat(res.data.data)//将请求回来的数据和当前展示的数据合并在一起
-                })
-
+                axios
+                  .post(this.updataUrl + "/api/getGhbData", params)
+                  .then(res => {
+                    this.historyData = this.historyData.concat(res.data.data); //将请求回来的数据和当前展示的数据合并在一起
+                  });
               }
             }
-          })
+          });
         });
       } else {
-        
         axios.post(this.updataUrl + "/api/getGhbData", params).then(res => {
           this.historyData = res.data.data;
           this.pageAll = res.data.pageTotle;
           this.dom = this.$refs.table.bodyWrapper;
-          this.dom.addEventListener('scroll', () => {
+          this.dom.addEventListener("scroll", () => {
             let scrollTop = this.dom.scrollTop;
             // 变量windowHeight是可视区的高度
             let windowHeight = this.dom.clientHeight || this.dom.clientHeight;
             // 变量scrollHeight是滚动条的总高度
             let scrollHeight = this.dom.scrollHeight || this.dom.scrollHeight;
-            const scrollDistance =this.dom.scrollHeight - this.dom.scrollTop - this.dom.clientHeight;
-            params.delete("pageNum")
-            if(scrollDistance <=0){//等于0证明已经到底，可以请求接口
-              if(this.pageNum < this.pageAll){//当前页数小于总页数就请求
-                this.pageNum++;//当前页数自增
-                params.append("pageNum",this.pageNum)
-                
+            const scrollDistance =
+              this.dom.scrollHeight -
+              this.dom.scrollTop -
+              this.dom.clientHeight;
+            params.delete("pageNum");
+            if (scrollDistance <= 0) {
+              //等于0证明已经到底，可以请求接口
+              if (this.pageNum < this.pageAll) {
+                //当前页数小于总页数就请求
+                this.pageNum++; //当前页数自增
+                params.append("pageNum", this.pageNum);
+
                 //请求接口的代码
-                axios.post(this.updataUrl + "/api/getGhbData", params).then(res => {
-
-                  this.historyData = this.historyData.concat(res.data.data)//将请求回来的数据和当前展示的数据合并在一起
-                })
-
+                axios
+                  .post(this.updataUrl + "/api/getGhbData", params)
+                  .then(res => {
+                    this.historyData = this.historyData.concat(res.data.data); //将请求回来的数据和当前展示的数据合并在一起
+                  });
               }
             }
-          })
+          });
         });
       }
     },
     esc() {
       var editType = 0;
-      if(!Boolean(this.changeShaoguan)){
-        editType = 0
-      }else{
-        editType = 1
+      if (!Boolean(this.changeShaoguan)) {
+        editType = 0;
+      } else {
+        editType = 1;
       }
       this.$router.push({
-        path: '/index',
+        path: "/index",
         query: {
-          editType: editType,
+          editType: editType
         }
-      })
+      });
     },
     syj() {
       this.$router.push("/index");
@@ -508,7 +382,7 @@ export default {
 };
 </script>
 <style scoped lang='less'>
-@import '../style/top.less';
+@import "../style/top.less";
 .ChemicalTable {
   margin: 0 auto 0;
   width: 6301px;
@@ -517,9 +391,9 @@ export default {
 
 #bgColor {
   background: transparent;
-      margin: 200px auto 0;
-      padding: 16px;
-      width: 6800px; 
+  margin: 500px auto 0;
+  padding: 16px;
+  width: 6800px;
 }
 
 .layui-table-body {
@@ -1409,26 +1283,29 @@ a {
 .el-dropdown-menu__item i {
   display: none;
 }
-.index-esc{
-    position: absolute;
-    top: 100px;
-    left: 640px;
-    width: 1060px;
-    height: 100px;
+.index-esc {
+  position: absolute;
+  top: 100px;
+  left: 640px;
+  width: 1060px;
+  height: 100px;
 }
-#building-top .el-table__empty-block{
-  background: #01AAED;
+#building-top {
+  overflow: none;
 }
-#building-top .el-table__empty-text{
-  color:#c00050;
+#building-top .el-table__empty-block {
+  background: #01aaed;
+}
+#building-top .el-table__empty-text {
+  color: #c00050;
 }
 #building-top .is-group {
-  background: #01AAED;
+  background: #01aaed;
 }
-.el-table__body tr:hover>td {
+.el-table__body tr:hover > td {
   background-color: #134087 !important;
 }
-.cell{
+.cell {
   padding: 20px !important;
 }
 /*::-webkit-scrollbar {display:none}*/

@@ -1401,6 +1401,9 @@ a {
     width: 1060px;
     height: 100px;
 }
+#building-top{
+  overflow: none;
+}
 #building-top .el-table__empty-block{
   background: #01AAED;
 }
