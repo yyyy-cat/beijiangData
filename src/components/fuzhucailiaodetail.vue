@@ -142,7 +142,7 @@ export default {
         let showName = ''
         if(name == 'sjsrl'){
             let sjsrl = this.$echarts.init(document.getElementById('sjsrl'))
-            showName = '实际上浆率';
+            showName = '实际上染率';
             sjsrl.setOption(_this.ybpOptions(value, showName, xj), true);
         }
     }, 

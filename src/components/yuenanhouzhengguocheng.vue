@@ -124,11 +124,12 @@
               </el-table-column>
               </el-table-column>
               <el-table-column
-                prop=" bzwmtrq"
+                
                 label="天然气用量"
                 align="center"
                 width="350">
                  <el-table-column
+                 prop=" bzwmtrq"
                 label="m3"
                 align="center"
                 width="350">
