@@ -291,6 +291,19 @@ export default {
                     width: 8,
                     color: opt.qlx
                 }
+            },
+            {
+                name: '标准制成率',
+                type: 'line',
+                smooth: 0.5,
+                yAxisIndex: 1,
+                symbolSize: 40, 
+
+                data: this.changeOptions('bzzcl'),
+                lineStyle: {
+                    width: 8,
+                    color: opt.qlx
+                }
             }
         ]
         }

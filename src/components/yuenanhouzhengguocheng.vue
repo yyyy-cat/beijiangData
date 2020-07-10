@@ -3,30 +3,30 @@
   <div class="Administration" v-on:dblclick="shuangji()">
     <!-- 顶部logo -->
     <div class="nav-main">
-    <div class="index-top_nav">
-      <p
-        style="text-align: center; font-family: 庞门正道标题体; font-size: 180px;color:#00ecfc; letter-spacing:15px;"
-      >
-        <img
-          src="..\assets\Administration\nav_logo.png"
-          alt
-          style="vertical-align: middle;margin-top: -37px;"
-        />
-        <span>后整过程耗能</span>
-      </p>
-    </div>
-    <!-- 返回主页 -->
-    <div class="index-esc">
-      <span @click="esc">
-        <img src="..\assets\Administration\home.png" alt />
-        返回
-      </span>
-    </div>
+      <div class="index-top_nav">
+        <p
+          style="text-align: center; font-family: 庞门正道标题体; font-size: 180px;color:#00ecfc; letter-spacing:15px;"
+        >
+          <img
+            src="..\assets\Administration\nav_logo.png"
+            alt
+            style="vertical-align: middle;margin-top: -37px;"
+          />
+          <span>后整过程耗能</span>
+        </p>
+      </div>
+      <!-- 返回主页 -->
+      <div class="index-esc">
+        <span @click="esc">
+          <img src="..\assets\Administration\home.png" alt />
+          返回
+        </span>
+      </div>
       <div class="right">
         <!-- <img src="..\assets\production\sc_chart.png" alt  class="img" @click='toBarCharts'/> -->
         <login></login>
+      </div>
     </div>
-  </div>
     <div id="bgColor">
       <!-- <h1>数据管控标准</h1> -->
 
@@ -63,433 +63,120 @@
       <barcharts></barcharts>
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height="1500"></Table>-->
-        <div id="building-top" >
-          <button class='spread' @click="tospread">展开</button>
+        <div id="building-top">
+          <button class="spread" @click="tospread">展开</button>
           <el-table
             :data="historyData"
             :span-method="arraySpanMethod"
-            height='1000'
+            height="1000"
             :header-cell-style="{background:'#040A53'}"
             :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            style="width: 100%;text-align: center;color: black;height: 1000px; background:none">
-            <el-table-column
-              label="基本资料"
-              align="center"
-              width="450">
-              <el-table-column
-                prop="scdh"
-                label="生产单号"
-                align="center"
-                width="350">
+            style="width: 100%;text-align: center;color: black;height: 1000px; background:none"
+          >
+            <el-table-column label="基本资料" align="center" width="450">
+              <el-table-column prop="scdh" label="生产单号" align="center" width="350"></el-table-column>
+              <el-table-column prop="pz" label="品种" align="center" width="350"></el-table-column>
+              <el-table-column prop="gh" label="缸号" align="center" width="350"></el-table-column>
+            </el-table-column>
+            <el-table-column label="标准万米用量" align="center" width="450">
+              <el-table-column label="自来水用量" align="center" width="350">
+                <el-table-column prop="bzwmzls" label="ton/万米" align="center" width="350"></el-table-column>
               </el-table-column>
-              <el-table-column
-                prop="pz"
-                label="品种"
-                align="center"
-                width="350">
+              <el-table-column label="蒸汽用量" align="center" width="350">
+                <el-table-column prop="bzwmzq" label="m3/万米" align="center" width="350"></el-table-column>
               </el-table-column>
-              <el-table-column
-                prop="gh"
-                label="缸号"
-                align="center"
-                width="350">
+              <el-table-column label="天然气用量" align="center" width="350">
+                <el-table-column prop="bzwmtrq" label="m3/万米" align="center" width="350"></el-table-column>
               </el-table-column>
             </el-table-column>
-            <el-table-column
-              label="标准万米用量"
-              align="center"
-              width="450">
-              <el-table-column
-                prop="bzwmzls"
-                label="自来水用量"
-                align="center"
-                width="350">
-                 <el-table-column
-                label="ton"
-                align="center"
-                width="350">
-              </el-table-column>
-              </el-table-column>
-              <el-table-column
-                prop="bzwmzq"
-                label=" 蒸汽用量"
-                align="center"
-                width="350">
-                 <el-table-column
-                label="ton"
-                align="center"
-                width="350">
-              </el-table-column>
-              </el-table-column>
-              <el-table-column
-                prop=" bzwmtrq"
-                label="天然气用量"
-                align="center"
-                width="350">
-                 <el-table-column
-                label="m3"
-                align="center"
-                width="350">
-              </el-table-column>
-              </el-table-column>
-            </el-table-column>
-            <el-table-column
-              prop="hzrq"
-              label="后整日期"
-              align="center"
-              width="380">
-            </el-table-column>
-            <el-table-column
-              label="坯布数量"
-              align="center"
-              width="600">
-              <el-table-column
-                prop="pbsl"
-                label="米"
-                align="center"
-                width="300">
-              </el-table-column>
+            <el-table-column prop="hzrq" label="后整日期" align="center" width="380"></el-table-column>
+            <el-table-column label="坯布数量" align="center" width="600">
+              <el-table-column prop="pbsl" label="米" align="center" width="300"></el-table-column>
             </el-table-column>
 
-            <el-table-column
-              label="总用量"
-              align="center"
-              width="450">
-              <el-table-column
-                label="自来水用量"
-                align="center"
-                width="350">
-                 <el-table-column
-                prop="zylzlston"
-                label="ton"
-                align="center"
-                width="350">
+            <el-table-column label="总用量" align="center" width="450">
+              <el-table-column label="自来水用量" align="center" width="350">
+                <el-table-column prop="zylzlston" label="ton" align="center" width="350"></el-table-column>
+                <el-table-column prop="zylzlstonwm" label="ton/万米" align="center" width="350"></el-table-column>
               </el-table-column>
-              <el-table-column
-                prop="zylzlstonwm"
-                label="ton/万米"
-                align="center"
-                width="350">
+              <el-table-column label="蒸汽用量" align="center" width="350">
+                <el-table-column prop="zylzqton" label="ton" align="center" width="350"></el-table-column>
+                <el-table-column prop="zylzqtonwm" label="ton/万米" align="center" width="350"></el-table-column>
               </el-table-column>
-              </el-table-column>
-              <el-table-column
-                label="蒸汽用量"
-                align="center"
-                width="350">
-                 <el-table-column
-                prop="zylzqton"
-                label="ton"
-                align="center"
-                width="350">
-              </el-table-column>
-              <el-table-column
-                prop="zylzqtonwm"
-                label="ton/万米"
-                align="center"
-                width="350">
-              </el-table-column>
-              </el-table-column>
-              <el-table-column
-                label="天然气用量"
-                align="center"
-                width="350">
-                 <el-table-column
-                prop="zyltrqm"
-                label="m3"
-                align="center"
-                width="350">
-              </el-table-column>
-              <el-table-column
-                prop="zyltrqmwm"
-                label="m3/万米"
-                align="center"
-                width="350">
-              </el-table-column>
+              <el-table-column label="天然气用量" align="center" width="350">
+                <el-table-column prop="zyltrqm" label="m3" align="center" width="350"></el-table-column>
+                <el-table-column prop="zyltrqmwm" label="m3/万米" align="center" width="350"></el-table-column>
               </el-table-column>
             </el-table-column>
             <template v-if="spread">
-              <el-table-column
-                label="烧毛退浆能源用量"
-                align="center"
-                width="450">
-                <el-table-column
-                  prop="tjsj"
-                  label="作业时间"
-                  align="center"
-                  width="280">
+              <el-table-column label="烧毛退浆能源用量" align="center" width="450">
+                <el-table-column prop="tjsj" label="作业时间" align="center" width="280"></el-table-column>
+                <el-table-column label="自来水用量" align="center" width="450">
+                  <el-table-column prop="tjzlston" label="ton" align="center" width="300"></el-table-column>
+                  <el-table-column prop="tjzlstonh" label="ton/H" align="center" width="300"></el-table-column>
+                  <el-table-column prop="tjzlstonwm" label="吨/万米" align="center" width="300"></el-table-column>
                 </el-table-column>
-                <el-table-column
-                  label="自来水用量"
-                  align="center"
-                  width="450">
-                  <el-table-column
-                    prop="tjzlston"
-                    label="ton"
-                    align="center"
-                    width="300">
-                  </el-table-column>
-                  <el-table-column
-                    prop="tjzlstonh"
-                    label="ton/H"
-                    align="center"
-                    width="300">
-                  </el-table-column>
-                  <el-table-column
-                    prop="tjzlstonwm"
-                    label="吨/万米"
-                    align="center"
-                    width="300">
-                  </el-table-column>
+                <el-table-column label="蒸汽用量" align="center" width="450">
+                  <el-table-column prop="tjzqm" label="m³" align="center" width="300"></el-table-column>
+                  <el-table-column prop="tjzqmh" label="m³/H" align="center" width="300"></el-table-column>
+                  <el-table-column prop="tjzqmwm" label="m³/万米" align="center" width="300"></el-table-column>
                 </el-table-column>
-                <el-table-column
-                  label="蒸汽用量"
-                  align="center"
-                  width="450">
-                  <el-table-column
-                    prop="tjzqm"
-                    label="m³"
-                    align="center"
-                    width="300">
-                  </el-table-column>
-                  <el-table-column
-                    prop="tjzqmh"
-                    label="m³/H"
-                    align="center"
-                    width="300">
-                  </el-table-column>
-                  <el-table-column
-                    prop="tjzqmwm"
-                    label="m³/万米"
-                    align="center"
-                    width="300">
-                  </el-table-column>
-                </el-table-column>
-                <el-table-column
-                  label="天然气用量"
-                  align="center"
-                  width="450">
-                  <el-table-column
-                    prop="tjtrqm"
-                    label="m³"
-                    align="center"
-                    width="300">
-                  </el-table-column>
-                  <el-table-column
-                    prop="tjtrqmh"
-                    label="m³/H"
-                    align="center"
-                    width="300">
-                  </el-table-column>
-                  <el-table-column
-                    prop="tjtrqmwm"
-                    label="m³/万米"
-                    align="center"
-                    width="300">
-                  </el-table-column>
+                <el-table-column label="天然气用量" align="center" width="450">
+                  <el-table-column prop="tjtrqm" label="m³" align="center" width="300"></el-table-column>
+                  <el-table-column prop="tjtrqmh" label="m³/H" align="center" width="300"></el-table-column>
+                  <el-table-column prop="tjtrqmwm" label="m³/万米" align="center" width="300"></el-table-column>
                 </el-table-column>
               </el-table-column>
-              <el-table-column
-                label="烧毛预缩能源用量"
-                align="center"
-                width="450">
-                <el-table-column
-                  prop="yssj"
-                  label="作业时间"
-                  align="center"
-                  width="280">
+              <el-table-column label="烧毛预缩能源用量" align="center" width="450">
+                <el-table-column prop="yssj" label="作业时间" align="center" width="280"></el-table-column>
+                <el-table-column label="自来水用量" align="center" width="450">
+                  <el-table-column prop="yszlston" label="ton" align="center" width="300"></el-table-column>
+                  <el-table-column prop="yszlstonh" label="ton/H" align="center" width="300"></el-table-column>
+                  <el-table-column prop="yszlstonwm" label="吨/万米" align="center" width="300"></el-table-column>
                 </el-table-column>
-                <el-table-column
-                  label="自来水用量"
-                  align="center"
-                  width="450">
-                  <el-table-column
-                    prop="yszlston"
-                    label="ton"
-                    align="center"
-                    width="300">
-                  </el-table-column>
-                  <el-table-column
-                    prop="yszlstonh"
-                    label="ton/H"
-                    align="center"
-                    width="300">
-                  </el-table-column>
-                  <el-table-column
-                    prop="yszlstonwm"
-                    label="吨/万米"
-                    align="center"
-                    width="300">
-                  </el-table-column>
+                <el-table-column label="蒸汽用量" align="center" width="450">
+                  <el-table-column prop="yszqmyszqm" label="m³" align="center" width="285"></el-table-column>
+                  <el-table-column prop="yszqmh" label="m³/H" align="center" width="285"></el-table-column>
+                  <el-table-column prop="yszqmwm" label="m³/万米" align="center" width="285"></el-table-column>
                 </el-table-column>
-                <el-table-column
-                  label="蒸汽用量"
-                  align="center"
-                  width="450">
-                  <el-table-column
-                    prop="yszqmyszqm"
-                    label="m³"
-                    align="center"
-                    width="285">
-                  </el-table-column>
-                  <el-table-column
-                    prop="yszqmh"
-                    label="m³/H"
-                    align="center"
-                    width="285">
-                  </el-table-column>
-                  <el-table-column
-                    prop="yszqmwm"
-                    label="m³/万米"
-                    align="center"
-                    width="285">
-                  </el-table-column>
-                </el-table-column>
-                <el-table-column
-                  label="天然气用量"
-                  align="center"
-                  width="450">
-                  <el-table-column
-                    prop="ystrqm"
-                    label="m³"
-                    align="center"
-                    width="285">
-                  </el-table-column>
-                  <el-table-column
-                    prop="ystrqmh"
-                    label="m³/H"
-                    align="center"
-                    width="285">
-                  </el-table-column>
-                  <el-table-column
-                    prop="ystrqmwm"
-                    label="m³/万米"
-                    align="center"
-                    width="285">
-                  </el-table-column>
+                <el-table-column label="天然气用量" align="center" width="450">
+                  <el-table-column prop="ystrqm" label="m³" align="center" width="285"></el-table-column>
+                  <el-table-column prop="ystrqmh" label="m³/H" align="center" width="285"></el-table-column>
+                  <el-table-column prop="ystrqmwm" label="m³/万米" align="center" width="285"></el-table-column>
                 </el-table-column>
               </el-table-column>
             </template>
 
             <template v-if="changeShaoguan == 'false'">
-
-              <el-table-column
-                label="丝光能源用量"
-                align="center"
-                width="450">
-                <el-table-column
-                  prop="sgsj"
-                  label="作业时间"
-                  align="center"
-                  width="400">
+              <el-table-column label="丝光能源用量" align="center" width="450">
+                <el-table-column prop="sgsj" label="作业时间" align="center" width="400"></el-table-column>
+                <el-table-column label="自来水用量" align="center" width="450">
+                  <el-table-column prop="sgzlston" label="吨" align="center" width="400"></el-table-column>
+                  <el-table-column prop="sgzlstonh" label="ton/H" align="center" width="400"></el-table-column>
+                  <el-table-column prop="sgzlstonwm" label="吨/万米" align="center" width="400"></el-table-column>
                 </el-table-column>
-                <el-table-column
-                  label="自来水用量"
-                  align="center"
-                  width="450">
-                  <el-table-column
-                    prop="sgzlston"
-                    label="吨"
-                    align="center"
-                    width="400">
-                  </el-table-column>
-                  <el-table-column
-                    prop="sgzlstonh"
-                    label="ton/H"
-                    align="center"
-                    width="400">
-                  </el-table-column>
-                  <el-table-column
-                    prop="sgzlstonwm"
-                    label="吨/万米"
-                    align="center"
-                    width="400">
-                  </el-table-column>
-                </el-table-column>
-                <el-table-column
-                  label="蒸汽用量"
-                  align="center"
-                  width="450">
-                  <el-table-column
-                    prop="sgzqm"
-                    label="m³"
-                    align="center"
-                    width="420">
-                  </el-table-column>
-                  <el-table-column
-                    prop="sgzqmh"
-                    label="m³/H"
-                    align="center"
-                    width="420">
-                  </el-table-column>
-                  <el-table-column
-                    prop="sgzqmwm"
-                    label="m³/万米"
-                    align="center"
-                    width="420">
-                  </el-table-column>
+                <el-table-column label="蒸汽用量" align="center" width="450">
+                  <el-table-column prop="sgzqm" label="m³" align="center" width="420"></el-table-column>
+                  <el-table-column prop="sgzqmh" label="m³/H" align="center" width="420"></el-table-column>
+                  <el-table-column prop="sgzqmwm" label="m³/万米" align="center" width="420"></el-table-column>
                 </el-table-column>
               </el-table-column>
-              <el-table-column
-                label="缩水能源用量"
-                align="center"
-                width="450">
-                <el-table-column
-                  prop="sssj"
-                  label="作业时间"
-                  align="center"
-                  width="420">
+              <el-table-column label="缩水能源用量" align="center" width="450">
+                <el-table-column prop="sssj" label="作业时间" align="center" width="420"></el-table-column>
+                <el-table-column label="自来水用量" align="center" width="450">
+                  <el-table-column prop="sszlston" label="吨" align="center" width="420"></el-table-column>
+                  <el-table-column prop="sszlstonh" label="ton/H" align="center" width="420"></el-table-column>
+                  <el-table-column prop="sszlstonwm" label="吨/万米" align="center" width="420"></el-table-column>
                 </el-table-column>
-                <el-table-column
-                  label="自来水用量"
-                  align="center"
-                  width="450">
-                  <el-table-column
-                    prop="sszlston"
-                    label="吨"
-                    align="center"
-                    width="420">
-                  </el-table-column>
-                  <el-table-column
-                    prop="sszlstonh"
-                    label="ton/H"
-                    align="center"
-                    width="420">
-                  </el-table-column>
-                  <el-table-column
-                    prop="sszlstonwm"
-                    label="吨/万米"
-                    align="center"
-                    width="420">
-                  </el-table-column>
-                </el-table-column>
-                <el-table-column
-                  label="蒸汽用量"
-                  align="center"
-                  width="450">
-                  <el-table-column
-                    prop="sszqm"
-                    label="m³"
-                    align="center"
-                    width="420">
-                  </el-table-column>
-                  <el-table-column
-                    prop="sszqmh"
-                    label="m³/H"
-                    align="center"
-                    width="420">
-                  </el-table-column>
-                  <el-table-column
-                    prop="sszqmwm"
-                    label="m³/万米"
-                    align="center"
-                    width="420">
-                  </el-table-column>
+                <el-table-column label="蒸汽用量" align="center" width="450">
+                  <el-table-column prop="sszqm" label="m³" align="center" width="420"></el-table-column>
+                  <el-table-column prop="sszqmh" label="m³/H" align="center" width="420"></el-table-column>
+                  <el-table-column prop="sszqmwm" label="m³/万米" align="center" width="420"></el-table-column>
                 </el-table-column>
               </el-table-column>
             </template>
-
           </el-table>
         </div>
         <div style="margin: 70px;overflow: hidden">
@@ -510,42 +197,53 @@
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :file-list="fileList"
-        :auto-upload="false">
-        <el-button slot="trigger" size="small" type="primary" style="width: 240px;height: 80px;float: left;">选取文件</el-button>
-        <el-button style="margin-left: 10px;width: 240px;height: 80px;float: left" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+        :auto-upload="false"
+      >
+        <el-button
+          slot="trigger"
+          size="small"
+          type="primary"
+          style="width: 240px;height: 80px;float: left;"
+        >选取文件</el-button>
+        <el-button
+          style="margin-left: 10px;width: 240px;height: 80px;float: left"
+          size="small"
+          type="success"
+          @click="submitUpload"
+        >上传到服务器</el-button>
         <div slot="tip" class="el-upload__tip" style="clear: both">只能上传jpg/png文件，且不超过500kb</div>
       </el-upload>
     </div>
-    
+
     <yuenanjiangrangguochengfoot></yuenanjiangrangguochengfoot>
   </div>
 </template>
 <script>
-import {mapState,mapGetters} from 'vuex'
+import { mapState, mapGetters } from "vuex";
 import yuenanUrl from "../assets/url";
-import shaoguanUrl from '../assets/s_url';
+import shaoguanUrl from "../assets/s_url";
 import axios from "axios";
 import foot from "./foot.vue";
 import yuenanjiangrangguochengfoot from "./yuenanjiangrangguochengfoot.vue";
 import login from "./login_assembly.vue";
-import Vue from 'vue';
-import {Upload,Button}from 'element-ui';
-import barcharts from './barCharts'
+import Vue from "vue";
+import { Upload, Button } from "element-ui";
+import barcharts from "./barCharts";
 
 Vue.use(Upload);
 Vue.use(Button);
 export default {
   data() {
     return {
-      show:false,
-      show1:true,
+      show: false,
+      show1: true,
       fileList: [],
-      None:false,
+      None: false,
       // 总页数
       pageAll: 0,
       // 初始化信息总条数
       dataCount: 0,
-      pageNum:1,
+      pageNum: 1,
       // 每页显示多少条
       pageSize: 10,
       xia: 0, //下一页或者上一页的第一项索引值
@@ -560,34 +258,31 @@ export default {
       timeSart: "",
       timeEnd: "",
       showShaoguan: false,
-      updataUrl: yuenanUrl + '/ErpYn',
+      updataUrl: yuenanUrl + "/ErpYn",
       spread: false //控制是否展开
     };
   },
   components: { foot, login, yuenanjiangrangguochengfoot, barcharts },
-   computed: {
-      ...mapGetters([
-    'changeShaoguan'
-  ])
-   },
-    watch:{
-    showShaoguan: function(newdata,olddata){
-
-      if(newdata != 'false'){
-        this.updataUrl = shaoguanUrl + '/ErpSg'
-      }else{
-        this.updataUrl = yuenanUrl+'/ErpYn'
+  computed: {
+    ...mapGetters(["changeShaoguan"])
+  },
+  watch: {
+    showShaoguan: function(newdata, olddata) {
+      if (newdata != "false") {
+        this.updataUrl = shaoguanUrl + "/ErpSg";
+      } else {
+        this.updataUrl = yuenanUrl + "/ErpYn";
       }
     }
   },
   created() {
     this.showShaoguan = this.changeShaoguan;
-    console.log(this.showShaoguan)
-     if(this.changeShaoguan != 'false'){
-        this.updataUrl = shaoguanUrl + '/ErpSg'
-      }else{
-        this.updataUrl = yuenanUrl+'/ErpYn'
-      }
+    // console.log(this.showShaoguan)
+    if (this.changeShaoguan != "false") {
+      this.updataUrl = shaoguanUrl + "/ErpSg";
+    } else {
+      this.updataUrl = yuenanUrl + "/ErpYn";
+    }
   },
   mounted() {
     this.xuanran(1);
@@ -610,26 +305,23 @@ export default {
     });
   },
   beforeDestroy() {
-
     clearInterval(this.str);
   },
   methods: {
     tospread() {
-        this.spread = !this.spread;
+      this.spread = !this.spread;
     },
     toBarCharts() {
-      this.$router.push('/barCharts?type='+ 2)
+      this.$router.push("/barCharts?type=" + 2);
     },
-    handlpe(){
-      this.show=!this.show;
-this.show1=!this.show1;
+    handlpe() {
+      this.show = !this.show;
+      this.show1 = !this.show1;
       // "{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
     },
-    arraySpanMethod({row, column, rowIndex, columnIndex}) {
-
-    },
-    shuangji(){
-      this.None=!this.None;
+    arraySpanMethod({ row, column, rowIndex, columnIndex }) {},
+    shuangji() {
+      this.None = !this.None;
     },
     submitUpload() {
       this.$refs.upload.submit();
@@ -641,10 +333,8 @@ this.show1=!this.show1;
       //
       // });
     },
-    handleRemove(file, fileList) {
-    },
-    handlePreview(file) {
-    },
+    handleRemove(file, fileList) {},
+    handlePreview(file) {},
     tijiao() {
       this.timeSart = $("#timeSart").val();
       this.timeEnd = $("#timeEnd").val();
@@ -706,70 +396,80 @@ this.show1=!this.show1;
           this.historyData = res.data.data;
           this.pageAll = res.data.pageTotle;
           this.dom = this.$refs.table.bodyWrapper;
-          this.dom.addEventListener('scroll', () => {
+          this.dom.addEventListener("scroll", () => {
             let scrollTop = this.dom.scrollTop;
             // 变量windowHeight是可视区的高度
             let windowHeight = this.dom.clientHeight || this.dom.clientHeight;
             // 变量scrollHeight是滚动条的总高度
             let scrollHeight = this.dom.scrollHeight || this.dom.scrollHeight;
-            const scrollDistance =this.dom.scrollHeight - this.dom.scrollTop - this.dom.clientHeight;
-            params.delete("pageNum")
-            if(scrollDistance <=0){//等于0证明已经到底，可以请求接口
-              if(this.pageNum < this.pageAll){//当前页数小于总页数就请求
-                this.pageNum++;//当前页数自增
-                params.append("pageNum",this.pageNum)
+            const scrollDistance =
+              this.dom.scrollHeight -
+              this.dom.scrollTop -
+              this.dom.clientHeight;
+            params.delete("pageNum");
+            if (scrollDistance <= 0) {
+              //等于0证明已经到底，可以请求接口
+              if (this.pageNum < this.pageAll) {
+                //当前页数小于总页数就请求
+                this.pageNum++; //当前页数自增
+                params.append("pageNum", this.pageNum);
                 //请求接口的代码
-                axios.post(this.updataUrl + "/api/getHzgcData", params).then(res => {
-
-                  this.historyData = this.historyData.concat(res.data.data)//将请求回来的数据和当前展示的数据合并在一起
-                })
-
+                axios
+                  .post(this.updataUrl + "/api/getHzgcData", params)
+                  .then(res => {
+                    this.historyData = this.historyData.concat(res.data.data); //将请求回来的数据和当前展示的数据合并在一起
+                  });
               }
             }
-          })
+          });
         });
       } else {
         axios.post(this.updataUrl + "/api/getHzgcData", params).then(res => {
           this.historyData = res.data.data;
           this.pageAll = res.data.pageTotle;
           this.dom = this.$refs.table.bodyWrapper;
-          this.dom.addEventListener('scroll', () => {
+          this.dom.addEventListener("scroll", () => {
             let scrollTop = this.dom.scrollTop;
             // 变量windowHeight是可视区的高度
             let windowHeight = this.dom.clientHeight || this.dom.clientHeight;
             // 变量scrollHeight是滚动条的总高度
             let scrollHeight = this.dom.scrollHeight || this.dom.scrollHeight;
-            const scrollDistance =this.dom.scrollHeight - this.dom.scrollTop - this.dom.clientHeight;
-            params.delete("pageNum")
-            if(scrollDistance <=0){//等于0证明已经到底，可以请求接口
-              if(this.pageNum < this.pageAll){//当前页数小于总页数就请求
-                this.pageNum++;//当前页数自增
-                params.append("pageNum",this.pageNum)
+            const scrollDistance =
+              this.dom.scrollHeight -
+              this.dom.scrollTop -
+              this.dom.clientHeight;
+            params.delete("pageNum");
+            if (scrollDistance <= 0) {
+              //等于0证明已经到底，可以请求接口
+              if (this.pageNum < this.pageAll) {
+                //当前页数小于总页数就请求
+                this.pageNum++; //当前页数自增
+                params.append("pageNum", this.pageNum);
                 //请求接口的代码
-                axios.post(this.updataUrl + "/api/getHzgcData", params).then(res => {
-
-                  this.historyData = this.historyData.concat(res.data.data)//将请求回来的数据和当前展示的数据合并在一起
-                })
-
+                axios
+                  .post(this.updataUrl + "/api/getHzgcData", params)
+                  .then(res => {
+                    this.historyData = this.historyData.concat(res.data.data); //将请求回来的数据和当前展示的数据合并在一起
+                  });
               }
             }
-          })
+          });
         });
       }
     },
-     esc() {
+    esc() {
       var editType = 0;
-      if(this.changeShaoguan != 'false'){
-        editType = 0
-      }else{
-        editType = 1
+      if (this.changeShaoguan != "false") {
+        editType = 0;
+      } else {
+        editType = 1;
       }
       this.$router.push({
-        path: '/index',
+        path: "/index",
         query: {
-          editType: editType,
+          editType: editType
         }
-      })
+      });
     },
     syj() {
       this.$router.push("/yuenanguochengnenghaoshuju");
@@ -781,7 +481,7 @@ this.show1=!this.show1;
 };
 </script>
 <style scoped lang='less'>
-@import '../style/gctop.less';
+@import "../style/gctop.less";
 
 .ChemicalTable {
   margin: 160px auto 0;
@@ -1638,8 +1338,6 @@ a {
   color: white;
   line-height: 160px;
 }
-
-
 </style>
 <style scoped lang='less'>
 .ivu-input {
@@ -1708,42 +1406,42 @@ a {
 .el-dropdown-menu__item i {
   display: none;
 }
-.index-esc{
-    position: absolute;
-    top: 100px;
-    left: 640px;
-    width: 1060px;
-    height: 100px;
+.index-esc {
+  position: absolute;
+  top: 100px;
+  left: 640px;
+  width: 1060px;
+  height: 100px;
 }
- #building-top{
-   overflow: auto;
-    width: 6800px;
-    .spread{
-        cursor: pointer;
-        position: absolute;
-        top: -100px;
-        right: 0;
-        width: 250px;
-        height: 80px;
-        line-height: 80px; 
-        background: #000836;
-        color: #fff
-    }
-    .el-table__empty-block{
-      background: #01AAED;
-    }
-    .el-table__empty-text{
-      color:#c00050;
-    }
-    .is-group {
-      background: #01AAED;
-    }
+#building-top {
+  overflow: none;
+  width: 6800px;
+  .spread {
+    cursor: pointer;
+    position: absolute;
+    top: -100px;
+    right: 0;
+    width: 250px;
+    height: 80px;
+    line-height: 80px;
+    background: #000836;
+    color: #fff;
   }
+  .el-table__empty-block {
+    background: #01aaed;
+  }
+  .el-table__empty-text {
+    color: #c00050;
+  }
+  .is-group {
+    background: #01aaed;
+  }
+}
 
-.el-table__body tr:hover>td {
+.el-table__body tr:hover > td {
   background-color: #134087 !important;
 }
-.cell{
+.cell {
   padding: 20px !important;
 }
 /* .is-scrolling-left{
