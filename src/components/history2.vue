@@ -1445,7 +1445,8 @@ a {
   overflow: hidden;
   position: relative;
   width: 7680px;
-  height: 3240px
+  height: 3240px;
+  background: url(../assets/history/login_bg1.png);
 }
 .index-top_nav {
   overflow: hidden;
