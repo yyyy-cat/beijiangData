@@ -24,7 +24,7 @@
       </span>
     </div>
     <!-- 显示用户登陆和退出 -->
-    <login></login>
+    <!-- <login></login> -->
     <!-- 筛选条件 -->
     <div class="history-top">
       <div class="history-topbox">

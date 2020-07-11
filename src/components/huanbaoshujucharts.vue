@@ -325,7 +325,7 @@ export default {
           data: _this.toChangeData("ph", _this.hbsj)
         },
         {
-          name: "PH最小值",
+          name: "PH标准值最小值",
           type: "line",
           smooth: 0.5,
           yAxisIndex: 1,
@@ -338,7 +338,7 @@ export default {
           data: _this.toChangeData("phbzmin", _this.hbsj)
         },
         {
-          name: "PH最大值",
+          name: "PH标准值最大值",
           type: "line",
           smooth: 0.5,
           yAxisIndex: 1,
@@ -387,7 +387,7 @@ export default {
           data: _this.toChangeData("cod", _this.hbsj)
         },
         {
-          name: "外排水cod值最大值",
+          name: "外排水cod标准值小于",
           type: "line",
           smooth: 0.5,
           yAxisIndex: 1,
@@ -436,7 +436,7 @@ export default {
           data: _this.toChangeData("lhw", _this.hbsj)
         },
         {
-          name: "外排水硫化物最大值",
+          name: "外排水硫化物标准值小于",
           type: "line",
           smooth: 0.5,
           yAxisIndex: 1,
