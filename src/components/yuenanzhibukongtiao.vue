@@ -67,7 +67,7 @@
               :header-cell-style="{background:'#040A53'}"
               :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
               border
-              height="1450"
+              height="1500"
               ref="table"
               style="width: 100%;text-align: center;color: black;background: #040A53"
             >

@@ -365,7 +365,7 @@ export default {
         }else if(Number(this.type) == 1){
             name = 'KG'
         }else{
-            name = '%'
+            name = ''
         }
         return name
     },

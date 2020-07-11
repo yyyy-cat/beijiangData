@@ -18,9 +18,9 @@
       </span>
     </div>
     <!-- 显示用户登陆和退出 -->
-    <div class="index-name_esc">
+    <!-- <div class="index-name_esc"> -->
       <!-- 跳转登陆后的页面 -->
-      <span @click="pro">
+      <!-- <span @click="pro">
         <img src="..\assets\index\home_name.png" alt>
         小北
       </span>
@@ -28,7 +28,7 @@
         <img src="..\assets\index\home_esc.png" alt>
         退出
       </span>
-    </div>
+    </div> -->
     <div class="history2-left">
       <div class="history2-Cylinder">
         <div class="top"></div>
@@ -72,7 +72,7 @@
         </table>
         <table border="1" class="CylinderTab2">
           <tr>
-            <td colspan="13">检测序号（染色位置</td>
+            <td colspan="13">检测序号(染色位置)</td>
           </tr>
           <tr></tr>
           <tr>
