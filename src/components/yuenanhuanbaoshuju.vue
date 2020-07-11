@@ -39,7 +39,7 @@
             :header-cell-style="{background:'#040A53'}"
             :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
-            height="1500"
+            height="1020"
             ref="table"
             style="width: 100%;text-align: center;color: black;background: #040A53"
           >
@@ -1292,6 +1292,7 @@ a {
 }
 #building-top {
   overflow: none;
+  height: 1200px;
 }
 #building-top .el-table__empty-block {
   background: #01aaed;
@@ -1301,6 +1302,9 @@ a {
 }
 #building-top .is-group {
   background: #01aaed;
+}
+#building-top .el-table__body-wrapper{
+  height: 800px;
 }
 .el-table__body tr:hover > td {
   background-color: #134087 !important;
