@@ -73,7 +73,7 @@
             :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1500"
+            height="1774.5"
             style="width: 100%;text-align: center;color: black;background:none">
             <el-table-column
               label="基本资料"
@@ -95,7 +95,7 @@
                 prop="gh"
                 label="缸号"
                 align="center"
-                width="550">
+                width="450">
               </el-table-column>
             </el-table-column>
             <el-table-column
@@ -538,12 +538,12 @@
                 <el-table-column
                   label="SS浆料"
                   align="center"
-                  width="280">
+                  width="380">
                   <el-table-column
                     prop="flkss"
                     label="KG"
                     align="center"
-                    width="280">
+                    width="380">
                   </el-table-column>
                 </el-table-column>
               </el-table-column>
@@ -827,6 +827,7 @@ import shaoguanUrl from '../assets/s_url';
   };
 </script>
 <style scoped>
+
   .ChemicalTable {
     margin: 200px auto 0;
     width: 7405px;
@@ -1830,6 +1831,9 @@ import shaoguanUrl from '../assets/s_url';
   }
   .cell{
     padding: 20px !important;
+  }
+    .el-table th.gutter{
+    display: table-cell !important;
   }
   /*::-webkit-scrollbar {display:none}*/
 </style>

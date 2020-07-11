@@ -63,7 +63,7 @@
             :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1500"
+            height="1509"
             style="width: 100%;text-align: center;color: black;background:none">
             <el-table-column
               prop="sh"

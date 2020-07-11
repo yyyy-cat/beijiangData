@@ -169,6 +169,23 @@ export default {
             ]
         }else if(_this.type == 1) {
             seriesData =  [
+                // shenzhen modify
+                { 
+                    name: '标准上浆率',
+                    // type: 'bar',由柱状图转变成了折线图
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 10, 
+                    // itemStyle: {
+                    //     color: opt.ql
+                    // },
+                     lineStyle: {
+                        width: 8,
+                        color: opt.ql
+                    },
+                    data:  _this.toSetData('fljysjsjl', _this.sjfl),
+                },
                 // { 
                 //     name: '标准上浆率',
                 //     type: 'bar',

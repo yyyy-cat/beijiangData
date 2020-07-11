@@ -35,35 +35,35 @@
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height = "1500"></Table>-->
         <div id="building-top"  style="position: relative">
-          <button @click="handlpe()" style="cursor: pointer;position: absolute;top: -150px;right: 0;width: 250px;
-      height: 80px;line-height: 80px; background: none; color: #fff" >展开</button>
+          <!-- <button @click="handlpe()" style="cursor: pointer;position: absolute;top: -150px;right: 0;width: 250px;
+      height: 80px;line-height: 80px; background: none; color: #fff" >展开</button> -->
           <!-- #040A53表格背景色 -->
           <!-- :header-cell-style="{background:'#040A53'}" -->
           <el-table
+            :ref="tbTaskContainer"
             :data="historyData"
-            :span-method="arraySpanMethod"
+            :span-method="objectSpanMethod"
             :header-cell-style="{background:'#040A53'}"
             :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
-            height="1500"
-            ref="table"
-            style="width: 100%;text-align: center;color: black; background:#040A53">
+            height="1710px"
+            style="width: 6742px;text-align: center;color: black; background:#040A53;border: 1px solid white;">
             
             <el-table-column
               label="基础信息"
               align="center"
               width="450">
               <el-table-column
-                prop="xh"
-                label="序号"
-                align="center"
-                width="200">
-              </el-table-column>
+              label="序号"
+              align="center"
+      type="index"
+      width="350">
+    </el-table-column>
               <el-table-column
                 prop="pz"
                 label="品种"
                 align="center"
-                width="450">
+                width="400">
               </el-table-column>
               <el-table-column
                 prop="sh"
@@ -81,12 +81,18 @@
                 label="标准织成率"
                 align="center"
                 width="400">
+                <template slot-scope="scope">
+                  {{numFilter(scope.row.yclzcl)}}%
+                </template>
               </el-table-column>
               <el-table-column
                 prop="yclzhichenglu"
                 label="标准制成率"
                 align="center"
                 width="400">
+                                <template slot-scope="scope">
+                  {{numFilter(scope.row.yclzhichenglu)}}%
+                </template>
               </el-table-column>
               <el-table-column
                 label="经纱信息"
@@ -96,13 +102,13 @@
                     prop="ycljssm"
                     label="纱名"
                     align="center"
-                    width="200">
+                    width="350">
                 </el-table-column>
                 <el-table-column
                   prop="ycljstf"
                   label="头份"
                   align="center"
-                  width="200">
+                  width="350">
                 </el-table-column>
                 <el-table-column
                   prop="ycljsbmyl"
@@ -119,7 +125,7 @@
                   prop="yclwssm"
                   label="纱名"
                   align="center"
-                  width="200">
+                  width="350">
                 </el-table-column>
                 <el-table-column
                   prop="yclwsbmyl"
@@ -143,52 +149,52 @@
                 prop="fzcldlq"
                 label="靛蓝前染料标准浓度"
                 align="center"
-                width="400">
+                width="500">
               </el-table-column>
               <el-table-column
                 label="靛蓝母液标准配方"
                 align="center"
-                width="400">
+                width="1050">
                 <el-table-column
                   prop="fzclmydl"
                   label="靛蓝(g/L)"
                   align="center"
-                  width="250">
+                  width="350">
                 </el-table-column>
                 <el-table-column
                   prop="fzclmysj"
                   label="烧碱(g/L)"
                   align="center"
-                  width="250">
+                  width="350">
                 </el-table-column>
                 <el-table-column
                   prop="fzclmybxf"
                   label="保险粉(g/L)"
                   align="center"
-                  width="250">
+                  width="350">
                 </el-table-column>
               </el-table-column>
               <el-table-column
                 prop="fzcldlh"
                 label="靛蓝后染料标准浓度"
                 align="center"
-                width="400">
+                width="500">
               </el-table-column>
               <el-table-column
                 label="助剂标准配方"
                 align="center"
-                width="400">
+                width="600">
                 <el-table-column
                   prop="fzclzjsj"
                   label="烧碱(g/L)"
                   align="center"
-                  width="250">
+                  width="300">
                 </el-table-column>
                 <el-table-column
                   prop="fzclzjbxf"
                   label="保险粉(g/L)"
                   align="center"
-                  width="250">
+                  width="300">
                 </el-table-column>
               </el-table-column>
               <el-table-column
@@ -200,35 +206,35 @@
               <el-table-column
                 label="浆液标准配方"
                 align="center"
-                width="400">
+                width="1200">
                 <el-table-column
                   prop="fzclpfdfg"
                   label="高粘淀粉(g/L)"
                   align="center"
-                  width="250">
+                  width="350">
                 </el-table-column>
                 <el-table-column
                   prop="fzclpfdfd"
                   label="低粘淀粉(g/L)"
                   align="center"
-                  width="250">
+                  width="350">
                 </el-table-column>
                 <el-table-column
                   prop="fzclpfss"
                   label="SS浆料(g/L)"
                   align="center"
-                  width="250">
+                  width="350">
                 </el-table-column>
                 <el-table-column
                   prop="fzclpfpva"
                   label="PVA"
                   align="center"
-                  width="250">
+                  width="350">
                 </el-table-column>
               </el-table-column>
             </el-table-column>
 
-            <el-table-column v-if="show">
+            <el-table-column>
               <el-table-column
                 label="过程耗能标准"
                 align="center"
@@ -242,25 +248,25 @@
                     prop="gchnjrrs"
                     label="染色用水(m³/万米)"
                     align="center"
-                    width="350">
+                    width="450">
                   </el-table-column>
                   <el-table-column
                     prop="gchnjrrq"
                     label="染色用汽(m³/万米)"
                     align="center"
-                    width="350">
+                    width="450">
                   </el-table-column>
                   <el-table-column
                     prop="gchnjrjs"
                     label="浆纱用水(m³/万米)"
                     align="center"
-                    width="350">
+                    width="450">
                   </el-table-column>
                   <el-table-column
                     prop="gchnjrjq"
                     label="浆纱用汽(m³/万米)"
                     align="center"
-                    width="350">
+                    width="450">
                   </el-table-column>
                 </el-table-column>
                 <el-table-column
@@ -294,55 +300,55 @@
                     prop="gchnhz3"
                     label="用天燃气(m³/万码)"
                     align="center"
-                    width="350">
+                    width="450">
                   </el-table-column>
                 </el-table-column>
               </el-table-column>
               <el-table-column
-                label="过程耗能标准"
+                label="环保标准"
                 align="center"
               >
                 <el-table-column
                   prop="gbbzys"
                   label="产生原水(m³/万码)"
                   align="center"
-                  width="350">
+                  width="450">
                 </el-table-column>
                 <el-table-column
                   prop="gbbzpf"
                   label="处理排放(m³/万码)"
                   align="center"
-                  width="350">
+                  width="450">
                 </el-table-column>
                 <el-table-column
                   prop="gbbzcod"
                   label="COD"
                   align="center"
-                  width="250">
+                  width="350">
                 </el-table-column>
                 <el-table-column
                   prop="gbbzad"
                   label="氨氮"
                   align="center"
-                  width="200">
+                  width="350">
                 </el-table-column>
                 <el-table-column
                   prop="gbbzsd"
                   label="色度"
                   align="center"
-                  width="200">
+                  width="350">
                 </el-table-column>
                 <el-table-column
                   prop="gbbzwd"
                   label="温度"
                   align="center"
-                  width="200">
+                  width="350">
                 </el-table-column>
                 <el-table-column
                   prop="gbbzlhw"
                   label="硫化物"
                   align="center"
-                  width="250">
+                  width="350">
                 </el-table-column>
                 <el-table-column
                   prop="gbbzph"
@@ -459,8 +465,19 @@ export default {
     arraySpanMethod({row, column, rowIndex, columnIndex}) {
 
     },
+        // 合并实现方法
+    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+      const span = column['property'] + '-span'
+      if (row[span]) {
+        return row[span]
+      }
+    },
     shuangji(){
       this.None=!this.None;
+    },
+    numFilter(value) {
+      const realVal = parseFloat(value).toFixed(2) * 100 ;
+      return realVal;
     },
     submitUpload() {
       this.$refs.upload.submit();
@@ -486,6 +503,8 @@ export default {
       }).then(res => {
         this.gd = res.data.total
         this.historyData = res.data.data;
+        this.historyData = this.mergeTableRow(this.historyData, ['pz', 'sh', 'fzclbzsjl', 'yclzcl','yclzhichenglu','fzclbzsrl', 'fzcldlh', 'fzcldlq', 'fzclmybxf' ,'fzclmydl', 'fzclmysj', 'fzclpfdfd', 'fzclpfdfg','fzclpfpva', 'fzclpfss','fzclzjbxf','fzclzjsj','gbbzad','gbbzcod','gbbzlhw','gbbzpf','gbbzph','gbbzsd','gbbzwd','gbbzys','gchnhz1','gchnhz2','gchnhz3','gchnjrjq','gchnjrjs','gchnjrrq','gchnjrrs','gchnzb','','',''])
+        console.log(this.historyData)
         this.pageAll = res.data.pageTotle;
         this.dom = this.$refs.table.bodyWrapper;
         this.dom.addEventListener('scroll', () => {
@@ -504,12 +523,48 @@ export default {
               axios.post(this.updataUrl + "/api/getSjgkData", params).then(res => {
 
                 this.historyData = this.historyData.concat(res.data.data)//将请求回来的数据和当前展示的数据合并在一起
+                // console.log(this.historyData)
+              
               })
 
             }
           }
         })
       });
+    },
+    mergeTableRow(data, merge) {
+      if (!merge || merge.length === 0) {
+        return data
+      }
+      merge.forEach((m) => {
+        const mList = {}
+        // 循环每一组
+        data = data.map((v, index) => {
+          // 提取每一组需要合并的列， 此时v[m]就是YC2006-012
+          // const idVal = v['produceRequestNo']
+          // window.console.log(idVal)
+
+          if (mList[v['pz']]) {
+            mList[v['pz']]++
+            data[index - mList[v['pz']] + 1][m + '-span'].rowspan++
+            v[m + '-span'] = {
+              rowspan: 0,
+              colspan: 0
+            }
+          } else {
+            mList[v['pz']] = 1
+            // v是提取出来的每组
+            v[m + '-span'] = {
+              rowspan: 1,
+              colspan: 1
+            }
+          }
+          // window.console.log(v[m + '-span'])
+          return v
+        })
+      })
+      // window.console.log(data)
+      return data
     },
      esc() {
       var editType = 0;
@@ -1546,6 +1601,10 @@ a {
 .cell{
   padding: 20px !important;
 }
+
+  .el-table th.gutter{
+    display: table-cell !important;
+  }
 </style>
 
 

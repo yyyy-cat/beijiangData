@@ -55,7 +55,7 @@
         <button id="ChemicalFind" @click="tijiao()">
           <i class="layui-icon">&#xe615;</i> 查询
         </button>
-         <button @click="handlpe()"> 扩展</button>
+         <!-- <button @click="handlpe()"> 扩展</button> -->
       </div>
       <div class="ChemicalTable">
         <!--<Table :columns="historyColumns" :data="historyData" height="1500"></Table>-->
@@ -68,8 +68,8 @@
             :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1500"
-            style="width: 100%;text-align: center;color: black;height: 1670px; background:rgba(255,255,255,0)">
+            height="1561"
+            style="width: 6747px;text-align: center;color: black;height: 1670px; background:rgba(255,255,255,0)">
             <el-table-column
               v-if="sho"
 
@@ -432,10 +432,10 @@
         bianhuan:0,
         sho:true,
         show:true,
-        show1:false,
-        show2:false,
-        show3:false,
-        show4:false,
+        show1:true,
+        show2:true,
+        show3:true,
+        show4:true,
         fileList: [],
         None:false,
         // 总页数
@@ -524,37 +524,39 @@
 
       handlpe(){
         this.bianhuan +=1;
-        if (this.bianhuan==1){
+        if (this.bianhuan){
           this.sho=true;
-          this.show=false;
+          this.show=true;
           this.show1=true;
           this.show2=true;
           this.show3=true;
-          this.show4=false;
-        }else if (this.bianhuan==2) {
-          this.sho=true;
-          this.show=false;
-          this.show1=false;
-          this.show2=false;
-          this.show3=false;
           this.show4=true;
-          this.bianhuan +=1;
-
-        }else if ( this.bianhuan%4==0 ){
-          this.sho=true;
-          this.show=true;
-          this.show1=false;
-          this.show2=false;
-          this.show3=false;
-          this.show4=false;
-         this.bianhuan=0
-          return;
         }
+        // else if (this.bianhuan==2) {
+        //   this.sho=true;
+        //   this.show=false;
+        //   this.show1=false;
+        //   this.show2=false;
+        //   this.show3=false;
+        //   this.show4=true;
+        //   this.bianhuan +=1;
+
+        // }else if ( this.bianhuan%4==0 ){
+        //   this.sho=true;
+        //   this.show=true;
+        //   this.show1=false;
+        //   this.show2=false;
+        //   this.show3=false;
+        //   this.show4=false;
+        //  this.bianhuan=0
+        //   return;
+        // }
         // this.show=!this.show;
         // "{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
       },
       handlpe1(){
         // this.show=!this.show;
+
 
         // "{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
       },
@@ -1684,15 +1686,20 @@
     padding: 20px !important;
   }
   .is-scrolling-left{
-    height: 1220px !important;
+    height: 1272px !important;
   }
   .is-scrolling-middle{
-    height: 1220px !important;
+    height: 1272px !important;
   }
 
   .is-scrolling-right{
-    height: 1220px !important;
+    height: 1272px !important;
+  }
+
+  .el-table th.gutter{
+    display: table-cell !important;
   }
   /*::-webkit-scrollbar {display:none}*/
 </style>
-
+<style scoped>
+</style>
