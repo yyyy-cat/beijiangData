@@ -131,6 +131,7 @@ export default {
             //原材料数据织造投入产出
           this.xrData = res.data.data;
           this.detailList2 = res.data.data[0].list
+          console.log(this.xrData)
          
         });
     },
@@ -228,6 +229,30 @@ export default {
                     lineStyle: {
                         width: 8,
                         color: opt.qlx
+                    }
+                },
+                              {
+                    name: '百米用纬标准',
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 10, 
+                    data: _this.toSetData('baimiyongweibiaozhun', _this.xrData),
+                    lineStyle: {
+                        width: 8,
+                        color: opt.qll
+                    }
+                },
+                                              {
+                    name: '织成率标准',
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 10, 
+                    data: _this.toSetData('zhichenglvbiaozhun', _this.xrData),
+                    lineStyle: {
+                        width: 8,
+                        color: opt.qll
                     }
                 }
             ]
@@ -350,6 +375,8 @@ export default {
                 day.push(k[name])
             })
         })
+        console.log(name)
+        console.log(day)
         return day
     },
     draw(data) {

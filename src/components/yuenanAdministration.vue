@@ -46,8 +46,9 @@
             :header-cell-style="{background:'#040A53'}"
             :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
-            height="1710px"
-            style="width: 6742px;text-align: center;color: black; background:#040A53;border: 1px solid white;">
+            height="1660"
+            style="width: 6742px;text-align: center;color: black; background:#040A53;border: 1px solid white;"
+            class="yuenanAdmin">
             
             <el-table-column
               label="基础信息"
@@ -591,6 +592,26 @@ export default {
 };
 </script>
 <style scoped>
+
+.el-table__body-wrapper{
+  height: 1212px !important;
+}
+
+.yuenanAdmin{
+    height: 1632px !important;
+}
+
+
+.is-scrolling-left{
+  height: 1100px !important;
+}
+.is-scrolling-middle{
+  height: 1100px !important;
+}
+
+.is-scrolling-right{
+  height: 1100px !important;
+}
 #bgColor {
   background: transparent;
    margin: 200px auto 0;

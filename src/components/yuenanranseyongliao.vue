@@ -69,9 +69,10 @@
             :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1510"
+            height="1553"
             v-if="!spread"
-            style="width: 100%;text-align: center;color: black;background: none">
+            style="width: 100%;text-align: center;color: black;background: none"
+            class="special">
             <el-table-column
               prop="sh"
               label="基本资料"
@@ -824,10 +825,12 @@ import shaoguanUrl from '../assets/s_url';
 </script>
 <style scoped lang='less'>
 @import '../style/top.less';
+.special{
+  height: 1553px !important;
+}
 .el-table--scrollable-y, 
 .el-table__body-wrapper, 
 .ChemicalTable{
-   
     height: auto !important;
   }
 

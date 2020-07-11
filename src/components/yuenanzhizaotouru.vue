@@ -61,7 +61,7 @@
             :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1500"
+            height="1510"
             style="width: 100%;text-align: center;color: black;height: 1670px; background:none">
             <el-table-column
               label="基础信息"
@@ -1517,7 +1517,7 @@ a {
   .el-table__body-wrapper .is-scrolling-left{
     height: 1500px !important;
   }
-.is-scrolling-left{
+/* .is-scrolling-left{
   height: 1100px !important;
 }
 .is-scrolling-middle{
@@ -1526,6 +1526,6 @@ a {
 
 .is-scrolling-right{
   height: 1100px !important;
-}
+} */
 </style>
 

@@ -2,7 +2,7 @@
     <div class="charts">
         <span class="title-name">{{name}}</span>
         <div class="right" @click="toTable">返回</div>
-     
+    
         <div class="left">
         <el-scrollbar style="height: 900px">
             <el-calendar>
@@ -180,7 +180,7 @@ export default {
                         width: 8,
                         color: opt.ql
                     },
-                    data:  _this.toSetData('fljysjsjl', _this.sjfl),
+                    data:  _this.toSetData('fljybzsjl', _this.sjfl),
                 },
                 // { 
                 //     name: '标准上浆率',
@@ -287,6 +287,7 @@ export default {
                 day.push(k[name])
             })
         })
+        console.log(day)
         return day
     },
     draw(data) {

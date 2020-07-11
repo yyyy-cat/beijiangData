@@ -74,6 +74,7 @@
             border
             ref="table"
             height="1774.5"
+            class="special"
             style="width: 100%;text-align: center;color: black;background:none">
             <el-table-column
               label="基本资料"
@@ -538,12 +539,12 @@
                 <el-table-column
                   label="SS浆料"
                   align="center"
-                  width="380">
+                  width="350">
                   <el-table-column
                     prop="flkss"
                     label="KG"
                     align="center"
-                    width="380">
+                    width="350">
                   </el-table-column>
                 </el-table-column>
               </el-table-column>
@@ -827,7 +828,9 @@ import shaoguanUrl from '../assets/s_url';
   };
 </script>
 <style scoped>
-
+.special{
+  height: 1646px !important;
+}
   .ChemicalTable {
     margin: 200px auto 0;
     width: 7405px;

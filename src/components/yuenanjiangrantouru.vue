@@ -68,7 +68,7 @@
             :row-style="{background: '#040A53',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1561"
+            height="1582"
             style="width: 6747px;text-align: center;color: black;height: 1670px; background:rgba(255,255,255,0)">
             <el-table-column
               v-if="sho"
@@ -1685,7 +1685,7 @@
   .cell{
     padding: 20px !important;
   }
-  .is-scrolling-left{
+  /* .is-scrolling-left{
     height: 1272px !important;
   }
   .is-scrolling-middle{
@@ -1694,7 +1694,7 @@
 
   .is-scrolling-right{
     height: 1272px !important;
-  }
+  } */
 
   .el-table th.gutter{
     display: table-cell !important;

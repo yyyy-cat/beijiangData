@@ -78,7 +78,8 @@
             :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1500"
+            height="1549"
+            class="special"
             style="width: 100%;text-align: center;color: black;background:none">
             <el-table-column
               label="基本资料"
@@ -501,6 +502,9 @@ export default {
 };
 </script>
 <style scoped>
+.special{
+  height: 1386px !important
+}
 .ChemicalTable {
   margin: 200px auto 0;
   width: 6770px;

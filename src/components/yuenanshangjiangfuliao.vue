@@ -64,7 +64,8 @@
             border
             ref="table"
             height="1509"
-            style="width: 100%;text-align: center;color: black;background:none">
+            style="width: 99.4%;text-align: center;color: black;background:none"
+            class="special">
             <el-table-column
               prop="sh"
               label="基本资料"
@@ -634,6 +635,9 @@ export default {
 </script>
 <style scoped lang='less'>
 @import '../style/top.less';
+.special{
+  height: 1549px !important;
+}
 .ChemicalTable {
   margin: 200px auto 0;
   /* width: 1751px; */
