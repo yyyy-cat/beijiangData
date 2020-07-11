@@ -292,23 +292,56 @@ export default {
           }
     },
     //设置母液化料数据
-    setMyData(data, dlsj, dlbz,dlqsj, dlqbz, dlhsj,dlhbz, colorsj, colorbz, colorqsj, colorqbz,colorhsj, colorhbz) {
+    setMyData(sj,bz) {
       let option = {
-          tooltip: {
-              trigger: 'axis',
-              axisPointer: {
-                  type: 'shadow'
-              }
-          },
-          legend: {
-              margin: 100,
-              x: "50%",
+            title: {
+              // text: "单位（m²）",
+              // subtext: '纯属虚构'
               textStyle: {
-                fontSize: 28, //字体大小
-                color: "#fff", //字体颜色
-                borderColor: "blue"
+                fontWeight: "normal", //标题颜色
+                color: "#fff",
+                fontSize: 28
               }
-          },
+            },
+             legend: {
+              margin: 100,
+              data: ["靛蓝后", "靛蓝前", "靛蓝"],
+              data: [
+                {
+                  name: "靛蓝后",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#00ff0c" // 图例文字颜色
+                  }
+                },
+                {
+                  name: "靛蓝前",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#00eaff" // 图例文字颜色
+                  }
+                },
+                {
+                  name: "靛蓝",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#ff6c00" // 图例文字颜色
+                  }
+                }
+              ],
+              x: "60%",
+              textStyle: {
+                fontSize: 28 //字体大小
+              }
+            },
+            tooltip: {
+              trigger: "axis",
+              axisPointer: {
+                // 坐标轴指示器，坐标轴触发有效
+                type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+              }
+            },
+           
             grid: {
               // top: "20%",
               left: "3%",
@@ -360,39 +393,62 @@ export default {
                 "B机靛蓝后",
                 "A机靛蓝",
                 "A机靛蓝前",
-                "A机靛蓝后"
+                "A机靛蓝后",
               ]
             },
             calculable: true,
             animationDurationUpdate: 1200,
-            // dlsj, dlbz,dlqsj, dlqbz, dlhsj,dlhbz, colorsj, colorbz, colorqsj, colorqbz,colorhsj, colorhbz
             series: [
               {
-                name: "靛蓝实际值",
+                name: "实际值",
                 type: "bar",
                 barWidth: 30,
-                color: colorsj,
+                // stack: '总量',
+                itemStyle: {
+                  color: function(params) {
+                    // build a color map as your need.
+                    var colorList = [
+                      "#0487f9",
+                      "#ff7d89",
+                      "#ff7200",
+                      "#0487f9",
+                      "#ff7d89",
+                      "#ff7200",
+                      "#0487f9",
+                      "#ff7d89",
+                      "#ff7200",
+                      "#0487f9",
+                      "#ff7d89",
+                      "#ff7200",
+                      "#0487f9",
+                      "#ff7d89",
+                      "#ff7200"
+                    ];
+                    return colorList[params.dataIndex];
+                  }
+                },
                 label: {
                   normal: {
                     show: true,
                     position: "right",
                     textStyle: {
                       //数值样式
-                      color: "#fff",
+                      color: "white",
                       fontSize: 25
                     }
                   }
                 },
                 barGap: "-100%",
-                data: this.returnShui(data,dlsj) 
+                data: sj
               },
               {
-                name: "靛蓝标准值",
+                name: "标准值",
                 type: "bar",
                 barWidth: 30,
+                // stack: '总量',
                 itemStyle: {
                   normal: {
-                    color: colorbz,//'#fbfa50',
+                    color: "rgba(237,125,49, 0)",
                     borderColor: "#fbfa50",
                     borderWidth: "5"
                   }
@@ -408,96 +464,11 @@ export default {
                     }
                   }
                 },
-                data: this.returnShui(data, dlbz)//标准值
-              },
-               {
-                name: "靛蓝前实际值",
-                type: "bar",
-                barWidth: 30,
-                color: colorsj,//'#00c8e1',
-                label: {
-                  normal: {
-                    show: true,
-                    position: "right",
-                    textStyle: {
-                      //数值样式
-                      color: "#fff",
-                      fontSize: 25
-                    }
-                  }
-                },
-                barGap: "-100%",
-                data: this.returnShui(data,dlqsj) 
-              },
-              {
-                name: "靛蓝前标准值",
-                type: "bar",
-                barWidth: 30,
-                itemStyle: {
-                  normal: {
-                    color: colorbz,//'#fbfa50',
-                    borderColor: "#fbfa50",
-                    borderWidth: "5"
-                  }
-                },
-                label: {
-                  normal: {
-                    show: true,
-                    position: "inside",
-                    textStyle: {
-                      //数值样式
-                      color: "fbfa50",
-                      fontSize: 25
-                    }
-                  }
-                },
-                data: this.returnShui(data, dlqbz)//标准值
-              },
-               {
-                name: "靛蓝后实际值",
-                type: "bar",
-                barWidth: 30,
-                color: colorsj,//'#00c8e1',
-                label: {
-                  normal: {
-                    show: true,
-                    position: "right",
-                    textStyle: {
-                      //数值样式
-                      color: "#fff",
-                      fontSize: 25
-                    }
-                  }
-                },
-                barGap: "-100%",
-                data: this.returnShui(data,dlhsj) 
-              },
-              {
-                name: "靛蓝后标准值",
-                type: "bar",
-                barWidth: 30,
-                itemStyle: {
-                  normal: {
-                    color: colorbz,//'#fbfa50',
-                    borderColor: "#fbfa50",
-                    borderWidth: "5"
-                  }
-                },
-                label: {
-                  normal: {
-                    show: true,
-                    position: "inside",
-                    textStyle: {
-                      //数值样式
-                      color: "fbfa50",
-                      fontSize: 25
-                    }
-                  }
-                },
-                data: this.returnShui(data, dlhbz)//标准值
+
+                data:bz
               }
             ]
-      };
+          };
     return option
     },
     
@@ -1767,17 +1738,28 @@ export default {
       let bar2 = this.$echarts.init(document.getElementById("myChart-bar2"));
         bar2.setOption(this.setShuiqiData(this.qishuiData,"实际用汽","标准用汽",'#e1bb02','#52fcbc'))
     },
+    setMy() {
+      let zhsj = [];
+      let zhbz = [];
+      this.muyeData.map((item,idx) => {
+        zhsj.unshift(item['靛蓝后实际值'])
+        zhsj.unshift(item['靛蓝前实际值'])
+        zhsj.unshift(item['靛蓝实际值']);
+        
+        zhbz.unshift(item['靛蓝后标准值'].toFixed(2))
+        zhbz.unshift(item['靛蓝前标准值'].toFixed(2))
+        zhbz.unshift(item['靛蓝标准值'].toFixed(2));
+      })
+       let data = {
+        sj: zhsj,
+        bz: zhbz
+      }
+      return data
+    },
     drawLineM() {
-//       设备编号: "A"
-// 靛蓝前实际值: "0"
-// 靛蓝前标准值: 0
-// 靛蓝后实际值: "0"
-// 靛蓝后标准值: 960.96
-// 靛蓝实际值: "0"
-// 靛蓝标准值: 1244.262295081967
       let bar3 = this.$echarts.init(document.getElementById("myChart-bar3"));
-      console.log(this.muyeData,"输出来我的母液")
-      bar3.setOption(this.setMyData(this.muyeData,"靛蓝实际值","靛蓝标准值","靛蓝前实际值","靛蓝前标准值","靛蓝后实际值","靛蓝后标准值",'orange','#e1bb02','pink','#e1bb02','#e1bb02','#52fcbc'))
+      let my = this.setMy();
+      bar3.setOption(this.setMyData(my.bz,my.sj))
     },
     drawJtGc() {
          let A = this.returnDataNd(this.gcDataA);
