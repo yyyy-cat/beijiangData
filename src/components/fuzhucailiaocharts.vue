@@ -178,7 +178,7 @@ export default {
                     // },
                      lineStyle: {
                         width: 8,
-                        color: opt.ql
+                        color: opt.qll
                     },
                     data:  _this.toSetData('fljybzsjl', _this.sjfl),
                 },
@@ -199,7 +199,7 @@ export default {
                     data: _this.toSetData('fljysjsjl', _this.sjfl),
                     lineStyle: {
                         width: 8,
-                        color: opt.qlx
+                        color: opt.qlxx
                     }
                 }
             ]

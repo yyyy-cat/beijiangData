@@ -201,7 +201,7 @@ export default {
                     data: _this.changeOptions('fljybzsjl'),
                     lineStyle: {
                         width: 8,
-                        color: opt.ql
+                        color: opt.qll
                     }
                 },
             {
@@ -214,7 +214,7 @@ export default {
                 data: this.changeOptions('fljysjsjl'),
                 lineStyle: {
                     width: 8,
-                    color: opt.qlx
+                    color: opt.qlxx
                 }
             }
         ]
