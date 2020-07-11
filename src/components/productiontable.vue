@@ -292,8 +292,8 @@ export default {
           }
     },
     //设置母液化料数据
-    setMyData() {
-     let option = {
+    setMyData(data, dlsj, dlbz,dlqsj, dlqbz, dlhsj,dlhbz, colorsj, colorbz, colorqsj, colorqbz,colorhsj, colorhbz) {
+      let option = {
           tooltip: {
               trigger: 'axis',
               axisPointer: {
@@ -346,22 +346,32 @@ export default {
               },
               type: "category",
               data: [
-                "E机",
-                "D机",
-                "C机",
-                "B机",
-                "A机",
-                "A机",
+                "E机靛蓝",
+                "E机靛蓝前",
+                "E机靛蓝后",
+                "D机靛蓝",
+                "D机靛蓝前",
+                "D机靛蓝后",
+                "C机靛蓝",
+                "C机靛蓝前",
+                "C机靛蓝后",
+                "B机靛蓝",
+                "B机靛蓝前",
+                "B机靛蓝后",
+                "A机靛蓝",
+                "A机靛蓝前",
+                "A机靛蓝后"
               ]
             },
             calculable: true,
             animationDurationUpdate: 1200,
+            // dlsj, dlbz,dlqsj, dlqbz, dlhsj,dlhbz, colorsj, colorbz, colorqsj, colorqbz,colorhsj, colorhbz
             series: [
               {
-                name: "实际值",
+                name: "靛蓝实际值",
                 type: "bar",
                 barWidth: 30,
-                color: '#00c8e1',
+                color: colorsj,
                 label: {
                   normal: {
                     show: true,
@@ -374,15 +384,15 @@ export default {
                   }
                 },
                 barGap: "-100%",
-                data: [100,200,300] 
+                data: this.returnShui(data,dlsj) 
               },
               {
-                name: "标准值",
+                name: "靛蓝标准值",
                 type: "bar",
                 barWidth: 30,
                 itemStyle: {
                   normal: {
-                    color: '#fbfa50',
+                    color: colorbz,//'#fbfa50',
                     borderColor: "#fbfa50",
                     borderWidth: "5"
                   }
@@ -393,16 +403,102 @@ export default {
                     position: "inside",
                     textStyle: {
                       //数值样式
-                      color: "#fbfa50",
+                      color: "fbfa50",
                       fontSize: 25
                     }
                   }
                 },
-                data: [200,300,400,500,600] //标准值
+                data: this.returnShui(data, dlbz)//标准值
+              },
+               {
+                name: "靛蓝前实际值",
+                type: "bar",
+                barWidth: 30,
+                color: colorsj,//'#00c8e1',
+                label: {
+                  normal: {
+                    show: true,
+                    position: "right",
+                    textStyle: {
+                      //数值样式
+                      color: "#fff",
+                      fontSize: 25
+                    }
+                  }
+                },
+                barGap: "-100%",
+                data: this.returnShui(data,dlqsj) 
+              },
+              {
+                name: "靛蓝前标准值",
+                type: "bar",
+                barWidth: 30,
+                itemStyle: {
+                  normal: {
+                    color: colorbz,//'#fbfa50',
+                    borderColor: "#fbfa50",
+                    borderWidth: "5"
+                  }
+                },
+                label: {
+                  normal: {
+                    show: true,
+                    position: "inside",
+                    textStyle: {
+                      //数值样式
+                      color: "fbfa50",
+                      fontSize: 25
+                    }
+                  }
+                },
+                data: this.returnShui(data, dlqbz)//标准值
+              },
+               {
+                name: "靛蓝后实际值",
+                type: "bar",
+                barWidth: 30,
+                color: colorsj,//'#00c8e1',
+                label: {
+                  normal: {
+                    show: true,
+                    position: "right",
+                    textStyle: {
+                      //数值样式
+                      color: "#fff",
+                      fontSize: 25
+                    }
+                  }
+                },
+                barGap: "-100%",
+                data: this.returnShui(data,dlhsj) 
+              },
+              {
+                name: "靛蓝后标准值",
+                type: "bar",
+                barWidth: 30,
+                itemStyle: {
+                  normal: {
+                    color: colorbz,//'#fbfa50',
+                    borderColor: "#fbfa50",
+                    borderWidth: "5"
+                  }
+                },
+                label: {
+                  normal: {
+                    show: true,
+                    position: "inside",
+                    textStyle: {
+                      //数值样式
+                      color: "fbfa50",
+                      fontSize: 25
+                    }
+                  }
+                },
+                data: this.returnShui(data, dlhbz)//标准值
               }
             ]
       };
-      return option
+    return option
     },
     
     //设置上面水汽的基本设置
@@ -1669,11 +1765,19 @@ export default {
     //汽用量挂载
     drawLineQ() {
       let bar2 = this.$echarts.init(document.getElementById("myChart-bar2"));
-        bar2.setOption(this.setShuiqiData(this.qishuiData,"实际用汽","标准用汽",'#e1bb02','#52fcbc' ))
+        bar2.setOption(this.setShuiqiData(this.qishuiData,"实际用汽","标准用汽",'#e1bb02','#52fcbc'))
     },
     drawLineM() {
+//       设备编号: "A"
+// 靛蓝前实际值: "0"
+// 靛蓝前标准值: 0
+// 靛蓝后实际值: "0"
+// 靛蓝后标准值: 960.96
+// 靛蓝实际值: "0"
+// 靛蓝标准值: 1244.262295081967
       let bar3 = this.$echarts.init(document.getElementById("myChart-bar3"));
-      bar3.setOption(this.setMyData())
+      console.log(this.muyeData,"输出来我的母液")
+      bar3.setOption(this.setMyData(this.muyeData,"靛蓝实际值","靛蓝标准值","靛蓝前实际值","靛蓝前标准值","靛蓝后实际值","靛蓝后标准值",'orange','#e1bb02','pink','#e1bb02','#e1bb02','#52fcbc'))
     },
     drawJtGc() {
          let A = this.returnDataNd(this.gcDataA);
