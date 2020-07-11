@@ -110,8 +110,7 @@
                 <el-table-column prop="zyltrqmwm" label="m3/万米" align="center" width="350"></el-table-column>
               </el-table-column>
             </el-table-column>
-            <template v-if="spread">
-              <el-table-column label="烧毛退浆能源用量" align="center" width="450">
+            <el-table-column label="烧毛退浆能源用量" align="center" width="450">
                 <el-table-column prop="tjsj" label="作业时间" align="center" width="280"></el-table-column>
                 <el-table-column label="自来水用量" align="center" width="450">
                   <el-table-column prop="tjzlston" label="ton" align="center" width="300"></el-table-column>
@@ -129,6 +128,7 @@
                   <el-table-column prop="tjtrqmwm" label="m³/万米" align="center" width="300"></el-table-column>
                 </el-table-column>
               </el-table-column>
+            <template v-if="spread">
               <el-table-column label="烧毛预缩能源用量" align="center" width="450">
                 <el-table-column prop="yssj" label="作业时间" align="center" width="280"></el-table-column>
                 <el-table-column label="自来水用量" align="center" width="450">

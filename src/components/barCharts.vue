@@ -1,7 +1,7 @@
 <template>
     <div class="charts">
         <div class="but" v-if="type == 2"> 
-            <button class="shui" @click="toShui('标准总用量自来水用量', '总用量自来水用量', 'zylzlstonwm', '#52FBC2', 'bzwmzls', '#E1BB02')">水</button>
+            <button class="shui" @click="toShui('标准总用量自来水用量', '总用量自来水用量', 'zylzlstonwm', '#52FBC2', 'bzwmzls', '#E1BB02','red')">水</button>
              <button class="shui" @click="toShui('标准总用量蒸汽用量', '总用量蒸汽用量', 'zylzqtonwm','#00A8FF', 'bzwmzq','#FF9500')">蒸汽</button>
               <button class="shui" @click="toShui('标准总用量天然气用量', '总用量天然气用量', 'zyltrqmwm','#01FF0E', 'bzwmtrq','#00E9FE')">天然气</button>
         </div>
@@ -68,6 +68,7 @@ export default {
              this.l = ''
          }
           this.optionsdata = Varible.OPTIONS;
+          console.log(this.optionsdata)
     this.showShaoguan = this.changeShaoguan;
      if(this.changeShaoguan != 'false'){
         this.updataUrl = shaoguanUrl + '/ErpSg'
@@ -86,25 +87,30 @@ export default {
        }
   },
    methods: {
-    toChangeShui(bzylName, sjylName, name, color, bzdata, linecolor) {
+    toChangeShui(bzylName, sjylName, name, color, bzdata, linecolor, linecolor2) {
         let _this = this;
         let seriesData = [];
         let opt = this.optionsdata;
          seriesData = [
                 {
                     name: bzylName,
-                    type: 'bar',
+                    type: 'line',
                     barWidth : 100,
-                    itemStyle: {
-                        color: color
+                    smooth: 0.5,
+                    // yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: linecolor2,
+                        width: 8
                     },
                     data: _this.toChangeData(bzdata, _this.xrData)
                 },
                      {
                     name: sjylName,
                     type: 'line',
+                    barWidth : 100,
                     smooth: 0.5,
-                    yAxisIndex: 1,
+                    // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
                         color: linecolor,
@@ -115,7 +121,7 @@ export default {
         ]
         return seriesData
     },
-    toShui(bzylName, sjylName, name, color, bzdata, linecolor) {
+    toShui(bzylName, sjylName, name, color, bzdata, linecolor ,linecolor2) {
         this.changeData = true;
         let data = this.toChangeShui(bzylName, sjylName, name, color, bzdata, linecolor)
         this.getGCNHHzgcTuBiaoData();
@@ -268,10 +274,10 @@ export default {
                     type: 'line',
                     barWidth : 100,
                     smooth: 0.5,
-                    yAxisIndex: 1,
+                    // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: opt.qlx,
+                        color: opt.qll,
                         width: 8
                     },
                     data: _this.toChangeData('tonhbz', _this.zzkthn)
@@ -281,7 +287,7 @@ export default {
                     type: 'line',
                     barWidth : 100,
                     smooth: 0.5,
-                    yAxisIndex: 1,
+                    // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
                         color: opt.qlx,
@@ -333,7 +339,7 @@ export default {
                     name: '染色自来水用量',
                     type: 'line',
                     smooth: 0.5,
-                    yAxisIndex: 1,
+                    // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
                         color: opt.qlx,
@@ -345,7 +351,7 @@ export default {
                     name: '染色蒸汽用量',
                     type: 'line',
                     smooth: 0.5,
-                    yAxisIndex: 1,
+                    // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
                         color: opt.lsx,
@@ -357,7 +363,7 @@ export default {
                     name: '浆纱蒸汽用量',
                     type: 'line',
                     smooth: 0.5,
-                    yAxisIndex: 1,
+                    // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
                         color: opt.xjx,
@@ -375,10 +381,10 @@ export default {
                     name: '自来水每万米用水标准',
                     type: 'line',
                     smooth: 0.5,
-                    yAxisIndex: 1,
+                    // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: opt.lsx,
+                        color: opt.qll,
                         width: 8
                     },
                     data: _this.toChangeData('tonwmbz', _this.zzkthn)
@@ -387,7 +393,7 @@ export default {
                     name: '自来水实际每万米用水',
                     type: 'line',
                     smooth: 0.5,
-                    yAxisIndex: 1,
+                    // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
                         color: opt.lsx,
@@ -401,10 +407,13 @@ export default {
           seriesData = [
                 {
                     name: '标准总用量蒸汽用量',
-                    type: 'line',
-                    barWidth : 100,
-                    itemStyle: {
-                        color: opt.ls
+                     type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: opt.qll,
+                        width: 8
                     },
                     data: _this.toChangeData('bzwmzq', _this.xrData)
                 },
@@ -412,7 +421,7 @@ export default {
                     name: '总用量蒸汽用量',
                     type: 'line',
                     smooth: 0.5,
-                    yAxisIndex: 1,
+                    // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
                         color: opt.lsx,
@@ -436,7 +445,7 @@ export default {
              v.list.map((k, index) =>{
                  
                  let dayData = []
-                 k.name = zjsj.slice(5,10)+ '-' + Number(index+1)
+                 k.name = zjsj.slice(5,10)+ '-' +'('+ Number(index+1) + ')'
                  nameList.push(k.name)
                 //  dayData.push(k.name, k.bzwmzls, k.bzwmzq, k.bzwmtrq)
                 if(str3 == '') {
