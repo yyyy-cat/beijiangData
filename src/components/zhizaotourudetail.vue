@@ -76,16 +76,16 @@ export default {
         }
         else if(Number(this.type) == 1) {
                 this.name = '织造投入产出数据';
-                this.draw('baimiyongweibiaozhun','zhichenglvbiaozhun');
+                this.draw('jingzhouchangdu','peibuchangdu');
             }else{
                 this.name = '后整投入产出数据'
-                this.draw('bzzcl');
+                this.draw('shoupeichangdu', 'chengpinzongchang');
             }
         }
     },
     created() {
-        
         this.lData = this.$props.detailList
+        console.log(this.$props.detailList,"我的数据")
         this.type = this.$props.type;
         this.optionsdata = Varible.OPTIONS;
         if(this.type == '1') {
@@ -105,10 +105,10 @@ export default {
         }
    else if(Number(this.type) == 1) {
         this.name = '织造投入产出数据';
-        this.draw('baimiyongweibiaozhun','zhichenglvbiaozhun');
+        this.draw('jingzhouchangdu','peibuchangdu');
     }else{
         this.name = '后整投入产出数据'
-        this.draw('bzzcl');
+        this.draw('shoupeichangdu', 'chengpinzongchang');
     }
       
      
@@ -192,6 +192,8 @@ export default {
         let _this = this;
          let seriesData = [];
          let opt = this.optionsdata
+         //             String jingzhouchangdu;经轴长度baimiyongweibiaozhun
+// String peibuchangdu;胚布长度zhichenglvbiaozhun
          if(Number(_this.type) == 0) {
           seriesData =  [
                 { 
@@ -227,7 +229,7 @@ export default {
         else if(Number(_this.type) == 1) {
             seriesData = [
             { 
-                name: '百米用纬标准',
+                name: '经轴长度',
                 type: 'bar',
                 barWidth : 100,
                 itemStyle: {
@@ -235,7 +237,7 @@ export default {
                 }
             },
              { 
-                name: '织成率标准',
+                name: '胚布长度',
                 type: 'bar',
                 barWidth : 100,
                 itemStyle: {
@@ -271,12 +273,28 @@ export default {
         ]
         }else{
             seriesData = [
+            // { 
+            //     name: '标准制成率',
+            //     type: 'bar',
+            //     barWidth : 100,
+            //     itemStyle: {
+            //         color: opt.ql
+            //     }
+            // },
             { 
-                name: '标准制成率',
+                name: '收胚长度',
                 type: 'bar',
                 barWidth : 100,
                 itemStyle: {
                     color: opt.ql
+                }
+            },
+             { 
+                name: '成品总长',
+                type: 'bar',
+                barWidth : 100,
+                itemStyle: {
+                    color: opt.ls
                 }
             },
             {
@@ -287,6 +305,19 @@ export default {
                 symbolSize: 40, 
 
                 data: this.changeOptions('sjzcl'),
+                lineStyle: {
+                    width: 8,
+                    color: opt.qlx
+                }
+            },
+            {
+                name: '标准制成率',
+                type: 'line',
+                smooth: 0.5,
+                yAxisIndex: 1,
+                symbolSize: 40, 
+
+                data: this.changeOptions('bzzcl'),
                 lineStyle: {
                     width: 8,
                     color: opt.qlx

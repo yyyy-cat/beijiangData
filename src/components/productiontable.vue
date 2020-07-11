@@ -43,15 +43,13 @@
         <p>机台基本信息</p>
         <div class="protab-sc_bg1-box">
           <el-table :data="tableData" border style="width: 100%;">
-            <el-table-column prop="lineID" label="机号" align="center" width="100"></el-table-column>
-            <el-table-column prop="colorNo" label="色号" align="center" width="200"></el-table-column>
-            <el-table-column prop="standardCylinderNo" label="标准缸号" align="center" width="300"></el-table-column>
-            <el-table-column prop="varieties" label="品种" align="center" width="250"></el-table-column>
-            <el-table-column prop="warpingLength" label="整经长度" align="center" width="280"></el-table-column>
-            <el-table-column prop="startTime" label="标准开机时间" align="center" width="500"></el-table-column>
-            <el-table-column prop="endTime" label="预计了机时间" align="center" width="500"></el-table-column>
-            <el-table-column prop="cylinderNo" label="实际缸号" align="center" width="300"></el-table-column>
-            <el-table-column prop="turnOnTime" label="实际开机时间" align="center" width="500"></el-table-column>
+            <el-table-column prop="机台编号" label="机台号" align="center" :width="tableWidth"></el-table-column>
+            <el-table-column prop="色号" label="色号" align="center" :width="tableWidth"></el-table-column>
+            <el-table-column prop="标准缸号" label="缸号" align="center" width="500"></el-table-column>
+            <el-table-column prop="品种" label="品种" align="center" :width="tableWidth"></el-table-column>
+            <el-table-column prop="整经长度" label="整经长度" align="center" :width="tableWidth"></el-table-column>
+            <el-table-column prop="标准开机时间" label="标准开机时间" align="center" width="510"></el-table-column>
+            <el-table-column prop="预计了机时间" label="预计了机时间" align="center" width="510"></el-table-column>
           </el-table>
         </div>
       </div>
@@ -118,6 +116,9 @@ import login from "./login_assembly.vue";
 export default {
   data() {
     return {
+      jtgyData: [],//机台工艺的总和数据
+      tableWidth: '350',
+      baseUrl: 'http://120.78.186.60:8090/api',
       tableData: [],
       shui: "",
       dianlanTimeA1: "",
@@ -136,32 +137,448 @@ export default {
    components: {login},
   created() {
     // this.setdata();
+    this.setShuiData();
+    this.setZhixingShiJian();
   },
   mounted() {
-    // this.setdata()
-    // this.setShui();
-    // setTimeout(this.drawLine(),1000)
     this.setData();
-
-    this.drawLine();
-    console.log(a1)
-    console.log(a2)
+    // this.drawLine();
+  },
+  watch: {
+    jtgyData: function(newData, oldData) {
+      this.drawLine();
+    }
   },
   methods: {
-    biaozhun(){
+    //机台工艺执行时间基本设置
+    setGyOption(dlqdd,dlqddbz,dlhtm,dlhtmbz,dl,dlbz,time) {
+      let options = {
+            color: ["#00ff0c", "#00eaff", "#ff6c00"],
+            title: {
+              text: "母液追加流量（g/L）",
+              // subtext: "纯属虚构"
+              textStyle: {
+                fontWeight: "normal", //标题颜色
+                color: "#fff",
+                fontSize: 28
+              },
+              x: "5%"
+            },
+            tooltip: {
+              trigger: "axis"
+            },
+            legend: {
+              margin: 100,
+              data: ["靛蓝前打底", "靛蓝", "靛蓝后套面"],
+              data: [
+                {
+                  name: "靛蓝前打底",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#00ff0c" // 图例文字颜色
+                  }
+                },
+                {
+                  name: "靛蓝",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#00eaff" // 图例文字颜色
+                  }
+                },
+                {
+                  name: "靛蓝后套面",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#ff6c00" // 图例文字颜色
+                  }
+                }
+              ],
+              x: "60%",
+              textStyle: {
+                fontSize: 28 //字体大小
+              }
+            },
 
+            grid: {
+              left: "3%",
+              right: "4%",
+              bottom: "3%",
+              containLabel: true
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {}
+              }
+            },
+            xAxis: {
+              type: "category",
+              //线框颜色
+              axisLine: {
+                lineStyle: {
+                  color: "#354875",
+                  width: 2
+                }
+              },
+              boundaryGap: false,
+              data: time,
+              axisLabel: {
+                color: "white",
+                fontSize: '50'
+              }
+            },
+            yAxis: {
+              type: "value",
+              //线框颜色
+              axisLine: {
+                lineStyle: {
+                  color: "#354875",
+                  width: 2
+                }
+              },
+              axisLabel: {
+                formatter: "{value}",
+                color: "white"
+              },
+              splitLine: {
+                lineStyle: {
+                  type: "dashed",
+                  color: "#354875"
+                }
+              }
+            },
+            series: [
+              {
+                name: "靛蓝前打底",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlqdd,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00ff0c"
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dl,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00eaff"
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝后套面",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlhtm,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#ff6c00"
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝前打底",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlqddbz,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00ff0c",
+                      type:'dotted'
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlbz,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00eaff",
+                      type:'dotted'
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝后套面",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlhtmbz,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#ff6c00",
+                      type:'dotted'
+                    }
+                  }
+                }
+              },
+            ]
+      }
+      return options
     },
+    //机台工艺执行时间
+//     追加流量靛蓝前打底实际: 1.2
+// 追加流量靛蓝前打底标准: 5
+// 追加流量靛蓝后套面实际: 1.3
+// 追加流量靛蓝后套面标准: 7
+// 追加流量靛蓝实际: 8.2
+// 追加流量靛蓝标准: 6
+    setZhixingShiJian() {
+      let params = new FormData();
+      params.append("machineNo",'A')
+      axios.post(this.baseUrl + '/getDatatuBiao65gongyizhixingxinxi',params).then(res => {
+        this.jtgyData = res.data.data;
+        // res.data.data.map((item, idx)=> {
+        //   this.ddsjData = 
+        //   // this.ddsjData.push(item['追加流量靛蓝前打底实际']);
+        //   // this.ddbzData.push(item['追加流量靛蓝前打底标准']);
+        // })
+        
+      })
+    },
+    returnData() {
+//       追加流量靛蓝后套面实际: (...)
+// 追加流量靛蓝后套面标准: (...)
+// 追加流量靛蓝实际: (...)
+// 追加流量靛蓝标准: (...)
+//  "上染率靛蓝前打底标准": 0.5,
+//             "上染率靛蓝前打底实际": 0,
+//             "上染率靛蓝标准": 0.6,
+//             "上染率靛蓝实际": 0.88,
+//             "上染率靛蓝后套面标准": 0.7,
+//             "上染率靛蓝后套面实际": 0
+
+      let dlqdd = [];
+      let dlqddbz = [];
+      let dlhtm = [];
+      let dlhtmbz = [];
+      let dl = [];
+      let dlbz = [];
+      let zhData = []
+      //上染率
+      let srqddbz = [];
+      let srqdd = [];
+      let srdlbz = [];
+      let srdl = [];
+      let srhtmbz = [];
+      let srhtm = [];
+      let srData = [];
+      let timer = []
+       this.jtgyData.map((item, idx)=> {
+         dlqdd.push(item['上染率靛蓝前打底实际'])
+         dlqddbz.push(item['上染率靛蓝前打底标准'])
+         dlhtm.push(item['上染率靛蓝实际'])
+         dlhtmbz.push(item['上染率靛蓝标准'])
+         dl.push(item['上染率靛蓝后套面实际'])
+         dlbz.push(item['上染率靛蓝后套面标准'])
+          //上染
+        srqddbz.push(item['上染率靛蓝前打底标准'])
+        srqdd.push(item['上染率靛蓝前打底实际'])
+        srdlbz.push(item['上染率靛蓝标准'])
+        srdl.push(item['上染率靛蓝实际'])
+        srhtmbz.push(item['上染率靛蓝后套面标准'])
+        srhtm.push(item['上染率靛蓝后套面实际'])
+        timer.push(item['采集时间'].slice(14,18))
+        })
+        zhData.push(dlqdd,dlqddbz,dlhtm,dlhtmbz,dl,dlbz)
+        srData.push(srqdd,srqddbz,srhtm,srhtmbz,srdl,srdlbz);
+        let oData = {
+          myData: zhData,
+          srData: srData,
+          time: timer
+        }
+        return oData
+    },
+    //横向柱状图基本数据
+    setOption() {
+      let options = {
+         title: {
+            textStyle: {
+                fontWeight: "normal", 
+                color: "#fff",
+                fontSize: 28
+              }
+            },
+            legend: {
+              margin: 100,
+              x: "50%",
+              textStyle: {
+                fontSize: 28, //字体大小
+                color: "#fff", //字体颜色
+                borderColor: "blue"
+              }
+            },
+            tooltip: {
+              trigger: "axis",
+              axisPointer: {
+                type: "shadow"
+              }
+            },
+            grid: {
+              left: "3%",
+              right: "4%",
+              bottom: "11%",
+              containLabel: true
+            },
+            xAxis: {
+              axisLabel: {
+                formatter: "{value}",
+                color: "white",
+                fontSize: 35
+              }
+            },
+            yAxis: {
+                    type: 'value',
+                     nameTextStyle: {
+                        color: opt.zts,
+                        fontSize: 40,
+                        lineHeight: 50
+                    },
+                    axisLabel: {
+                        formatter: '{value}',
+                        textStyle: { 
+                            fontSize : 30,
+                            color: opt.zts     
+                            }
+                    },
+            },
+            calculable: true,
+            animationDurationUpdate: 1200,
+            series: [
+              {
+                name: "实际值",
+                type: "bar",
+                barWidth: 30,
+                itemStyle: {
+                  color: function(params) {
+                    // build a color map as your need.
+                    var colorList = [
+                      "#0487f9",
+                      "#ff7d89",
+                      "#ff7200",
+                      "#0487f9",
+                      "#ff7d89",
+                      "#ff7200",
+                      "#0487f9",
+                      "#ff7d89",
+                      "#ff7200",
+                      "#0487f9",
+                      "#ff7d89",
+                      "#ff7200",
+                      "#0487f9",
+                      "#ff7d89",
+                      "#ff7200"
+                    ];
+                    return colorList[params.dataIndex];
+                  }
+                },
+                label: {
+                  normal: {
+                    show: true,
+                    position: "right",
+                    textStyle: {
+                      //数值样式
+                      color: "white",
+                      fontSize: 25
+                    }
+                  }
+                },
+                barGap: "-100%",
+                data: [100,200,300,400] // 母液数据
+              },
+              {
+                name: "标准值",
+                type: "bar",
+                barWidth: 30,
+                // stack: '总量',
+                itemStyle: {
+                  normal: {
+                    color: "rgba(237,125,49, 0)",
+                    borderColor: "#fbfa50",
+                    borderWidth: "5"
+                  }
+                },
+                label: {
+                  normal: {
+                    show: true,
+                    position: "inside",
+                    textStyle: {
+                      //数值样式
+                      color: "fbfa50",
+                      fontSize: 25
+                    }
+                  }
+                },
+
+                data:muyeshuju11
+              }
+            ]
+      }
+    },
+    // 水能耗渲染数据
+    setShuiData() {
+       axios.post(this.baseUrl + '/getDatatuBiao62shuiyongliang').then(res => {
+        // console.log(res, "输出来水的数据1")
+      })
+    },
+
     setShui() {
       //水能耗
       axios
-        .get("/api/getEnergyConsumptionChart", {
-          params: {
-            type: 2
-          }
-        })
+        .get(this.baseUrl + '/getDatatuBiao62shuiyongliang')
         .then(res => {
-          console.log("resshui", res.data);
-          // this.tableData = res.data.data;
           var shuiA = "";
           var shuiB = "";
           var shuiC = "";
@@ -207,132 +624,14 @@ export default {
           console.log(this.shui);
         });
 
-      // drawLine()
+      drawLine()
     },
     setData() {
       axios///getRunningBasicInfo
-        .get("/getRunningBasicInfo", {
-          params: {
-            lineID: "all"
-          }
-        })
+        .post(this.baseUrl + "/getDatatuBiao61jitaijibenxinxi")
         .then(res => {
-          console.log("resAA1", res.data);
           this.tableData = res.data.data;
-          var arr  = res.data.data
-          for (let i = 0; i < arr.length; i++) {
-            if (arr[i].lineID == "A") {
-              this.mA = arr[i].cylinderNo
-            }
-            if (arr[i].lineID == "B") {
-              this.mB = arr[i].cylinderNo
-            }
-            if (arr[i].lineID == "C") {
-              this.mC = arr[i].cylinderNo
-            }
-            if (arr[i].lineID == "D") {
-              this.mD = arr[i].cylinderNo
-            }
-            if (arr[i].lineID == "E") {
-              this.mE = arr[i].cylinderNo
-            }
-            
-          }
-          //A机标准
-           axios
-        .get("/api/getControlStandardProduction", {
-          params: {
-            cylinderNo: this.mA
-          }
-        })
-        .then(res => {
-          console.log("resmA", res.data.data[0]);
-          if (res.data.data[0]!="") {
-            this.bzA = res.data.data[0]
-          }
-          if (res.data.data[0]==undefined) {
-            this.bzA = {}
-          }
-          console.log("bzA", this.bzA);
-          
-        })
-          //B机标准
-           axios
-        .get("/api/getControlStandardProduction", {
-          params: {
-            cylinderNo: this.mB
-          }
-        })
-        .then(res => {
-          console.log("resmB", res.data.data[0]);
-          if (res.data.data[0]!="") {
-            this.bzB = res.data.data[0]
-          }
-          if (res.data.data[0]==undefined) {
-            this.bzB = {}
-          }
-          console.log("bzB", this.bzB);
-        })
-          //C机标准
-           axios
-        .get("/api/getControlStandardProduction", {
-          params: {
-            cylinderNo: this.mC
-          }
-        })
-        .then(res => {
-          console.log("resmC", res.data.data[0]);
-          if (res.data.data[0]!="") {
-            this.bzC = res.data.data[0]
-          }
-          if (res.data.data[0]==undefined) {
-            this.bzC = {}
-          }
-          console.log("bzC", this.bzC);
-        })
-          //D机标准
-           axios
-        .get("/api/getControlStandardProduction", {
-          params: {
-            cylinderNo: this.mD
-          }
-        })
-        .then(res => {
-          console.log("resmD", res.data.data[0]);
-          if (res.data.data[0]!="") {
-            this.bzD = res.data.data[0]
-          }
-          if (res.data.data[0]==undefined) {
-            this.bzD = {}
-          }
-          console.log("bzD", this.bzD);
-        })
-          //E机标准
-           axios
-        .get("/api/getControlStandardProduction", {
-          params: {
-            cylinderNo: this.mE
-          }
-        })
-        .then(res => {
-          console.log("resmE", res.data.data[0]);
-          if (res.data.data[0]!="") {
-            this.bzE = res.data.data[0]
-          }
-          if (res.data.data[0]==undefined) {
-            this.bzE = {}
-          }
-          console.log("bzE", this.bzE);
-        })
-
-
-
-
-
-
-
-
-        });
+      });
     },
     pro() {
       this.$router.push("/personal");
@@ -345,6 +644,9 @@ export default {
     },
     drawLine() {
       //////////标准信息
+      axios.post(this.baseUrl + '/getDatatuBiao62shuiyongliang').then(res => {
+        console.log(res, "输出来水的数据")
+      })
       axios
         .get("/api/getControlStandardDaping", {
           params: {
@@ -419,12 +721,10 @@ export default {
 
               // 水
               let bar1 = this.$echarts.init(document.getElementById("myChart-bar1"));
-
+                console.log(bar1,"水水水")
               // 水
               bar1.setOption({
                 title: {
-                  // text: "单位（m²）",
-                  // subtext: '纯属虚构'
                   textStyle: {
                     fontWeight: "normal", //标题颜色
                     color: "#fff",
@@ -441,23 +741,12 @@ export default {
                     borderColor: "blue"
                   }
                 },
-                // tooltip: {
-                //   trigger: "axis"
-                // },
-                // legend: {
-                //   data: ["标准值", "实际值"]
-                // },
-                // color: ["#fef552", "#4f80f7"],
                 tooltip: {
                   trigger: "axis",
                   axisPointer: {
-                    // 坐标轴指示器，坐标轴触发有效
-                    type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+                    type: "shadow" 
                   }
                 },
-                // legend: {
-                //     data: ['实际值', '标准值']
-                // },
                 grid: {//设置图表位置
                   // top: "20%",
                   left: "3%",
@@ -493,13 +782,6 @@ export default {
                       color: "#354875"
                     }
                   },
-
-                  // axisLabel: {
-                  //     // formatter: "{value}",
-                  //     color: "white"
-                  //     // width:"8"
-                  //     // fontSize:"30px"
-                  //   },
                   type: "category",
                   data: ["E机", "D机", "C机", "B机", "A机"]
                 },
@@ -758,19 +1040,8 @@ export default {
             ]
           });
         });
-
-      ////////////母液用量
-      // axios
-      //   .get("/api/getDosageOfExcipientsChart", {
-      //     params: {
-      //       type: 4
-      //     }
-      //   })
-      //   .then(res => {
-          // console.log("母液用量", res.data);
           var muyeAll = a3.data;
           var muyeA = [];
-          console.log("muyeA", muyeA);
 
           var muyeB = [];
           var muyeC = [];
@@ -1066,7 +1337,7 @@ export default {
                   }
                 },
                 barGap: "-100%",
-                data: muyeshuju
+                data: muyeshuju // 母液数据
               },
               {
                 name: "标准值",
@@ -1096,202 +1367,26 @@ export default {
               }
             ]
           });
-        // });
-
-      /////////////生产运行-工艺执行信息
-      // axios
-      //   .get("/api/getProcessExecutionInfo", {
-      //     params: {
-      //       limit: "all",
-      //       page: 1,
-      //       type: 4,
-      //       cylinderNo: "all"
-      //     }
-      //   })
-      //   .then(res => {
-          console.log("shengchanAll", a1.data);
-          var shengchanAll = a1.data;
-          var shengchanA = [];
-          var shengchanB = [];
-          var shengchanC = [];
-          var shengchanD = [];
-          var shengchanE = [];
-
-          var additionalTrafficIndigoA = []; //A机器靛蓝母液追加流量
-          var additionalTrafficBottomingA = []; //A机器靛蓝前母液追加流量
-          var additionalTrafficSurfaceA = []; //A机器靛蓝后母液追加流量
-
-          var additionalTrafficIndigoB = []; //B机器靛蓝母液追加流量
-          var additionalTrafficCottomingB = []; //B机器靛蓝前母液追加流量
-          var additionalTrafficSurfaceB = []; //B机器靛蓝后母液追加流量
-
-          var additionalTrafficIndigoC = []; //C机器靛蓝母液追加流量
-          var additionalTrafficCottomingC = []; //C机器靛蓝前母液追加流量
-          var additionalTrafficSurfaceC = []; //C机器靛蓝后母液追加流量
-
-          var additionalTrafficIndigoD = []; //D机器靛蓝母液追加流量
-          var additionalTrafficCottomingD = []; //D机器靛蓝前母液追加流量
-          var additionalTrafficSurfaceD = []; //D机器靛蓝后母液追加流量
-
-          var additionalTrafficIndigoE = []; //E机器靛蓝母液追加流量
-          var additionalTrafficCottomingE = []; //E机器靛蓝前母液追加流量
-          var additionalTrafficSurfaceE = []; //E机器靛蓝后母液追加流量
-
-          var dyeUptakeA = []; //A机器靛蓝上染率
-          var dyeUptakeBA = []; //A机器靛蓝前上染率
-          var dyeUptakeAA = []; //A机器靛蓝后上染率
-
-          var dyeUptakeB = []; //B机器靛蓝上染率
-          var dyeUptakeBB = []; //B机器靛蓝前上染率
-          var dyeUptakeAB = []; //B机器靛蓝后上染率
-
-          var dyeUptakeC = []; //C机器靛蓝上染率
-          var dyeUptakeBC = []; //C机器靛蓝前上染率
-          var dyeUptakeAC = []; //C机器靛蓝后上染率
-
-          var dyeUptakeD = []; //D机器靛蓝上染率
-          var dyeUptakeBD = []; //D机器靛蓝前上染率
-          var dyeUptakeAD = []; //D机器靛蓝后上染率
-
-          var dyeUptakeE = []; //E机器靛蓝上染率
-          var dyeUptakeBE = []; //E机器靛蓝前上染率
-          var dyeUptakeAE = []; //E机器靛蓝后上染率
-
-          var timeA = [];
-          var timeB = [];
-          var timeC = [];
-          var timeD = [];
-          var timeE = [];
-
-          //按照生产线划分数据
-          for (let i = 0; i < shengchanAll.length; i++) {
-            if (shengchanAll[i].boardName == "A") {
-              shengchanA.push(shengchanAll[i]);
-            }
-            if (shengchanAll[i].boardName == "B") {
-              shengchanB.push(shengchanAll[i]);
-            }
-            if (shengchanAll[i].boardName == "C") {
-              shengchanC.push(shengchanAll[i]);
-            }
-            if (shengchanAll[i].boardName == "D") {
-              shengchanD.push(shengchanAll[i]);
-            }
-            if (shengchanAll[i].boardName == "E") {
-              shengchanE.push(shengchanAll[i]);
-            }
-          }
-          //这边是每个生产线的母液追加流量
-          //A
-          for (let j = 0; j < shengchanA.length; j++) {
-            additionalTrafficIndigoA.push(
-              shengchanA[j].additionalTrafficIndigo
-            );
-            additionalTrafficBottomingA.push(
-              shengchanA[j].additionalTrafficBottoming
-            );
-            additionalTrafficSurfaceA.push(
-              shengchanA[j].additionalTrafficSurface
-            );
-            timeA.push(shengchanA[j].time);
-          }
-          //B
-          for (let j = 0; j < shengchanB.length; j++) {
-            additionalTrafficIndigoB.push(
-              shengchanB[j].additionalTrafficIndigo
-            );
-            additionalTrafficCottomingB.push(
-              shengchanB[j].additionalTrafficCottoming
-            );
-            additionalTrafficSurfaceB.push(
-              shengchanB[j].additionalTrafficSurface
-            );
-            timeB.push(shengchanB[j].time);
-          }
-          //C
-          for (let j = 0; j < shengchanC.length; j++) {
-            additionalTrafficIndigoC.push(
-              shengchanC[j].additionalTrafficIndigo
-            );
-            additionalTrafficCottomingC.push(
-              shengchanC[j].additionalTrafficCottoming
-            );
-            additionalTrafficSurfaceC.push(
-              shengchanC[j].additionalTrafficSurface
-            );
-            timeC.push(shengchanC[j].time);
-          }
-          //D
-          for (let j = 0; j < shengchanD.length; j++) {
-            additionalTrafficIndigoD.push(
-              shengchanD[j].additionalTrafficIndigo
-            );
-            additionalTrafficCottomingD.push(
-              shengchanD[j].additionalTrafficCottoming
-            );
-            additionalTrafficSurfaceD.push(
-              shengchanD[j].additionalTrafficSurface
-            );
-            timeD.push(shengchanD[j].time);
-          }
-          //E
-          for (let j = 0; j < shengchanE.length; j++) {
-            additionalTrafficIndigoE.push(
-              shengchanE[j].additionalTrafficIndigo
-            );
-            additionalTrafficCottomingE.push(
-              shengchanE[j].additionalTrafficCottoming
-            );
-            additionalTrafficSurfaceE.push(
-              shengchanE[j].additionalTrafficSurface
-            );
-            timeE.push(shengchanE[j].time);
-          }
-          //这边是每个生产线的上染率
-          //A
-          for (let j = 0; j < shengchanA.length; j++) {
-            dyeUptakeA.push(shengchanA[j].dyeUptake);
-            dyeUptakeBA.push(shengchanA[j].dyeUptakeB);
-            dyeUptakeAA.push(shengchanA[j].dyeUptakeA);
-          }
-          //B
-          for (let j = 0; j < shengchanB.length; j++) {
-            dyeUptakeB.push(shengchanB[j].dyeUptake);
-            dyeUptakeBB.push(shengchanB[j].dyeUptakeB);
-            dyeUptakeAB.push(shengchanB[j].dyeUptakeA);
-          }
-          //C
-          for (let j = 0; j < shengchanC.length; j++) {
-            dyeUptakeC.push(shengchanC[j].dyeUptake);
-            dyeUptakeBC.push(shengchanC[j].dyeUptakeB);
-            dyeUptakeAC.push(shengchanC[j].dyeUptakeA);
-          }
-          //D
-          for (let j = 0; j < shengchanD.length; j++) {
-            dyeUptakeD.push(shengchanD[j].dyeUptake);
-            dyeUptakeBD.push(shengchanD[j].dyeUptakeB);
-            dyeUptakeAD.push(shengchanD[j].dyeUptakeA);
-          }
-          //E
-          for (let j = 0; j < shengchanE.length; j++) {
-            dyeUptakeE.push(shengchanE[j].dyeUptake);
-            dyeUptakeBE.push(shengchanE[j].dyeUptakeB);
-            dyeUptakeAE.push(shengchanE[j].dyeUptakeA);
-          }
-
-          // console.log( "shuju",  additionalTrafficIndigoA,  additionalTrafficDottomingA,  additionalTrafficSurfaceA,  timeA );
-          // console.log( "shuju",additionalTrafficIndigoD,additionalTrafficDottomingD,additionalTrafficSurfaceD,timeB );
-
+          let jyData = this.returnData();
           // 机台工艺执行
           let gyA1 = this.$echarts.init(
             document.getElementById("myChart-gyA1")
           );
+        //    let oData = {
+        //   myData: zhData,
+        //   srData: srData
+        // }
+        console.log(jyData.time,"输出时间看")
+          gyA1.setOption(this.setGyOption(jyData.myData[0],jyData.myData[1],jyData.myData[2],jyData.myData[3],jyData.myData[4],jyData.myData[5],jyData.time))
           let gyA2 = this.$echarts.init(
             document.getElementById("myChart-gyA2")
           );
+          console.log(jyData.srData,"数出来这个数据")
+           gyA2.setOption(this.setGyOption(jyData.srData[0],jyData.srData[1],jyData.srData[2],jyData.srData[3],jyData.srData[4],jyData.srData[5],jyData.time))
           let gyB1 = this.$echarts.init(
             document.getElementById("myChart-gyB1")
           );
+          //B机柜
           let gyB2 = this.$echarts.init(
             document.getElementById("myChart-gyB2")
           );
@@ -1315,2310 +1410,7 @@ export default {
           );
 
           // 机台工艺执行
-          gyA1.setOption({
-            color: ["#00ff0c", "#00eaff", "#ff6c00"],
-            title: {
-              text: "母液追加流量（g/L）",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              },
-              x: "5%"
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: ["靛蓝前打底", "靛蓝", "靛蓝后套面"],
-              data: [
-                {
-                  name: "靛蓝前打底",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00ff0c" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00eaff" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝后套面",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#ff6c00" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "60%",
-              textStyle: {
-                fontSize: 28 //字体大小
-              }
-            },
-
-            grid: {
-              left: "3%",
-              right: "4%",
-              bottom: "3%",
-              containLabel: true
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {}
-              }
-            },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeA,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝前打底",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficBottomingA,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00ff0c"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficIndigoA,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00eaff"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝后套面",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficSurfaceA,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#ff6c00"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 5,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00ff0c ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 6,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00eaff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 7,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#ff6c00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          gyA2.setOption({
-            color: ["#00ffd4", "#00c0ff", "#f6ff00"],
-            title: {
-              text: "实时上染率（g/L）",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              },
-              x: "5%"
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: ["靛蓝前打底", "靛蓝", "靛蓝后套面"],
-              data: [
-                {
-                  name: "靛蓝前打底",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00ffd4" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00c0ff" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝后套面",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#f6ff00" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "60%",
-              textStyle: {
-                fontSize: 28 //字体大小
-              }
-            },
-
-            grid: {
-              left: "3%",
-              right: "4%",
-              bottom: "3%",
-              containLabel: true
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {}
-              }
-            },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeA,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝前打底",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeBA,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00ffd4"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeA,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00c0ff"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝后套面",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeAA,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#f6ff00"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 0.5,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00ffd4 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 0.6,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00c0ff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 0.7,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#f6ff00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          gyB1.setOption({
-            color: ["#00ff0c", "#00eaff", "#ff6c00"],
-            title: {
-              text: "母液追加流量（g/L）",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              },
-              x: "5%"
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: ["靛蓝前打底", "靛蓝", "靛蓝后套面"],
-              data: [
-                {
-                  name: "靛蓝前打底",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00ff0c" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00eaff" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝后套面",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#ff6c00" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "60%",
-              textStyle: {
-                fontSize: 28 //字体大小
-              }
-            },
-
-            grid: {
-              left: "3%",
-              right: "4%",
-              bottom: "3%",
-              containLabel: true
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {}
-              }
-            },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeB,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝前打底",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficIndigoB,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00ff0c"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficIndigoB,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00eaff"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝后套面",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficSurfaceB,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#ff6c00"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 5,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00ff0c ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 7,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00eaff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 6,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#ff6c00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          gyB2.setOption({
-            color: ["#00ffd4", "#00c0ff", "#f6ff00"],
-            title: {
-              text: "实时上染率（g/L）",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              },
-              x: "5%"
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: ["靛蓝前打底", "靛蓝", "靛蓝后套面"],
-              data: [
-                {
-                  name: "靛蓝前打底",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00ffd4" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00c0ff" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝后套面",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#f6ff00" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "60%",
-              textStyle: {
-                fontSize: 28 //字体大小
-              }
-            },
-
-            grid: {
-              left: "3%",
-              right: "4%",
-              bottom: "3%",
-              containLabel: true
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {}
-              }
-            },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeB,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝前打底",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeBB,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00ffd4"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeB,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00c0ff"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝后套面",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeAB,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#f6ff00"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 0.5,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00ffd4 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 0.7,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00c0ff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 0.6,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#f6ff00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          gyC1.setOption({
-            color: ["#00ff0c", "#00eaff", "#ff6c00"],
-            title: {
-              text: "母液追加流量（g/L）",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              },
-              x: "5%"
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: ["靛蓝前打底", "靛蓝", "靛蓝后套面"],
-              data: [
-                {
-                  name: "靛蓝前打底",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00ff0c" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00eaff" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝后套面",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#ff6c00" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "60%",
-              textStyle: {
-                fontSize: 28 //字体大小
-              }
-            },
-
-            grid: {
-              left: "3%",
-              right: "4%",
-              bottom: "3%",
-              containLabel: true
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {}
-              }
-            },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeC,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝前打底",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficIndigoC,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00ff0c"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficIndigoC,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00eaff"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝后套面",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficSurfaceC,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#ff6c00"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 6,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00ff0c ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 5,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00eaff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 7,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#ff6c00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          gyC2.setOption({
-            color: ["#00ffd4", "#00c0ff", "#f6ff00"],
-            title: {
-              text: "实时上染率（g/L）",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              },
-              x: "5%"
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: ["靛蓝前打底", "靛蓝", "靛蓝后套面"],
-              data: [
-                {
-                  name: "靛蓝前打底",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00ffd4" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00c0ff" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝后套面",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#f6ff00" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "60%",
-              textStyle: {
-                fontSize: 28 //字体大小
-              }
-            },
-
-            grid: {
-              left: "3%",
-              right: "4%",
-              bottom: "3%",
-              containLabel: true
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {}
-              }
-            },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeC,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝前打底",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeBC,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00ffd4"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeC,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00c0ff"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝后套面",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeAC,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#f6ff00"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 0.5,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00ffd4 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 0.56,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00c0ff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 0.57,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#f6ff00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          gyD1.setOption({
-            color: ["#00ff0c", "#00eaff", "#ff6c00"],
-            title: {
-              text: "母液追加流量（g/L）",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              },
-              x: "5%"
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: ["靛蓝前打底", "靛蓝", "靛蓝后套面"],
-              data: [
-                {
-                  name: "靛蓝前打底",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00ff0c" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00eaff" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝后套面",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#ff6c00" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "60%",
-              textStyle: {
-                fontSize: 28 //字体大小
-              }
-            },
-
-            grid: {
-              left: "3%",
-              right: "4%",
-              bottom: "3%",
-              containLabel: true
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {}
-              }
-            },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeD,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝前打底",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficIndigoD,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00ff0c"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficIndigoD,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00eaff"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝后套面",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficSurfaceD,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#ff6c00"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 4,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00ff0c ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 6,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00eaff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 5,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#ff6c00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          gyD2.setOption({
-            color: ["#00ffd4", "#00c0ff", "#f6ff00"],
-            title: {
-              text: "实时上染率（g/L）",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              },
-              x: "5%"
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: ["靛蓝前打底", "靛蓝", "靛蓝后套面"],
-              data: [
-                {
-                  name: "靛蓝前打底",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00ffd4" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00c0ff" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝后套面",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#f6ff00" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "60%",
-              textStyle: {
-                fontSize: 28 //字体大小
-              }
-            },
-
-            grid: {
-              left: "3%",
-              right: "4%",
-              bottom: "3%",
-              containLabel: true
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {}
-              }
-            },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeD,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝前打底",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeBD,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00ffd4"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeD,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00c0ff"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝后套面",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeAD,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#f6ff00"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 0.5,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00ffd4 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 0.56,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00c0ff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 0.6,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#f6ff00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          gyE1.setOption({
-            color: ["#00ff0c", "#00eaff", "#ff6c00"],
-            title: {
-              text: "母液追加流量（g/L）",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              },
-              x: "5%"
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: ["靛蓝前打底", "靛蓝", "靛蓝后套面"],
-              data: [
-                {
-                  name: "靛蓝前打底",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00ff0c" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00eaff" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝后套面",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#ff6c00" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "60%",
-              textStyle: {
-                fontSize: 28 //字体大小
-              }
-            },
-
-            grid: {
-              left: "3%",
-              right: "4%",
-              bottom: "3%",
-              containLabel: true
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {}
-              }
-            },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeE,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝前打底",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficIndigoE,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00ff0c"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficIndigoE,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00eaff"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝后套面",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: additionalTrafficSurfaceE,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#ff6c00"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 5,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00ff0c ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 6,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00eaff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 7,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#ff6c00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          gyE2.setOption({
-            color: ["#00ffd4", "#00c0ff", "#f6ff00"],
-            title: {
-              text: "实时上染率（g/L）",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              },
-              x: "5%"
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: ["靛蓝前打底", "靛蓝", "靛蓝后套面"],
-              data: [
-                {
-                  name: "靛蓝前打底",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00ffd4" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#00c0ff" // 图例文字颜色
-                  }
-                },
-                {
-                  name: "靛蓝后套面",
-                  //  icon : 'circle',
-                  textStyle: {
-                    color: "#f6ff00" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "60%",
-              textStyle: {
-                fontSize: 28 //字体大小
-              }
-            },
-
-            grid: {
-              left: "3%",
-              right: "4%",
-              bottom: "3%",
-              containLabel: true
-            },
-            toolbox: {
-              feature: {
-                saveAsImage: {}
-              }
-            },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeE,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝前打底",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeBE,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00ffd4"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeE,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00c0ff"
-                    }
-                  }
-                }
-              },
-              {
-                name: "靛蓝后套面",
-                type: "line",
-                // stack: '总量',
-                symbolSize: 10,
-                data: dyeUptakeAE,
-                smooth: true,
-                serieslabel: {
-                  color: "white"
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#f6ff00"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 0.5,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00ffd4 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 0.6,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00c0ff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    },
-                    {
-                      yAxis: 0.7,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#f6ff00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-        // });
-
-      //过程检测信息
-      // axios
-      //   .get("/api/getProcessDetectionInfo", {
-      //     params: {
-      //       limit: "all",
-      //       page: 1,
-      //       type: 1,
-      //       cylinderNo: "all"
-      //     }
-      //   })
-      //   .then(res => {
-          // console.log("guochengAll", res.data);
+   
           var guochengAll = a2.data;
           //生产线划分
           var guochengA = [];
@@ -5205,7 +2997,17 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style scoped lang='less'>
+/* 修改机台基本信息 */
+.el-table--enable-row-transition .el-table__body td {
+  border: 2px solid #000;
+}
+.el-table__body tr.current-row>td{
+    background-color: #134087 !important;
+}
+/deep/.cell{
+  line-height: 60px;
+}
 * {
   margin: 0;
   padding: 0;

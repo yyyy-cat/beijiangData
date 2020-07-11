@@ -144,7 +144,7 @@ export default {
                 extraCssText: 'font-size: 100px; line-height: 100px',
             },
             grid: {
-                left: '0%',
+                left: '2%',
                 right: '0%',  //距离右侧边距
                 bottom: '0%',
                 show:true,
@@ -173,7 +173,7 @@ export default {
                      nameTextStyle: {
                         color: opt.zts,
                         fontSize: 40,
-                        lineHeight: 50
+                        lineHeight: 50,
                     },
                     axisLabel: {
                         formatter: '{value}',
@@ -265,10 +265,14 @@ export default {
                 seriesData = [
                 {
                     name: '自来水每小时用水标准',
-                    type: 'bar',
+                    type: 'line',
                     barWidth : 100,
-                    itemStyle: {
-                        color: opt.ql
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: opt.qlx,
+                        width: 8
                     },
                     data: _this.toChangeData('tonhbz', _this.zzkthn)
                 },
@@ -284,7 +288,7 @@ export default {
                         width: 8
                     },
                     data: _this.toChangeData('tonh', _this.zzkthn)
-                }
+                },
         ]
         }
         
@@ -369,10 +373,13 @@ export default {
                
                 {
                     name: '自来水每万米用水标准',
-                    type: 'bar',
-                    barWidth : 100,
-                    itemStyle: {
-                       color: opt.ls
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: opt.lsx,
+                        width: 8
                     },
                     data: _this.toChangeData('tonwmbz', _this.zzkthn)
                 },
@@ -394,7 +401,7 @@ export default {
           seriesData = [
                 {
                     name: '标准总用量蒸汽用量',
-                    type: 'bar',
+                    type: 'line',
                     barWidth : 100,
                     itemStyle: {
                         color: opt.ls
