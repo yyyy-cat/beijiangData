@@ -1,9 +1,9 @@
 <template>
     <div class="charts">
         <div class="but" v-if="type == 2"> 
-            <button class="shui" @click="toShui('标准总用量自来水用量', '总用量自来水用量', 'zylzlstonwm', '#52FBC2', 'bzwmzls', '#E1BB02','red')">水</button>
-             <button class="shui" @click="toShui('标准总用量蒸汽用量', '总用量蒸汽用量', 'zylzqtonwm','#00A8FF', 'bzwmzq','#FF9500')">蒸汽</button>
-              <button class="shui" @click="toShui('标准总用量天然气用量', '总用量天然气用量', 'zyltrqmwm','#01FF0E', 'bzwmtrq','#00E9FE')">天然气</button>
+            <button class="shui" @click="toShui('标准总用量自来水用量', '总用量自来水用量', 'zylzlstonwm', '#DC143C', 'bzwmzls', '#32CD32','red')">水</button>
+             <button class="shui" @click="toShui('标准总用量蒸汽用量', '总用量蒸汽用量', 'zylzqtonwm','#DC143C', 'bzwmzq','#32CD32','red')">蒸汽</button>
+              <button class="shui" @click="toShui('标准总用量天然气用量', '总用量天然气用量', 'zyltrqmwm','#DC143C', 'bzwmtrq','#32CD32','red')">天然气</button>
         </div>
         <div class="charts-main" :style="{marginLeft: l}">
              <div id='list' :style="{width: h, height: '900px', margin: '0 auto', zIndex: '10'}"></div>
@@ -290,7 +290,7 @@ export default {
                     // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: opt.qlx,
+                        color: opt.qlxx,
                         width: 8
                     },
                     data: _this.toChangeData('tonh', _this.zzkthn)
@@ -310,10 +310,13 @@ export default {
                 seriesData = [
                 {
                     name: '染色自来水标准用量',
-                    type: 'bar',
-                    barWidth : 100,
-                    itemStyle: {
-                        color: opt.ql
+                    type: 'line',
+                    smooth: 0.5,
+                    // yAxisIndex: 1,
+                    symbolSize: 20, 
+                    lineStyle: {
+                        color: opt.qll,
+                        width: 8
                     },
                     data: _this.toChangeData('ystonbz', _this.jrgchn)
                 },
@@ -342,14 +345,14 @@ export default {
                     // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: opt.qlx,
+                        color: opt.qlxx,
                         width: 8
                     },
                     data: _this.toChangeData('ystonwm', _this.jrgchn)
                 },
                   {
                     name: '染色蒸汽用量',
-                    type: 'line',
+                    type: 'bar',
                     smooth: 0.5,
                     // yAxisIndex: 1,
                     symbolSize: 20, 
@@ -357,11 +360,11 @@ export default {
                         color: opt.lsx,
                         width: 8
                     },
-                    data: _this.toChangeData('zylzqtonwm', _this.jrgchn)
+                    data: _this.toChangeData('ysmwm', _this.jrgchn)
                 },
                  {
                     name: '浆纱蒸汽用量',
-                    type: 'line',
+                    type: 'bar',
                     smooth: 0.5,
                     // yAxisIndex: 1,
                     symbolSize: 20, 
@@ -396,7 +399,7 @@ export default {
                     // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: opt.lsx,
+                        color: opt.qlxx,
                         width: 8
                     },
                     data: _this.toChangeData('tonwm', _this.zzkthn)
@@ -409,7 +412,7 @@ export default {
                     name: '标准总用量蒸汽用量',
                      type: 'line',
                     smooth: 0.5,
-                    yAxisIndex: 1,
+                    // yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
                         color: opt.qll,
@@ -421,10 +424,10 @@ export default {
                     name: '总用量蒸汽用量',
                     type: 'line',
                     smooth: 0.5,
-                    // yAxisIndex: 1,
+                    yAxisIndex: 1,
                     symbolSize: 20, 
                     lineStyle: {
-                        color: opt.lsx,
+                        color: opt.qlxx,
                         width: 8
                     },
                     data: _this.toChangeData('zylzqtonwm', _this.xrData)
