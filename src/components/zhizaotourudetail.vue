@@ -9,7 +9,7 @@
             <div class="ybp" >
               <!-- v-show='JSON.stringify(this.rsylcurrent) !== "{}"' -->
                 <div id="sjsrl" :style="{width: '1400px', height: '1200px',  zIndex: '10',marginLeft: x}"></div>
-                  <div class="info" :style="{marginLeft: p}">
+                  <div id="sjsrl" class="info" :style="{marginLeft: p}">
                     <!-- <div class="data">基本信息</div> -->
                     <table border="1"  class="main">
                         <tr>
@@ -246,6 +246,19 @@ export default {
                     color: opt.ls
                 }
             },
+                                    {
+                name: '织成率标准',
+                type: 'line',
+                smooth: 0.5,
+                yAxisIndex: 1,
+                symbolSize: 40, 
+
+                data: this.changeOptions('zhichenglvbiaozhun'),
+                lineStyle: {
+                    width: 8,
+                    color: opt.qll
+                }
+            },
             {
                 name: '织成率',
                 type: 'line',
@@ -257,6 +270,19 @@ export default {
                 lineStyle: {
                     width: 8,
                     color: opt.qlxx
+                }
+            },
+                        {
+                name: '百米用纬标准',
+                type: 'line',
+                smooth: 0.5,
+                yAxisIndex: 1,
+                symbolSize: 40, 
+
+                data: this.changeOptions('baimiyongweibiaozhun'),
+                lineStyle: {
+                    width: 8,
+                    color: opt.qll
                 }
             },
             {
@@ -271,33 +297,9 @@ export default {
                     width: 8,
                     color: opt.qlxx
                 }
-            },
-                        {
-                name: '织成率标准',
-                type: 'line',
-                smooth: 0.5,
-                yAxisIndex: 1,
-                symbolSize: 40, 
-
-                data: this.changeOptions('zhichenglvbiaozhun'),
-                lineStyle: {
-                    width: 8,
-                    color: opt.qll
-                }
-            },
-            {
-                name: '百米用纬标准',
-                type: 'line',
-                smooth: 0.5,
-                yAxisIndex: 1,
-                symbolSize: 40, 
-
-                data: this.changeOptions('baimiyongweibiaozhun'),
-                lineStyle: {
-                    width: 8,
-                    color: opt.qll
-                }
             }
+
+
         ]
         }else{
             seriesData = [
@@ -325,19 +327,7 @@ export default {
                     color: opt.ls
                 }
             },
-            {
-                name: '制成率',
-                type: 'line',
-                smooth: 0.5,
-                yAxisIndex: 1,
-                symbolSize: 40, 
 
-                data: this.changeOptions('sjzcl'),
-                lineStyle: {
-                    width: 8,
-                    color: opt.qlxx
-                }
-            },
             {
                 name: '标准制成率',
                 type: 'line',
@@ -349,6 +339,19 @@ export default {
                 lineStyle: {
                     width: 8,
                     color: opt.qll
+                }
+            },
+                        {
+                name: '制成率',
+                type: 'line',
+                smooth: 0.5,
+                yAxisIndex: 1,
+                symbolSize: 40, 
+
+                data: this.changeOptions('sjzcl'),
+                lineStyle: {
+                    width: 8,
+                    color: opt.qlxx
                 }
             }
         ]
