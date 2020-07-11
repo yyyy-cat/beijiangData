@@ -179,6 +179,8 @@ export default {
         return options
     },
     ybp(sj,value, name, title) {
+        console.log('testing')
+        console.log(value)
         let _this = this;
         if(name == 'sjsrl'){
             let sjsrl = this.$echarts.init(document.getElementById('sjsrl'))
@@ -254,7 +256,7 @@ export default {
                 data: this.changeOptions('zhichenglv'),
                 lineStyle: {
                     width: 8,
-                    color: opt.lsx
+                    color: opt.qlxx
                 }
             },
             {
@@ -267,7 +269,33 @@ export default {
                 data: this.changeOptions('baimiyongwei'),
                 lineStyle: {
                     width: 8,
-                    color: opt.qlx
+                    color: opt.qlxx
+                }
+            },
+                        {
+                name: '织成率标准',
+                type: 'line',
+                smooth: 0.5,
+                yAxisIndex: 1,
+                symbolSize: 40, 
+
+                data: this.changeOptions('zhichenglvbiaozhun'),
+                lineStyle: {
+                    width: 8,
+                    color: opt.qll
+                }
+            },
+            {
+                name: '百米用纬标准',
+                type: 'line',
+                smooth: 0.5,
+                yAxisIndex: 1,
+                symbolSize: 40, 
+
+                data: this.changeOptions('baimiyongweibiaozhun'),
+                lineStyle: {
+                    width: 8,
+                    color: opt.qll
                 }
             }
         ]
@@ -307,7 +335,7 @@ export default {
                 data: this.changeOptions('sjzcl'),
                 lineStyle: {
                     width: 8,
-                    color: opt.qlx
+                    color: opt.qlxx
                 }
             },
             {
@@ -320,7 +348,7 @@ export default {
                 data: this.changeOptions('bzzcl'),
                 lineStyle: {
                     width: 8,
-                    color: opt.qlx
+                    color: opt.qll
                 }
             }
         ]
@@ -431,11 +459,12 @@ export default {
          let data = JSON.parse(this.lData);
           let xData = [];//横坐标显示数据
           let source = []//柱状图数据
+          console.log(data,'shuju ')
             data.map((item, idx) => {
                 let data = []
                 let a = '第'+ Number(idx+1) + '条数据'
                 xData.push(a)
-                data.push(idx,item[str1], item[str2])
+                data.push(idx,item[str1], item[str2],item['zhichenglvbiaozhun'],item['baimiyongweibiaozhun'],item['bzzcl'])
                 source.push(data)
             });
             //放大的图 xData横坐标数据
@@ -450,14 +479,15 @@ export default {
                     _this.rsylcurrent = data[params.dataIndex];
                 }
                 if(_this.type == 1 && params.seriesType == 'line' && params.seriesName == "百米用纬"){
-                    _this.ybp(params.data,source[params['dataIndex']]['1'], 'sjsrl2', params.seriesName);
+                    _this.ybp(params.data,source[a]['4'], 'sjsrl2', params.seriesName);
                     _this.rsylcurrent2 = data[params.dataIndex];
                 }else if(_this.type == 1 && params.seriesType == 'line' && params.seriesName == "织成率"){
-                    // console.log(source['6'],"参数数据5555")
-                    _this.ybp(params.data,source[a]['2'], 'sjsrl', params.seriesName);
+                    _this.ybp(params.data,source[a]['3'], 'sjsrl', params.seriesName);
                     _this.rsylcurrent = data[params.dataIndex];
                 }else if(_this.type == 2 && params.seriesType == 'line' && params.seriesName == "制成率") {
-                    _this.ybp(params.data,source[params['dataIndex']]['1'], 'sjsrl', params.seriesName);
+                    console.log(source,"参数数据5555")
+                    // _this.ybp(params.data,source[params['dataIndex']]['1'], 'sjsrl', params.seriesName);
+                    _this.ybp(params.data,source[a]['5'], 'sjsrl', params.seriesName);
                     _this.rsylcurrent = data[params.dataIndex];
                 }
                 

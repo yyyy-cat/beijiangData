@@ -414,9 +414,8 @@ export default {
 </script>
 <style scoped lang='less'>
 @import "../style/gctop.less";
-
-#building-top .el-table__body-wrapper {
-  height: 730px !important;
+.el-table__body-wrapper{
+  height: 710px !important;
 }
 .ChemicalTable {
   margin: 60px auto 0;
@@ -1379,8 +1378,8 @@ a {
 .el-table--scrollable-y .el-table__body-wrapper {
   overflow-y: auto !important;
 }
-/* #building-top .el-table__body-wrapper {
-  height: 710px;
+/* .el-table__body-wrapper{
+  height: 710px !important;
 } */
 /*::-webkit-scrollbar {display:none}*/
 </style>

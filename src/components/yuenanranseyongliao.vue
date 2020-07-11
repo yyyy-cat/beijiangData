@@ -69,8 +69,10 @@
             :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
             border
             ref="table"
-            height="1500"
-            style="width: 100%;text-align: center;color: black;background: none">
+            height="1553"
+            v-if="!spread"
+            style="width: 100%;text-align: center;color: black;background: none"
+            class="special">
             <el-table-column
               prop="sh"
               label="基本资料"
@@ -86,7 +88,7 @@
                 prop="pz"
                 label="品种"
                 align="center"
-                width="300">
+                width="350">
               </el-table-column>
               <el-table-column
                 prop="gh"
@@ -254,7 +256,209 @@
             <el-table-column
               label="前处理槽烧碱用量"
               align="center"
-              width="250">
+              width="300">
+              <el-table-column
+                prop="sjyl"
+                label="KG"
+                align="center"
+                width="250">
+              </el-table-column>
+            </el-table-column>
+          </el-table>
+          <el-table
+            :data="historyData"
+            :span-method="arraySpanMethod"
+            :header-cell-style="{background:'#040A53'}"
+            :row-style="{background: 'none',margin:'200px',height:'200px;',color:'#ffffff'}"
+            border
+            ref="table"
+            height="1632 !important"
+            v-if="spread"
+            style="width: 100%;text-align: center;color: black;background: none; height:1632px !important">
+            <el-table-column
+              prop="sh"
+              label="基本资料"
+              align="center"
+              width="400">
+              <el-table-column
+                prop="scdh"
+                label="生产单号"
+                align="center"
+                width="400">
+              </el-table-column>
+              <el-table-column
+                prop="pz"
+                label="品种"
+                align="center"
+                width="350">
+              </el-table-column>
+              <el-table-column
+                prop="gh"
+                label="缸号"
+                align="center"
+                width="550">
+              </el-table-column>
+            </el-table-column>
+            <el-table-column
+              label="染色投入纱量"
+              align="center"
+              width="450">
+              <el-table-column
+                prop="slm"
+                label="m"
+                align="center"
+                width="280">
+              </el-table-column>
+              <el-table-column
+                prop="slkg"
+                label="KG"
+                align="center"
+                width="300">
+              </el-table-column>
+            </el-table-column>
+            <el-table-column
+              prop="rssj"
+              label="染色时间"
+              align="center"
+              width="400">
+            </el-table-column>
+            <el-table-column
+              label="母液使用实绩"
+              align="center"
+              width="450">
+              <el-table-column
+                label="母液标准用量"
+                align="center"
+                width="450">
+                <el-table-column
+                  label="上染"
+                  align="center"
+                  width="280">
+                  <el-table-column
+                    prop="mybzsr"
+                    label="OWF %"
+                    align="center"
+                    width="280">
+                  </el-table-column>
+                </el-table-column>
+                <el-table-column
+                  label="用量"
+                  align="center"
+                  width="280">
+                  <el-table-column
+                    prop="mybzyl"
+                    label="L"
+                    align="center"
+                    width="280">
+                  </el-table-column>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column
+                label="母液实际用量"
+                align="center"
+                width="450">
+                <el-table-column
+                  label="流量计用量"
+                  align="center"
+                  width="300">
+                  <el-table-column
+                    prop="mysjyl"
+                    label="L"
+                    align="center"
+                    width="300">
+                  </el-table-column>
+                </el-table-column>
+                <el-table-column
+                  label="化料桶用量"
+                  align="center"
+                  width="300">
+                  <el-table-column
+                    prop="mysjyl"
+                    label="#"
+                    align="center"
+                    width="300">
+                  </el-table-column>
+                </el-table-column>
+                <el-table-column
+                  label="上染"
+                  align="center"
+                  width="280">
+                  <el-table-column
+                    prop="mysjsr"
+                    label="OWF %"
+                    align="center"
+                    width="280">
+                  </el-table-column>
+                </el-table-column>
+              </el-table-column>
+              <el-table-column
+                label="标准偏差"
+                align="center"
+                width="450">
+                <el-table-column
+                  prop="mybzpc"
+                  label="%"
+                  align="center"
+                  width="250">
+                </el-table-column>
+                <el-table-column
+                  prop="mybzpcsm"
+                  label="异常判断及备注说明"
+                  :show-overflow-tooltip="true"
+                  align="center"
+                  width="600">
+                </el-table-column>
+              </el-table-column>
+            </el-table-column>
+            <el-table-column
+              label="助剂使用实绩"
+              align="center"
+              width="450">
+              <el-table-column
+                label="助剂标准用量"
+                align="center"
+                width="350">
+                <el-table-column
+                  prop="zjbz"
+                  label="L"
+                  align="center"
+                  width="350">
+                </el-table-column>
+              </el-table-column>
+              <el-table-column
+                label="助剂实际用量"
+                align="center"
+                width="350">
+                <el-table-column
+                  prop="zjsj"
+                  label="L"
+                  align="center"
+                  width="350">
+                </el-table-column>
+              </el-table-column>
+              <el-table-column
+                label="标准偏差"
+                align="center"
+                width="450">
+                <el-table-column
+                  prop="zjbzpc"
+                  label="%"
+                  align="center"
+                  width="300">
+                </el-table-column>
+                <el-table-column
+                  prop="zjbzpcsm"
+                  label="异常判断及备注说明"
+                  :show-overflow-tooltip="true"
+                  align="center"
+                  width="600">
+                </el-table-column>
+              </el-table-column>
+            </el-table-column>
+            <el-table-column
+              label="前处理槽烧碱用量"
+              align="center"
+              width="300">
               <el-table-column
                 prop="sjyl"
                 label="KG"
@@ -263,7 +467,6 @@
               </el-table-column>
             </el-table-column>
             <el-table-column
-             v-if="spread"
              key='1'
               label="染色辅料实际投入总量"
               align="center"
@@ -622,6 +825,15 @@ import shaoguanUrl from '../assets/s_url';
 </script>
 <style scoped lang='less'>
 @import '../style/top.less';
+.special{
+  height: 1553px !important;
+}
+.el-table--scrollable-y, 
+.el-table__body-wrapper, 
+.ChemicalTable{
+    height: auto !important;
+  }
+
   .ChemicalTable {
     margin: 200px auto 0;
     /* width: 1751px; */
