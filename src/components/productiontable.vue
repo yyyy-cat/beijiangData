@@ -293,15 +293,14 @@ export default {
     },
     //设置母液化料数据
     setMyData() {
-      let option = {
-          title: {
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
+     let option = {
+          tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                  type: 'shadow'
               }
-            },
-            legend: {
+          },
+          legend: {
               margin: 100,
               x: "50%",
               textStyle: {
@@ -309,20 +308,16 @@ export default {
                 color: "#fff", //字体颜色
                 borderColor: "blue"
               }
-            },
-            tooltip: {
-              trigger: "axis",
-              axisPointer: {
-                type: "shadow" 
-              }
-            },
+          },
             grid: {
+              // top: "20%",
               left: "3%",
               right: "4%",
               bottom: "11%",
               containLabel: true
             },
             xAxis: {
+              // type: 'value',
               axisLabel: {
                 formatter: "{value}",
                 color: "white",
@@ -339,6 +334,8 @@ export default {
               axisLabel: {
                 formatter: "{value}",
                 color: "white",
+                // width:"8"
+                // fontSize:"30px"
                 fontSize: 22
               },
               splitLine: {
@@ -354,36 +351,38 @@ export default {
                 "C机",
                 "B机",
                 "A机",
+                "A机",
               ]
             },
             calculable: true,
             animationDurationUpdate: 1200,
             series: [
               {
-                name: "靛蓝前实际值",
+                name: "实际值",
                 type: "bar",
                 barWidth: 30,
+                color: '#00c8e1',
                 label: {
                   normal: {
                     show: true,
                     position: "right",
                     textStyle: {
-                      color: "white",
+                      //数值样式
+                      color: "#fff",
                       fontSize: 25
                     }
                   }
                 },
                 barGap: "-100%",
-                data: [0,10,20,30] // 母液数据
+                data: [100,200,300] 
               },
               {
-                name: "靛蓝前标准值",
+                name: "标准值",
                 type: "bar",
                 barWidth: 30,
-                // stack: '总量',
                 itemStyle: {
                   normal: {
-                    color: "rgba(237,125,49, 0)",
+                    color: '#fbfa50',
                     borderColor: "#fbfa50",
                     borderWidth: "5"
                   }
@@ -394,59 +393,15 @@ export default {
                     position: "inside",
                     textStyle: {
                       //数值样式
-                      color: "fbfa50",
+                      color: "#fbfa50",
                       fontSize: 25
                     }
                   }
                 },
-
-                data: [0,10,20,30]
-              },
-               {
-                name: "靛蓝前实际值",
-                type: "bar",
-                barWidth: 30,
-                label: {
-                  normal: {
-                    show: true,
-                    position: "right",
-                    textStyle: {
-                      color: "white",
-                      fontSize: 25
-                    }
-                  }
-                },
-                barGap: "-100%",
-                data: [0,10,20,30] // 母液数据
-              },
-              {
-                name: "靛蓝前标准值",
-                type: "bar",
-                barWidth: 30,
-                // stack: '总量',
-                itemStyle: {
-                  normal: {
-                    color: "rgba(237,125,49, 0)",
-                    borderColor: "#fbfa50",
-                    borderWidth: "5"
-                  }
-                },
-                label: {
-                  normal: {
-                    show: true,
-                    position: "inside",
-                    textStyle: {
-                      //数值样式
-                      color: "fbfa50",
-                      fontSize: 25
-                    }
-                  }
-                },
-
-                data: [0,80,90,100]
+                data: [200,300,400,500,600] //标准值
               }
             ]
-      }
+      };
       return option
     },
     
@@ -1216,6 +1171,223 @@ export default {
       }
       return options
     },
+    setJtOprOption(dlndsj, dlndbz, dlqndsj, dlqndbz, dlhndsj, dlhndbz,time) {
+      let options = {
+            color: ["#00ff0c", "#00eaff", "#ff6c00"],
+            title: {
+              text: "OPR（g/L）",
+              // subtext: "纯属虚构"
+              textStyle: {
+                fontWeight: "normal", //标题颜色
+                color: "#fff",
+                fontSize: 28
+              },
+              x: "5%"
+            },
+            tooltip: {
+              trigger: "axis"
+            },
+            legend: {
+              margin: 100,
+              data: ["靛蓝ORP浓度", "靛蓝前ORP浓度", "靛蓝后ORP浓度"],
+              data: [
+                {
+                  name: "靛蓝ORP浓度",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#00ff0c" // 图例文字颜色
+                  }
+                },
+                {
+                  name: "靛蓝前ORP浓度",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#00eaff" // 图例文字颜色
+                  }
+                },
+                {
+                  name: "靛蓝后ORP浓度",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#ff6c00" // 图例文字颜色
+                  }
+                }
+              ],
+              x: "60%",
+              textStyle: {
+                fontSize: 28 //字体大小
+              }
+            },
+
+            grid: {
+              left: "3%",
+              right: "4%",
+              bottom: "3%",
+              containLabel: true
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {}
+              }
+            },
+            xAxis: {
+              type: "category",
+              //线框颜色
+              axisLine: {
+                lineStyle: {
+                  color: "#354875",
+                  width: 2
+                }
+              },
+              boundaryGap: false,
+              data: time,
+              axisLabel: {
+                color: "white",
+                fontSize: '20'
+              }
+            },
+            yAxis: {
+              type: "value",
+              //线框颜色
+              axisLine: {
+                lineStyle: {
+                  color: "#354875",
+                  width: 2
+                }
+              },
+              axisLabel: {
+                formatter: "{value}",
+                color: "white"
+              },
+              splitLine: {
+                lineStyle: {
+                  type: "dashed",
+                  color: "#354875"
+                }
+              }
+            },
+            series: [
+              {
+                name: "靛蓝ORP浓度",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlndsj,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00ff0c"
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝前ORP浓度",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlqndsj,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00eaff"
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝后ORP浓度",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlhndsj,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#ff6c00"
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝ORP浓度标准",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlndbz,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00ff0c",
+                      type:'dotted'
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝前ORP浓度标准",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlqndbz,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00eaff",
+                      type:'dotted'
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝后ORP浓度标准",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlhndbz,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#ff6c00",
+                      type:'dotted'
+                    }
+                  }
+                }
+              },
+            ]
+      }
+      return options
+    },
     setZhixingShiJian() {
       axios.post(this.baseUrl + '/getDatatuBiao65gongyizhixingxinxi').then(res => {
         this.jtgyData = res.data.data[0]['A机台数据'];
@@ -1278,19 +1450,6 @@ export default {
         return oData
     },
     //右边表格图
-//        "采集时间": "2020-07-10 17:27:07",
-//             "靛蓝浓度实际": "73.98",
-//             "靛蓝浓度标准": 73.2,
-//             "靛蓝ORP浓度实际": "809.25",
-//             "靛蓝ORP浓度标准": 0,
-//             "靛蓝前浓度实际": 0,
-//             "靛蓝前浓度标准": 0,
-//             "靛蓝前ORP浓度实际": 0,
-//             "靛蓝前ORP浓度标准": 0,
-//             "靛蓝后浓度实际": "5.82",
-//             "靛蓝后浓度标准": 5.0,
-//             "靛蓝后ORP浓度实际": "800.58",
-//             "靛蓝后ORP浓度标准": 0
 
     returnDataNd(dataList) {
       let dlnd = [];
@@ -1317,12 +1476,12 @@ export default {
          dlhnd.push(item['靛蓝后浓度实际'])
          dlhndbz.push(item['靛蓝后浓度标准'])
          //上染
-         opdlnd.push(item['靛蓝浓度实际'])
-         opdlndbz.push(item['靛蓝浓度标准'])
-         opdlqnd.push(item['靛蓝前浓度实际'])
-         opdlqndbz.push(item['靛蓝前浓度标准'])
-         opdlhnd.push(item['靛蓝后浓度实际'])
-         opdlhndbz.push(item['靛蓝后浓度标准'])
+         opdlnd.push(item['靛蓝ORP浓度实际'])
+         opdlndbz.push(item['靛蓝ORP浓度标准'])
+         opdlqnd.push(item['靛蓝前ORP浓度实际'])
+         opdlqndbz.push(item['靛蓝前ORP浓度标准'])
+         opdlhnd.push(item['靛蓝后ORP浓度实际'])
+         opdlhndbz.push(item['靛蓝后ORP浓度标准'])
         timer.push(item['采集时间'].slice(14,18))
         })
         zhData.push(dlnd,dlndbz,dlqnd,dlqndbz,dlhnd,dlhndbz)
@@ -1524,32 +1683,47 @@ export default {
           let myChartA2 = this.$echarts.init(
             document.getElementById("myChartA2")
           );
-          console.log(A,"输出来一个数据八八八")
           myChartA1.setOption(this.setJtOption(A.myData[0],A.myData[1],A.myData[2],A.myData[3],A.myData[4],A.myData[5],A.time))
+          myChartA2.setOption(this.setJtOprOption(A.srData[0],A.srData[1],A.srData[2],A.srData[3],A.srData[4],A.srData[5],A.time))
+          let B = this.returnDataNd(this.gcDataB);
           let myChartB1 = this.$echarts.init(
             document.getElementById("myChartB1")
           );
           let myChartB2 = this.$echarts.init(
             document.getElementById("myChartB2")
           );
+
+          myChartB1.setOption(this.setJtOption(B.myData[0],B.myData[1],B.myData[2],B.myData[3],B.myData[4],B.myData[5],B.time))
+          myChartB2.setOption(this.setJtOprOption(B.srData[0],B.srData[1],B.srData[2],B.srData[3],B.srData[4],B.srData[5],B.time))
+          let C = this.returnDataNd(this.gcDataC);
           let myChartC1 = this.$echarts.init(
             document.getElementById("myChartC1")
           );
           let myChartC2 = this.$echarts.init(
             document.getElementById("myChartC2")
           );
+          myChartC1.setOption(this.setJtOption(C.myData[0],C.myData[1],C.myData[2],C.myData[3],C.myData[4],C.myData[5],C.time))
+          myChartC2.setOption(this.setJtOprOption(C.srData[0],C.srData[1],C.srData[2],C.srData[3],C.srData[4],C.srData[5],C.time))
+          
+          let D = this.returnDataNd(this.gcDataD);
           let myChartD1 = this.$echarts.init(
             document.getElementById("myChartD1")
           );
           let myChartD2 = this.$echarts.init(
             document.getElementById("myChartD2")
           );
+          myChartD1.setOption(this.setJtOption(D.myData[0],D.myData[1],D.myData[2],D.myData[3],D.myData[4],D.myData[5],D.time))
+          myChartD2.setOption(this.setJtOprOption(D.srData[0],D.srData[1],D.srData[2],D.srData[3],D.srData[4],D.srData[5],D.time))
+          
+          let E = this.returnDataNd(this.gcDataE);
           let myChartE1 = this.$echarts.init(
             document.getElementById("myChartE1")
           );
           let myChartE2 = this.$echarts.init(
             document.getElementById("myChartE2")
           );
+          myChartE1.setOption(this.setJtOption(E.myData[0],E.myData[1],E.myData[2],E.myData[3],E.myData[4],E.myData[5],E.time))
+          myChartE2.setOption(this.setJtOprOption(E.srData[0],E.srData[1],E.srData[2],E.srData[3],E.srData[4],E.srData[5],E.time))
 
     },
     // setMyData
