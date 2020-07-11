@@ -331,7 +331,7 @@ export default {
           yAxisIndex: 1,
           symbolSize: 20,
           lineStyle: {
-            color: opt.ql,
+            color: opt.qll,
             width: 8,
             type: "dotted"
           },
@@ -344,7 +344,7 @@ export default {
           yAxisIndex: 1,
           symbolSize: 20,
           lineStyle: {
-            color: opt.ls,
+            color: opt.qll,
             width: 8,
             type: "dotted"
           },
@@ -393,7 +393,7 @@ export default {
           yAxisIndex: 1,
           symbolSize: 20,
           lineStyle: {
-            color: opt.ls,
+            color: opt.qll,
             width: 8,
             type: "dotted"
           },
@@ -430,7 +430,7 @@ export default {
           yAxisIndex: 1,
           symbolSize: 20,
           lineStyle: {
-            color: opt.qlx,
+            color: opt.qll,
             width: 8
           },
           data: _this.toChangeData("lhw", _this.hbsj)
@@ -442,7 +442,7 @@ export default {
           yAxisIndex: 1,
           symbolSize: 20,
           lineStyle: {
-            color: opt.ls,
+            color: opt.qll,
             width: 8,
             type: "dotted"
           },

@@ -2,7 +2,7 @@
     <div class="charts">
         <span class="title-name">{{name}}</span>
         <div class="right" @click="toTable">返回</div>
-     
+    
         <div class="left">
         <el-scrollbar style="height: 900px">
             <el-calendar>
@@ -165,6 +165,23 @@ export default {
             ]
         }else if(_this.type == 1) {
             seriesData =  [
+                // shenzhen modify
+                { 
+                    name: '标准上浆率',
+                    // type: 'bar',由柱状图转变成了折线图
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 10, 
+                    // itemStyle: {
+                    //     color: opt.ql
+                    // },
+                     lineStyle: {
+                        width: 8,
+                        color: opt.qll
+                    },
+                    data:  _this.toSetData('fljybzsjl', _this.sjfl),
+                },
                 // { 
                 //     name: '标准上浆率',
                 //     type: 'bar',
@@ -182,7 +199,7 @@ export default {
                     data: _this.toSetData('fljysjsjl', _this.sjfl),
                     lineStyle: {
                         width: 8,
-                        color: opt.qlx
+                        color: opt.qlxx
                     }
                 }
             ]
@@ -270,6 +287,7 @@ export default {
                 day.push(k[name])
             })
         })
+        console.log(day)
         return day
     },
     draw(data) {

@@ -163,7 +163,7 @@ export default {
                     data: _this.changeOptions('mybzsr'),
                     lineStyle: {
                         width: 8,
-                        color: opt.ql
+                        color: opt.qll
                     }
                 },
                 {
@@ -175,7 +175,7 @@ export default {
                     data: _this.changeOptions('mysjsr'),
                     lineStyle: {
                         width: 8,
-                        color: opt.qlx
+                        color: opt.qlxx
                     }
                 }
             ]
@@ -190,6 +190,20 @@ export default {
             //         color: opt.ql
             //     }
             // },
+            { 
+                    name: '标准上浆率',
+                    // type: 'bar',
+                    // barWidth : 150,
+                    type: 'line',
+                    smooth: 0.5,
+                    yAxisIndex: 1,
+                    symbolSize: 40, 
+                    data: _this.changeOptions('fljybzsjl'),
+                    lineStyle: {
+                        width: 8,
+                        color: opt.qll
+                    }
+                },
             {
                 name: '上浆率',
                 type: 'line',
@@ -200,7 +214,7 @@ export default {
                 data: this.changeOptions('fljysjsjl'),
                 lineStyle: {
                     width: 8,
-                    color: opt.qlx
+                    color: opt.qlxx
                 }
             }
         ]
