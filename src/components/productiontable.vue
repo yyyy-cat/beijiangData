@@ -65,14 +65,6 @@
         <p>母液用量</p>
         <div id="myChart-bar3" :style="{width: '100%', height: '640px'}"></div>
       </div>
-      <!-- <div class="protab-sc_bg4">
-        <p>机台车速</p>
-        <div id="myChart-curveA" :style="{width: '100%', height: '380px'}"></div>
-        <div id="myChart-curveB" :style="{width: '100%', height: '380px'}"></div>
-        <div id="myChart-curveC" :style="{width: '100%', height: '380px'}"></div>
-        <div id="myChart-curveD" :style="{width: '100%', height: '380px'}"></div>
-        <div id="myChart-curveE" :style="{width: '100%', height: '380px'}"></div>
-      </div>-->
       <div class="protab-sc_bg5">
         <p>机台工艺执行信息</p>
         <div class="bg5-content">
@@ -116,7 +108,19 @@ import login from "./login_assembly.vue";
 export default {
   data() {
     return {
+      gcDataA:[],
+      gcDataB:[],
+      gcDataC:[],
+      gcDataD:[],
+      gcDataE:[],
+      muyeData: [],//母液数据
+      qishuiData: [],//汽水数据
+      shuiyongliang: [],//水用量数据
       jtgyData: [],//机台工艺的总和数据
+      jtgyDataB: [],
+      jtgyDataC: [],
+      jtgyDataD: [],
+      jtgyDataE: [],
       tableWidth: '350',
       baseUrl: 'http://120.78.186.60:8090/api',
       tableData: [],
@@ -138,18 +142,426 @@ export default {
   created() {
     // this.setdata();
     this.setShuiData();
+    this.setQiData();
+    this.setmyData();
     this.setZhixingShiJian();
+    this.setjitaiguochengjiancexinxi();
   },
   mounted() {
     this.setData();
-    // this.drawLine();
   },
   watch: {
+    shuiyongliang: function(newData, oldData) {
+      this.drawLineS();
+    },
+    qishuiData: function() {
+      this.drawLineQ()
+    },
+    muyeData: function(newData, oldData) {
+      this.drawLineM();
+    },
     jtgyData: function(newData, oldData) {
       this.drawLine();
+    },
+    gcDataA: function() {
+      this.drawJtGc();
     }
+    // drawJtGc
   },
   methods: {
+    //设置机台过程检测信息
+    setJtOptions() {
+      let options = {
+            color: "#00e573",
+            title: {
+              text: "靛蓝浓度（g/L）",
+              x: "7%",
+              textStyle: {
+                fontWeight: "normal", //标题颜色
+                color: "#fff",
+                fontSize: 28
+              }
+            },
+            tooltip: {
+              trigger: "axis"
+            },
+            legend: {
+              margin: 100,
+              data: [
+                {
+                  name: "靛蓝",
+                  textStyle: {
+                    color: "#00e573" // 图例文字颜色
+                  }
+                }
+              ],
+              x: "80%",
+              textStyle: {
+                fontSize: 28 //字体大小
+              }
+            },
+            xAxis: {
+              type: "category",
+              //线框颜色
+              axisLine: {
+                lineStyle: {
+                  color: "#354875",
+                  width: 2
+                }
+              },
+              boundaryGap: false,
+              data: timeDs,
+              axisLabel: {
+                color: "white"
+              }
+            },
+            yAxis: {
+              type: "value",
+              axisLine: {
+                lineStyle: {
+                  color: "#354875",
+                  width: 2
+                }
+              },
+              axisLabel: {
+                formatter: "{value}",
+                color: "white"
+              },
+              splitLine: {
+                lineStyle: {
+                  type: "dashed",
+                  color: "#354875"
+                }
+              }
+            },
+            series: [
+              {
+                name: "靛蓝",
+                type: "line",
+                symbolSize: 10,
+                data: [10,20,30,40],
+                markPoint: {
+                  data: [
+                    { type: "max", name: "最大值" },
+                    { type: "min", name: "最小值" }
+                  ]
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00e573"
+                    }
+                  }
+                }
+              },
+              {
+                name: "平行于y轴的趋势线",
+                type: "line",
+                markLine: {
+                  silent: true,
+                  data: [
+                    {
+                      yAxis: 200,
+                      lineStyle: {
+                        type: "dash",
+                        color: "#e6bf00 ",
+                        width: 3
+                      },
+                      label: {
+                        textStyle: {
+                          fontSize: 20
+                        }
+                      }
+                    }
+                  ],
+                  itemStyle: {
+                    normal: {
+                      borderWidth: 1,
+
+                      lineStyle: {
+                        type: "dash",
+                        color: "red ",
+                        width: 3
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+    },
+    //设置母液化料数据
+    setMyData() {
+      let option = {
+          title: {
+              textStyle: {
+                fontWeight: "normal", //标题颜色
+                color: "#fff",
+                fontSize: 28
+              }
+            },
+            legend: {
+              margin: 100,
+              x: "50%",
+              textStyle: {
+                fontSize: 28, //字体大小
+                color: "#fff", //字体颜色
+                borderColor: "blue"
+              }
+            },
+            tooltip: {
+              trigger: "axis",
+              axisPointer: {
+                type: "shadow" 
+              }
+            },
+            grid: {
+              left: "3%",
+              right: "4%",
+              bottom: "11%",
+              containLabel: true
+            },
+            xAxis: {
+              axisLabel: {
+                formatter: "{value}",
+                color: "white",
+                fontSize: 35
+              }
+            },
+            yAxis: {
+              axisLine: {
+                lineStyle: {
+                  color: "#354875",
+                  width: 2
+                }
+              },
+              axisLabel: {
+                formatter: "{value}",
+                color: "white",
+                fontSize: 22
+              },
+              splitLine: {
+                lineStyle: {
+                  type: "dashed",
+                  color: "#354875"
+                }
+              },
+              type: "category",
+              data: [
+                "E机",
+                "D机",
+                "C机",
+                "B机",
+                "A机",
+              ]
+            },
+            calculable: true,
+            animationDurationUpdate: 1200,
+            series: [
+              {
+                name: "靛蓝前实际值",
+                type: "bar",
+                barWidth: 30,
+                label: {
+                  normal: {
+                    show: true,
+                    position: "right",
+                    textStyle: {
+                      color: "white",
+                      fontSize: 25
+                    }
+                  }
+                },
+                barGap: "-100%",
+                data: [0,10,20,30] // 母液数据
+              },
+              {
+                name: "靛蓝前标准值",
+                type: "bar",
+                barWidth: 30,
+                // stack: '总量',
+                itemStyle: {
+                  normal: {
+                    color: "rgba(237,125,49, 0)",
+                    borderColor: "#fbfa50",
+                    borderWidth: "5"
+                  }
+                },
+                label: {
+                  normal: {
+                    show: true,
+                    position: "inside",
+                    textStyle: {
+                      //数值样式
+                      color: "fbfa50",
+                      fontSize: 25
+                    }
+                  }
+                },
+
+                data: [0,10,20,30]
+              },
+               {
+                name: "靛蓝前实际值",
+                type: "bar",
+                barWidth: 30,
+                label: {
+                  normal: {
+                    show: true,
+                    position: "right",
+                    textStyle: {
+                      color: "white",
+                      fontSize: 25
+                    }
+                  }
+                },
+                barGap: "-100%",
+                data: [0,10,20,30] // 母液数据
+              },
+              {
+                name: "靛蓝前标准值",
+                type: "bar",
+                barWidth: 30,
+                // stack: '总量',
+                itemStyle: {
+                  normal: {
+                    color: "rgba(237,125,49, 0)",
+                    borderColor: "#fbfa50",
+                    borderWidth: "5"
+                  }
+                },
+                label: {
+                  normal: {
+                    show: true,
+                    position: "inside",
+                    textStyle: {
+                      //数值样式
+                      color: "fbfa50",
+                      fontSize: 25
+                    }
+                  }
+                },
+
+                data: [0,80,90,100]
+              }
+            ]
+      }
+      return option
+    },
+    
+    //设置上面水汽的基本设置
+    setShuiqiData(data, sj, bz, colorsj, colorbz) {
+      let option = {
+          tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                  type: 'shadow'
+              }
+          },
+          legend: {
+              margin: 100,
+              x: "50%",
+              textStyle: {
+                fontSize: 28, //字体大小
+                color: "#fff", //字体颜色
+                borderColor: "blue"
+              }
+          },
+            grid: {
+              // top: "20%",
+              left: "3%",
+              right: "4%",
+              bottom: "11%",
+              containLabel: true
+            },
+            xAxis: {
+              // type: 'value',
+              axisLabel: {
+                formatter: "{value}",
+                color: "white",
+                fontSize: 35
+              }
+            },
+            yAxis: {
+              axisLine: {
+                lineStyle: {
+                  color: "#354875",
+                  width: 2
+                }
+              },
+              axisLabel: {
+                formatter: "{value}",
+                color: "white",
+                // width:"8"
+                // fontSize:"30px"
+                fontSize: 22
+              },
+              splitLine: {
+                lineStyle: {
+                  type: "dashed",
+                  color: "#354875"
+                }
+              },
+              type: "category",
+              data: [
+                "E机",
+                "D机",
+                "C机",
+                "B机",
+                "A机",
+              ]
+            },
+            calculable: true,
+            animationDurationUpdate: 1200,
+            series: [
+              {
+                name: "实际值",
+                type: "bar",
+                barWidth: 30,
+                color: colorsj,//'#00c8e1',
+                label: {
+                  normal: {
+                    show: true,
+                    position: "right",
+                    textStyle: {
+                      //数值样式
+                      color: "#fff",
+                      fontSize: 25
+                    }
+                  }
+                },
+                barGap: "-100%",
+                data: this.returnShui(data,sj) 
+              },
+              {
+                name: "标准值",
+                type: "bar",
+                barWidth: 30,
+                itemStyle: {
+                  normal: {
+                    color: colorbz,//'#fbfa50',
+                    borderColor: "#fbfa50",
+                    borderWidth: "5"
+                  }
+                },
+                label: {
+                  normal: {
+                    show: true,
+                    position: "inside",
+                    textStyle: {
+                      //数值样式
+                      color: "fbfa50",
+                      fontSize: 25
+                    }
+                  }
+                },
+                data: this.returnShui(data, bz)//标准值
+              }
+            ]
+      };
+    return option
+    },
     //机台工艺执行时间基本设置
     setGyOption(dlqdd,dlqddbz,dlhtm,dlhtmbz,dl,dlbz,time) {
       let options = {
@@ -223,7 +635,7 @@ export default {
               data: time,
               axisLabel: {
                 color: "white",
-                fontSize: '50'
+                fontSize: '20'
               }
             },
             yAxis: {
@@ -305,7 +717,7 @@ export default {
                 }
               },
               {
-                name: "靛蓝前打底",
+                name: "靛蓝前打底标准",
                 type: "line",
                 // stack: '总量',
                 symbolSize: 10,
@@ -325,7 +737,7 @@ export default {
                 }
               },
               {
-                name: "靛蓝",
+                name: "靛蓝标准",
                 type: "line",
                 // stack: '总量',
                 symbolSize: 10,
@@ -345,7 +757,7 @@ export default {
                 }
               },
               {
-                name: "靛蓝后套面",
+                name: "靛蓝后套面标准",
                 type: "line",
                 // stack: '总量',
                 symbolSize: 10,
@@ -368,38 +780,462 @@ export default {
       }
       return options
     },
-    //机台工艺执行时间
-//     追加流量靛蓝前打底实际: 1.2
-// 追加流量靛蓝前打底标准: 5
-// 追加流量靛蓝后套面实际: 1.3
-// 追加流量靛蓝后套面标准: 7
-// 追加流量靛蓝实际: 8.2
-// 追加流量靛蓝标准: 6
+    setSrOption(dlqdd,dlqddbz,dlhtm,dlhtmbz,dl,dlbz,time) {
+      let options = {
+            color: ["#00ff0c", "#00eaff", "#ff6c00"],
+            title: {
+              text: "实际上染率（%）",
+              // subtext: "纯属虚构"
+              textStyle: {
+                fontWeight: "normal", //标题颜色
+                color: "#fff",
+                fontSize: 28
+              },
+              x: "5%"
+            },
+            tooltip: {
+              trigger: "axis"
+            },
+            legend: {
+              margin: 100,
+              data: ["上染率靛蓝前打底", "上染率靛蓝", "上染率靛蓝后套面"],
+              data: [
+                {
+                  name: "上染率靛蓝前打底",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#00ff0c" // 图例文字颜色
+                  }
+                },
+                {
+                  name: "上染率靛蓝",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#00eaff" // 图例文字颜色
+                  }
+                },
+                {
+                  name: "上染率靛蓝后套面",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#ff6c00" // 图例文字颜色
+                  }
+                }
+              ],
+              x: "60%",
+              textStyle: {
+                fontSize: 28 //字体大小
+              }
+            },
+
+            grid: {
+              left: "3%",
+              right: "4%",
+              bottom: "3%",
+              containLabel: true
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {}
+              }
+            },
+            xAxis: {
+              type: "category",
+              //线框颜色
+              axisLine: {
+                lineStyle: {
+                  color: "#354875",
+                  width: 2
+                }
+              },
+              boundaryGap: false,
+              data: time,
+              axisLabel: {
+                color: "white",
+                fontSize: '20'
+              }
+            },
+            yAxis: {
+              type: "value",
+              //线框颜色
+              axisLine: {
+                lineStyle: {
+                  color: "#354875",
+                  width: 2
+                }
+              },
+              axisLabel: {
+                formatter: "{value}",
+                color: "white"
+              },
+              splitLine: {
+                lineStyle: {
+                  type: "dashed",
+                  color: "#354875"
+                }
+              }
+            },
+            series: [
+              {
+                name: "上染率靛蓝前打底",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlqdd,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00ff0c"
+                    }
+                  }
+                }
+              },
+              {
+                name: "上染率靛蓝",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dl,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00eaff"
+                    }
+                  }
+                }
+              },
+              {
+                name: "上染率靛蓝后套面",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlhtm,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#ff6c00"
+                    }
+                  }
+                }
+              },
+              {
+                name: "上染率靛蓝前打底标准",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlqddbz,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00ff0c",
+                      type:'dotted'
+                    }
+                  }
+                }
+              },
+              {
+                name: "上染率靛蓝标准",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlbz,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00eaff",
+                      type:'dotted'
+                    }
+                  }
+                }
+              },
+              {
+                name: "上染率靛蓝后套面标准",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlhtmbz,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#ff6c00",
+                      type:'dotted'
+                    }
+                  }
+                }
+              },
+            ]
+      }
+      return options
+    },
+    //机台工艺过程
+    //"靛蓝浓度实际","靛蓝浓度标准","靛蓝前浓度实际","靛蓝前浓度标准","靛蓝后浓度标准",靛蓝后浓度标准
+     setJtOption(dlndsj, dlndbz, dlqndsj, dlqndbz, dlhndsj, dlhndbz,time) {
+      let options = {
+            color: ["#00ff0c", "#00eaff", "#ff6c00"],
+            title: {
+              text: "靛蓝浓度（g/L）",
+              // subtext: "纯属虚构"
+              textStyle: {
+                fontWeight: "normal", //标题颜色
+                color: "#fff",
+                fontSize: 28
+              },
+              x: "5%"
+            },
+            tooltip: {
+              trigger: "axis"
+            },
+            legend: {
+              margin: 100,
+              data: ["靛蓝浓度", "靛蓝前浓度", "靛蓝后浓度"],
+              data: [
+                {
+                  name: "靛蓝浓度",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#00ff0c" // 图例文字颜色
+                  }
+                },
+                {
+                  name: "靛蓝前浓度",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#00eaff" // 图例文字颜色
+                  }
+                },
+                {
+                  name: "靛蓝后浓度",
+                  //  icon : 'circle',
+                  textStyle: {
+                    color: "#ff6c00" // 图例文字颜色
+                  }
+                }
+              ],
+              x: "60%",
+              textStyle: {
+                fontSize: 28 //字体大小
+              }
+            },
+
+            grid: {
+              left: "3%",
+              right: "4%",
+              bottom: "3%",
+              containLabel: true
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {}
+              }
+            },
+            xAxis: {
+              type: "category",
+              //线框颜色
+              axisLine: {
+                lineStyle: {
+                  color: "#354875",
+                  width: 2
+                }
+              },
+              boundaryGap: false,
+              data: time,
+              axisLabel: {
+                color: "white",
+                fontSize: '20'
+              }
+            },
+            yAxis: {
+              type: "value",
+              //线框颜色
+              axisLine: {
+                lineStyle: {
+                  color: "#354875",
+                  width: 2
+                }
+              },
+              axisLabel: {
+                formatter: "{value}",
+                color: "white"
+              },
+              splitLine: {
+                lineStyle: {
+                  type: "dashed",
+                  color: "#354875"
+                }
+              }
+            },
+            series: [
+              {
+                name: "靛蓝浓度",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlndsj,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00ff0c"
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝前浓度",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlqndsj,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00eaff"
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝后浓度",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlhndsj,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#ff6c00"
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝浓度标准",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlndbz,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00ff0c",
+                      type:'dotted'
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝前浓度标准",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlqndbz,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#00eaff",
+                      type:'dotted'
+                    }
+                  }
+                }
+              },
+              {
+                name: "靛蓝后浓度标准",
+                type: "line",
+                // stack: '总量',
+                symbolSize: 10,
+                data: dlhndbz,
+                smooth: true,
+                serieslabel: {
+                  color: "white"
+                },
+                itemStyle: {
+                  normal: {
+                    lineStyle: {
+                      width: 4,
+                      color: "#ff6c00",
+                      type:'dotted'
+                    }
+                  }
+                }
+              },
+            ]
+      }
+      return options
+    },
     setZhixingShiJian() {
-      let params = new FormData();
-      params.append("machineNo",'A')
-      axios.post(this.baseUrl + '/getDatatuBiao65gongyizhixingxinxi',params).then(res => {
-        this.jtgyData = res.data.data;
-        // res.data.data.map((item, idx)=> {
-        //   this.ddsjData = 
-        //   // this.ddsjData.push(item['追加流量靛蓝前打底实际']);
-        //   // this.ddbzData.push(item['追加流量靛蓝前打底标准']);
-        // })
-        
+      axios.post(this.baseUrl + '/getDatatuBiao65gongyizhixingxinxi').then(res => {
+        this.jtgyData = res.data.data[0]['A机台数据'];
+        this.jtgyDataB = res.data.data[1]['B机台数据'];
+        this.jtgyDataC = res.data.data[2]['C机台数据'];
+        this.jtgyDataD = res.data.data[2]['C机台数据'];
+        this.jtgyDataE = res.data.data[2]['C机台数据'];
       })
     },
-    returnData() {
-//       追加流量靛蓝后套面实际: (...)
-// 追加流量靛蓝后套面标准: (...)
-// 追加流量靛蓝实际: (...)
-// 追加流量靛蓝标准: (...)
-//  "上染率靛蓝前打底标准": 0.5,
-//             "上染率靛蓝前打底实际": 0,
-//             "上染率靛蓝标准": 0.6,
-//             "上染率靛蓝实际": 0.88,
-//             "上染率靛蓝后套面标准": 0.7,
-//             "上染率靛蓝后套面实际": 0
-
+    setjitaiguochengjiancexinxi() {
+      axios.post(this.baseUrl + '/getDatatuBiao66gongyizhixingxinxi').then((res)=> {
+        this.gcDataA = res.data.data[0]['A机台数据'];
+        this.gcDataB = res.data.data[1]['B机台数据'];
+        this.gcDataC = res.data.data[2]['C机台数据'];
+        this.gcDataD = res.data.data[3]['D机台数据'];
+        this.gcDataE = res.data.data[4]['E机台数据'];
+      })
+    },
+    //左边表格图
+    returnData(dataList) {
       let dlqdd = [];
       let dlqddbz = [];
       let dlhtm = [];
@@ -416,14 +1252,14 @@ export default {
       let srhtm = [];
       let srData = [];
       let timer = []
-       this.jtgyData.map((item, idx)=> {
-         dlqdd.push(item['上染率靛蓝前打底实际'])
-         dlqddbz.push(item['上染率靛蓝前打底标准'])
-         dlhtm.push(item['上染率靛蓝实际'])
-         dlhtmbz.push(item['上染率靛蓝标准'])
-         dl.push(item['上染率靛蓝后套面实际'])
-         dlbz.push(item['上染率靛蓝后套面标准'])
-          //上染
+       dataList.map((item, idx)=> {
+         dlqdd.push(item['追加流量靛蓝前打底实际'])
+         dlqddbz.push(item['追加流量靛蓝前打底标准'])
+         dlhtm.push(item['追加流量靛蓝后套面实际'])
+         dlhtmbz.push(item['追加流量靛蓝后套面标准'])
+         dl.push(item['追加流量靛蓝实际'])
+         dlbz.push(item['追加流量靛蓝标准'])
+         //上染
         srqddbz.push(item['上染率靛蓝前打底标准'])
         srqdd.push(item['上染率靛蓝前打底实际'])
         srdlbz.push(item['上染率靛蓝标准'])
@@ -440,6 +1276,71 @@ export default {
           time: timer
         }
         return oData
+    },
+    //右边表格图
+//        "采集时间": "2020-07-10 17:27:07",
+//             "靛蓝浓度实际": "73.98",
+//             "靛蓝浓度标准": 73.2,
+//             "靛蓝ORP浓度实际": "809.25",
+//             "靛蓝ORP浓度标准": 0,
+//             "靛蓝前浓度实际": 0,
+//             "靛蓝前浓度标准": 0,
+//             "靛蓝前ORP浓度实际": 0,
+//             "靛蓝前ORP浓度标准": 0,
+//             "靛蓝后浓度实际": "5.82",
+//             "靛蓝后浓度标准": 5.0,
+//             "靛蓝后ORP浓度实际": "800.58",
+//             "靛蓝后ORP浓度标准": 0
+
+    returnDataNd(dataList) {
+      let dlnd = [];
+      let dlndbz = [];
+      let dlqnd = [];
+      let dlqndbz = [];
+      let dlhnd = [];
+      let dlhndbz = [];
+      let zhData = []
+      //上染率
+      let opdlnd = [];
+      let opdlndbz = [];
+      let opdlqnd = [];
+      let opdlqndbz = [];
+      let opdlhnd = [];
+      let opdlhndbz = [];
+      let srData = [];
+      let timer = []
+       dataList.map((item, idx)=> {
+         dlnd.push(item['靛蓝浓度实际'])
+         dlndbz.push(item['靛蓝浓度标准'])
+         dlqnd.push(item['靛蓝前浓度实际'])
+         dlqndbz.push(item['靛蓝前浓度标准'])
+         dlhnd.push(item['靛蓝后浓度实际'])
+         dlhndbz.push(item['靛蓝后浓度标准'])
+         //上染
+         opdlnd.push(item['靛蓝浓度实际'])
+         opdlndbz.push(item['靛蓝浓度标准'])
+         opdlqnd.push(item['靛蓝前浓度实际'])
+         opdlqndbz.push(item['靛蓝前浓度标准'])
+         opdlhnd.push(item['靛蓝后浓度实际'])
+         opdlhndbz.push(item['靛蓝后浓度标准'])
+        timer.push(item['采集时间'].slice(14,18))
+        })
+        zhData.push(dlnd,dlndbz,dlqnd,dlqndbz,dlhnd,dlhndbz)
+        srData.push(opdlnd,opdlndbz,opdlqnd,opdlqndbz,opdlhnd,opdlhndbz);
+        let oData = {
+          myData: zhData,
+          srData: srData,
+          time: timer
+        }
+        return oData
+    },
+    //公共使用数据处理图this.shuiyongliang
+     returnShui(dataName,name) {
+      let data = [];
+      dataName.map((item, idx) => {
+        data.push(item[name])
+      })
+      return data
     },
     //横向柱状图基本数据
     setOption() {
@@ -570,61 +1471,20 @@ export default {
     // 水能耗渲染数据
     setShuiData() {
        axios.post(this.baseUrl + '/getDatatuBiao62shuiyongliang').then(res => {
-        // console.log(res, "输出来水的数据1")
+        this.shuiyongliang = res.data.data
       })
     },
-
-    setShui() {
-      //水能耗
-      axios
-        .get(this.baseUrl + '/getDatatuBiao62shuiyongliang')
-        .then(res => {
-          var shuiA = "";
-          var shuiB = "";
-          var shuiC = "";
-          var shuiD = "";
-          var shuiE = "";
-          var datdashui = res.data.data;
-          for (let i = 0; i < datdashui.length; i++) {
-            if (datdashui[i].boardName == "A") {
-              console.log(datdashui[i].steam);
-
-              shuiA = datdashui[i].steam;
-            }
-            if (datdashui[i].boardName == "B") {
-              shuiB = datdashui[i].steam;
-            }
-            if (datdashui[i].boardName == "C") {
-              shuiC = datdashui[i].steam;
-            }
-            if (datdashui[i].boardName == "D") {
-              shuiD = datdashui[i].steam;
-            }
-            if (datdashui[i].boardName == "E") {
-              shuiE = datdashui[i].steam;
-            }
-          }
-          if (shuiA == "") {
-            shuiA = 0;
-          }
-          if (shuiB == "") {
-            shuiB = 0;
-          }
-          if (shuiC == "") {
-            shuiC = 0;
-          }
-          if (shuiD == "") {
-            shuiD = 0;
-          }
-          if (shuiE == "") {
-            shuiE = 0;
-          }
-
-          this.shui = [shuiE, shuiD, shuiC, shuiB, shuiA];
-          console.log(this.shui);
-        });
-
-      drawLine()
+    //汽耗能渲染数据
+    setQiData() {
+      axios.post(this.baseUrl + '/getDatatuBiao63qiyongliang').then((res)=> {
+        this.qishuiData = res.data.data
+      })
+    },
+    //母液耗能渲染数据
+    setmyData() {
+      axios.post(this.baseUrl + '/getDatatuBiao64muyeyongliang').then((res)=> {
+        this.muyeData = res.data.data
+      })
     },
     setData() {
       axios///getRunningBasicInfo
@@ -642,858 +1502,30 @@ export default {
     esc() {
       this.$router.push("/index");
     },
-    drawLine() {
-      //////////标准信息
-      axios.post(this.baseUrl + '/getDatatuBiao62shuiyongliang').then(res => {
-        console.log(res, "输出来水的数据")
-      })
-      axios
-        .get("/api/getControlStandardDaping", {
-          params: {
-            lineID: "all"
-          }
-        })
-        .then(res => {
-          console.log("biaozhun", res.data);
-          var qwe = res.data
-          /////////////水能耗
-          axios
-            .get("/api/getEnergyConsumptionChart", {
-              params: {
-                type: 2
-              }
-            })
-            .then(res => {
-              console.log("qwe",qwe);
-              
-              // console.log("resshui", res.data);
-              // this.tableData = res.data.data;
-              var shuiA = "";
-              var shuiB = "";
-              var shuiC = "";
-              var shuiD = "";
-              var shuiE = "";
-              var datdashui = res.data.data;
-              for (let i = 0; i < datdashui.length; i++) {
-                if (datdashui[i].boardName == "A") {
-                  // console.log(datdashui[i].steam);
-
-                  shuiA = datdashui[i].steam;
-                }
-                if (datdashui[i].boardName == "B") {
-                  shuiB = datdashui[i].steam;
-                }
-                if (datdashui[i].boardName == "C") {
-                  shuiC = datdashui[i].steam;
-                }
-                if (datdashui[i].boardName == "D") {
-                  shuiD = datdashui[i].steam;
-                }
-                if (datdashui[i].boardName == "E") {
-                  shuiE = datdashui[i].steam;
-                }
-              }
-              if (shuiA == "") {
-                shuiA = 0;
-              }
-              if (shuiB == "") {
-                shuiB = 0;
-              }
-              if (shuiC == "") {
-                shuiC = 0;
-              }
-              if (shuiD == "") {
-                shuiD = 0;
-              }
-              if (shuiE == "") {
-                shuiE = 0;
-              }
-
-              var shuibz = [this.bzA.waterInformationM,
-              this.bzB.waterInformationM,
-              this.bzC.waterInformationM,
-              this.bzD.waterInformationM,
-              this.bzE.waterInformationM]
-              console.log("shuibz1111111111111111111111111111111111");
-              
-              var shuiAll = [shuiE, shuiD, shuiC, shuiB, shuiA];
-              console.log(shuiAll);
-
-              // 水
-              let bar1 = this.$echarts.init(document.getElementById("myChart-bar1"));
-                console.log(bar1,"水水水")
-              // 水
-              bar1.setOption({
-                title: {
-                  textStyle: {
-                    fontWeight: "normal", //标题颜色
-                    color: "#fff",
-                    fontSize: 28
-                  }
-                },
-                legend: {
-                  margin: 100,
-                  data: ["标准值", "实际值"],
-                  x: "80%",
-                  textStyle: {
-                    fontSize: 28, //字体大小
-                    color: "#fff", //字体颜色
-                    borderColor: "blue"
-                  }
-                },
-                tooltip: {
-                  trigger: "axis",
-                  axisPointer: {
-                    type: "shadow" 
-                  }
-                },
-                grid: {//设置图表位置
-                  // top: "20%",
-                  left: "3%",
-                  right: "4%",
-                  bottom: "11%",
-                  containLabel: true
-                },
-                xAxis: {
-                  // type: 'value',
-                  axisLabel: {
-                    formatter: "{value}",
-                    color: "white",
-                    fontSize: 35
-                  }
-                },
-                yAxis: {
-                  axisLine: {
-                    lineStyle: {
-                      color: "#354875",
-                      width: 2
-                    }
-                  },
-                  axisLabel: {
-                    formatter: "{value}",
-                    color: "white",
-                    // width:"8"
-                    // fontSize:"30px"
-                    fontSize: 35
-                  },
-                  splitLine: {
-                    lineStyle: {
-                      type: "dashed",
-                      color: "#354875"
-                    }
-                  },
-                  type: "category",
-                  data: ["E机", "D机", "C机", "B机", "A机"]
-                },
-                calculable: true,
-                animationDurationUpdate: 1200,
-                series: [
-                  {
-                    name: "实际值",
-                    type: "bar",
-                    barWidth: 50,
-                    // stack: '总量',
-                    itemStyle: {
-                      color: "#00c8e0"
-                    },
-                    label: {
-                      normal: {
-                        show: true,
-                        position: "right",
-                        textStyle: {
-                          //数值样式
-                          color: "white",
-                          fontSize: 25
-                        }
-                      }
-                    },
-                    barGap: "-100%",
-                    // [320, 302, 301, 334, 390]
-                    data: shuiAll
-                  },
-                  {
-                    name: "标准值",
-                    type: "bar",
-                    barWidth: 50,
-                    // stack: '总量',
-                    itemStyle: {
-                      normal: {
-                        color: "rgba(237,125,49, 0)",
-                        borderColor: "#fef552",
-                        borderWidth: "6"
-                      }
-                    },
-                    label: {
-                      normal: {
-                        show: true,
-                        position: "top",
-                        textStyle: {
-                          //数值样式
-                          color: "white",
-                          fontSize: 25
-                        }
-                      }
-                    },
-
-                    data: [0.5, 0.5, 0.5, 0.5, 0.5]
-                  }
-                ]
-              });
-            });
-          // console.log(this.shui);
-        });
-
-      /////////////水蒸气能耗
-      axios
-        .get("/api/getEnergyConsumptionChart", {
-          params: {
-            type: 1
-          }
-        })
-        .then(res => {
-          // console.log("resqi", res.data);
-          // this.tableData = res.data.data;
-          var qiA = "";
-          var qiB = "";
-          var qiC = "";
-          var qiD = "";
-          var qiE = "";
-          var datdaqi = res.data.data;
-          for (let i = 0; i < datdaqi.length; i++) {
-            if (datdaqi[i].boardName == "A") {
-              console.log(datdaqi[i].water);
-
-              qiA = datdaqi[i].water;
-            }
-            if (datdaqi[i].boardName == "B") {
-              qiB = datdaqi[i].water;
-            }
-            if (datdaqi[i].boardName == "C") {
-              qiC = datdaqi[i].water;
-            }
-            if (datdaqi[i].boardName == "D") {
-              qiD = datdaqi[i].water;
-            }
-            if (datdaqi[i].boardName == "E") {
-              qiE = datdaqi[i].water;
-            }
-          }
-          if (qiA == "") {
-            qiA = 0;
-          }
-          if (qiB == "") {
-            qiB = 0;
-          }
-          if (qiC == "") {
-            qiC = 0;
-          }
-          if (qiD == "") {
-            qiD = 0;
-          }
-          if (qiE == "") {
-            qiE = 0;
-          }
-
-          var qiAll = [qiE, qiD, qiC, qiB, qiA];
-          // console.log(qiAll);
-
-          // 汽
-          let bar2 = this.$echarts.init(
-            document.getElementById("myChart-bar2")
-          );
-
-          // 汽
-          bar2.setOption({
-            title: {
-              // text: "单位（m²）",
-              // subtext: '纯属虚构'
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              }
-            },
-            legend: {
-              margin: 100,
-              data: ["标准值", "实际值"],
-              x: "80%",
-              x: "80%",
-              textStyle: {
-                fontSize: 28, //字体大小
-                color: "#fff", //字体颜色
-                borderColor: "blue"
-              }
-            },
-            // tooltip: {
-            //   trigger: "axis"
-            // },
-            // legend: {
-            //   data: ["标准值", "实际值"]
-            // },
-            // color: ["#fef552", "#4f80f7"],
-            tooltip: {
-              trigger: "axis",
-              axisPointer: {
-                // 坐标轴指示器，坐标轴触发有效
-                type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-              }
-            },
-            // legend: {
-            //     data: ['实际值', '标准值']
-            // },
-            grid: {
-              // top: "20%",
-              left: "3%",
-              right: "4%",
-              bottom: "11%",
-              containLabel: true
-            },
-            xAxis: {
-              // type: 'value',
-              axisLabel: {
-                formatter: "{value}",
-                color: "white",
-                fontSize: 35
-              }
-            },
-            yAxis: {
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white",
-                // width:"8"
-                // fontSize:"30px"
-                fontSize: 35
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              },
-
-              // axisLabel: {
-              //     // formatter: "{value}",
-              //     color: "white"
-              //     // width:"8"
-              //     // fontSize:"30px"
-              //   },
-              type: "category",
-              data: ["E机", "D机", "C机", "B机", "A机"]
-            },
-            calculable: true,
-            animationDurationUpdate: 1200,
-            series: [
-              {
-                name: "实际值",
-                type: "bar",
-                barWidth: 50,
-                // stack: '总量',
-                itemStyle: {
-                  color: "#e0bb00"
-                },
-                label: {
-                  normal: {
-                    show: true,
-                    position: "right",
-                    textStyle: {
-                      //数值样式
-                      color: "white",
-                      fontSize: 25
-                    }
-                  }
-                },
-                barGap: "-100%",
-                data: qiAll
-              },
-              {
-                name: "标准值",
-                type: "bar",
-                barWidth: 50,
-                // stack: '总量',
-                itemStyle: {
-                  normal: {
-                    color: "rgba(237,125,49, 0)",
-                    borderColor: "#51fcc0",
-                    borderWidth: "5"
-                  }
-                },
-                label: {
-                  normal: {
-                    show: true,
-                    position: "top",
-                    textStyle: {
-                      //数值样式
-                      color: "white",
-                      fontSize: 25
-                    }
-                  }
-                },
-
-                data: [2.75, 2.75, 2.75, 2.75, 2.75]
-              }
-            ]
-          });
-        });
-          var muyeAll = a3.data;
-          var muyeA = [];
-
-          var muyeB = [];
-          var muyeC = [];
-          var muyeD = [];
-          var muyeE = [];
-          var time = [];
-
-          var cumulantA = "";
-          var cumulantBA = "";
-          var cumulantAA = "";
-          var cumulantB = "";
-          var cumulantBB = "";
-          var cumulantAB = "";
-          var cumulantC = "";
-          var cumulantBC = "";
-          var cumulantAC = "";
-          var cumulantD = "";
-          var cumulantBD = "";
-          var cumulantAD = "";
-          var cumulantE = "";
-          var cumulantBE = "";
-          var cumulantAE = "";
-
-          for (let i = 0; i < muyeAll.length; i++) {
-            time.push(muyeAll[i].time);
-
-            if (muyeAll[i].boardName == "A") {
-              muyeA.push(muyeAll[i]);
-            }
-            if (muyeAll[i].boardName == "B") {
-              muyeB.push(muyeAll[i]);
-            }
-            if (muyeAll[i].boardName == "C") {
-              muyeC.push(muyeAll[i]);
-            }
-            if (muyeAll[i].boardName == "D") {
-              muyeD.push(muyeAll[i]);
-            }
-            if (muyeAll[i].boardName == "E") {
-              muyeE.push(muyeAll[i]);
-            }
-          }
-          for (let j = 0; j < muyeA.length; j++) {
-            var cumulantA = muyeA[j].cumulant; //靛蓝缸次累加量
-            var cumulantBA = muyeA[j].cumulantB; //靛蓝前缸次累加量
-            var cumulantAA = muyeA[j].cumulantA; //靛蓝后缸次累加量
-          }
-          for (let j = 0; j < muyeB.length; j++) {
-            var cumulantB = muyeB[j].cumulant; //靛蓝缸次累加量
-            var cumulantBB = muyeB[j].cumulantB; //靛蓝前缸次累加量
-            var cumulantAB = muyeB[j].cumulantA; //靛蓝后缸次累加量
-          }
-          for (let j = 0; j < muyeC.length; j++) {
-            var cumulantC = muyeC[j].cumulant; //靛蓝缸次累加量
-            var cumulantBC = muyeC[j].cumulantB; //靛蓝前缸次累加量
-            var cumulantAC = muyeC[j].cumulantA; //靛蓝后缸次累加量
-          }
-          for (let j = 0; j < muyeD.length; j++) {
-            var cumulantD = muyeD[j].cumulant; //靛蓝缸次累加量
-            var cumulantBD = muyeD[j].cumulantB; //靛蓝前缸次累加量
-            var cumulantAD = muyeD[j].cumulantA; //靛蓝后缸次累加量
-          }
-          for (let j = 0; j < muyeE.length; j++) {
-            var cumulantE = muyeE[j].cumulant; //靛蓝缸次累加量
-            var cumulantBE = muyeE[j].cumulantB; //靛蓝前缸次累加量
-            var cumulantAE = muyeE[j].cumulantA; //靛蓝后缸次累加量
-          }
-          if (cumulantA == "") {
-            cumulantA = 0;
-          }
-          if (cumulantBA == "") {
-            cumulantBA = 0;
-          }
-          if (cumulantAA == "") {
-            cumulantAA = 0;
-          }
-          if (cumulantB == "") {
-            cumulantB = 0;
-          }
-          if (cumulantBB == "") {
-            cumulantBB = 0;
-          }
-          if (cumulantAB == "") {
-            cumulantAB = 0;
-          }
-          if (cumulantC == "") {
-            cumulantC = 0;
-          }
-          if (cumulantBC == "") {
-            cumulantBC = 0;
-          }
-          if (cumulantAC == "") {
-            cumulantAC = 0;
-          }
-          if (cumulantD == "") {
-            cumulantD = 0;
-          }
-          if (cumulantBD == "") {
-            cumulantBD = 0;
-          }
-          if (cumulantAD == "") {
-            cumulantAD = 0;
-          }
-          if (cumulantE == "") {
-            cumulantE = 0;
-          }
-          if (cumulantBE == "") {
-            cumulantBE = 0;
-          }
-          if (cumulantAE == "") {
-            cumulantAE = 0;
-          }
-
-          var muyeshuju = [
-            cumulantE,
-            cumulantBE,
-            cumulantAE,
-            cumulantD,
-            cumulantBD,
-            cumulantAD,
-            cumulantC,
-            cumulantBC,
-            cumulantAC,
-            cumulantB,
-            cumulantBB,
-            cumulantAB,
-            cumulantA,
-            cumulantBA,
-            cumulantAA
-          ];
-          var muyeshuju11 = [
-            Number(cumulantE)*3,
-             Number(cumulantBE)*3,
-             Number(cumulantAE)*3,
-             Number(cumulantD)*3,
-             Number(cumulantBD)*3,
-             Number(cumulantAD)*3,
-             Number(cumulantC)*3,
-             Number(cumulantBC)*3,
-             Number(cumulantAC)*3,
-             Number(cumulantB)*3,
-             Number(cumulantBB)*3,
-             Number(cumulantAB)*3,
-             Number(cumulantA)*3,
-             Number(cumulantBA)*3,
-             Number(cumulantAA)*3
-          ];
-          // console.log("1111", muyeshuju, time);
-          // 母液用量
-          let bar3 = this.$echarts.init(
-            document.getElementById("myChart-bar3")
-          );
-
-          // 母液用量
-          bar3.setOption({
-            title: {
-              // text: "单位（m²）",
-              // subtext: '纯属虚构'
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              }
-            },
-            legend: {
-              margin: 100,
-              //   data: ["标准值", "实际值","靛蓝标准值", "靛蓝实际值"],
-              x: "50%",
-              textStyle: {
-                fontSize: 28, //字体大小
-                color: "#fff", //字体颜色
-                borderColor: "blue"
-              }
-            },
-            // tooltip: {
-            //   trigger: "axis"
-            // },
-            // legend: {
-            //   data: ["标准值", "实际值"]
-            // },
-            // color: ["#fef552", "#4f80f7"],
-            tooltip: {
-              trigger: "axis",
-              axisPointer: {
-                // 坐标轴指示器，坐标轴触发有效
-                type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-              }
-            },
-            // legend: {
-            //     data: ['实际值', '标准值']
-            // },
-            grid: {
-              // top: "20%",
-              left: "3%",
-              right: "4%",
-              bottom: "11%",
-              containLabel: true
-            },
-            xAxis: {
-              // type: 'value',
-              axisLabel: {
-                formatter: "{value}",
-                color: "white",
-                fontSize: 35
-              }
-            },
-            yAxis: {
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white",
-                // width:"8"
-                // fontSize:"30px"
-                fontSize: 22
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              },
-
-              // axisLabel: {
-              //     // formatter: "{value}",
-              //     color: "white"
-              //     // width:"8"
-              //     // fontSize:"30px"
-              //   },
-              type: "category",
-              data: [
-                "E机靛蓝",
-                "E机前打底",
-                "E机后套面",
-                "D机靛蓝",
-                "D机前打底",
-                "D机后套面",
-                "C机靛蓝",
-                "C机前打底",
-                "C机后套面",
-                "B机靛蓝",
-                "B机前打底",
-                "B机后套面",
-                "A机靛蓝",
-                "A机前打底",
-                "A机后套面"
-              ]
-            },
-            calculable: true,
-            animationDurationUpdate: 1200,
-            series: [
-              {
-                name: "实际值",
-                type: "bar",
-                barWidth: 30,
-                // stack: '总量',
-                itemStyle: {
-                  color: function(params) {
-                    // build a color map as your need.
-                    var colorList = [
-                      "#0487f9",
-                      "#ff7d89",
-                      "#ff7200",
-                      "#0487f9",
-                      "#ff7d89",
-                      "#ff7200",
-                      "#0487f9",
-                      "#ff7d89",
-                      "#ff7200",
-                      "#0487f9",
-                      "#ff7d89",
-                      "#ff7200",
-                      "#0487f9",
-                      "#ff7d89",
-                      "#ff7200"
-                    ];
-                    return colorList[params.dataIndex];
-                  }
-                },
-                label: {
-                  normal: {
-                    show: true,
-                    position: "right",
-                    textStyle: {
-                      //数值样式
-                      color: "white",
-                      fontSize: 25
-                    }
-                  }
-                },
-                barGap: "-100%",
-                data: muyeshuju // 母液数据
-              },
-              {
-                name: "标准值",
-                type: "bar",
-                barWidth: 30,
-                // stack: '总量',
-                itemStyle: {
-                  normal: {
-                    color: "rgba(237,125,49, 0)",
-                    borderColor: "#fbfa50",
-                    borderWidth: "5"
-                  }
-                },
-                label: {
-                  normal: {
-                    show: true,
-                    position: "inside",
-                    textStyle: {
-                      //数值样式
-                      color: "fbfa50",
-                      fontSize: 25
-                    }
-                  }
-                },
-
-                data:muyeshuju11
-              }
-            ]
-          });
-          let jyData = this.returnData();
-          // 机台工艺执行
-          let gyA1 = this.$echarts.init(
-            document.getElementById("myChart-gyA1")
-          );
-        //    let oData = {
-        //   myData: zhData,
-        //   srData: srData
-        // }
-        console.log(jyData.time,"输出时间看")
-          gyA1.setOption(this.setGyOption(jyData.myData[0],jyData.myData[1],jyData.myData[2],jyData.myData[3],jyData.myData[4],jyData.myData[5],jyData.time))
-          let gyA2 = this.$echarts.init(
-            document.getElementById("myChart-gyA2")
-          );
-          console.log(jyData.srData,"数出来这个数据")
-           gyA2.setOption(this.setGyOption(jyData.srData[0],jyData.srData[1],jyData.srData[2],jyData.srData[3],jyData.srData[4],jyData.srData[5],jyData.time))
-          let gyB1 = this.$echarts.init(
-            document.getElementById("myChart-gyB1")
-          );
-          //B机柜
-          let gyB2 = this.$echarts.init(
-            document.getElementById("myChart-gyB2")
-          );
-          let gyC1 = this.$echarts.init(
-            document.getElementById("myChart-gyC1")
-          );
-          let gyC2 = this.$echarts.init(
-            document.getElementById("myChart-gyC2")
-          );
-          let gyD1 = this.$echarts.init(
-            document.getElementById("myChart-gyD1")
-          );
-          let gyD2 = this.$echarts.init(
-            document.getElementById("myChart-gyD2")
-          );
-          let gyE1 = this.$echarts.init(
-            document.getElementById("myChart-gyE1")
-          );
-          let gyE2 = this.$echarts.init(
-            document.getElementById("myChart-gyE2")
-          );
-
-          // 机台工艺执行
-   
-          var guochengAll = a2.data;
-          //生产线划分
-          var guochengA = [];
-          var guochengB = [];
-          var guochengC = [];
-          var guochengD = [];
-          var guochengE = [];
-
-          //靛蓝   靛蓝浓度
-          var indigoConcentrationA = [];
-          var indigoConcentrationB = [];
-          var indigoConcentrationC = [];
-          var indigoConcentrationD = [];
-          var indigoConcentrationE = [];
-
-          //靛蓝 orp
-          var orpA = [];
-          var orpB = [];
-          var orpC = [];
-          console.log(orpC);
-          
-          var orpD = [];
-          var orpE = [];
-
-          //时间
-          var timeAs = [];
-          var timeBs = [];
-          var timeCs = [];
-          var timeDs = [];
-          var timeEs = [];
-
-          for (let i = 0; i < guochengAll.length; i++) {
-            if (guochengAll[i].boardName == "A") {
-              guochengA.push(guochengAll[i]);
-            }
-            if (guochengAll[i].boardName == "B") {
-              guochengB.push(guochengAll[i]);
-            }
-            if (guochengAll[i].boardName == "C") {
-              guochengC.push(guochengAll[i]);
-            }
-            if (guochengAll[i].boardName == "D") {
-              guochengD.push(guochengAll[i]);
-            }
-            if (guochengAll[i].boardName == "E") {
-              guochengE.push(guochengAll[i]);
-            }
-          }
-
-          //靛蓝浓度 orp 时间
-          for (let j = 0; j < guochengA.length; j++) {
-            indigoConcentrationA.push(guochengA[j].indigoConcentration);
-            orpA.push(guochengA[j].orp);
-            timeAs.push(guochengA[j].time);
-          }
-          for (let j = 0; j < guochengB.length; j++) {
-            indigoConcentrationB.push(guochengB[j].indigoConcentration);
-            orpB.push(guochengB[j].orp);
-            timeBs.push(guochengB[j].time);
-          }
-          for (let j = 0; j < guochengC.length; j++) {
-            indigoConcentrationC.push(guochengC[j].indigoConcentration);
-            orpC.push(guochengC[j].orp);
-            timeCs.push(guochengC[j].time);
-          }
-          for (let j = 0; j < guochengD.length; j++) {
-            indigoConcentrationD.push(guochengD[j].indigoConcentration);
-            orpD.push(guochengD[j].orp);
-            timeDs.push(guochengD[j].time);
-          }
-          for (let j = 0; j < guochengE.length; j++) {
-            indigoConcentrationE.push(guochengE[j].indigoConcentration);
-            orpE.push(guochengE[j].orp);
-            timeEs.push(guochengE[j].time);
-          }
-
-          // 机台过程检测信息
-          let myChartA1 = this.$echarts.init(
+    //水用量挂载
+    drawLineS() {
+        let bar1 = this.$echarts.init(document.getElementById("myChart-bar1"));
+        bar1.setOption(this.setShuiqiData(this.shuiyongliang, "实际用水","标准用水",'#00c8e1','#f2e950'))
+    },
+    //汽用量挂载
+    drawLineQ() {
+      let bar2 = this.$echarts.init(document.getElementById("myChart-bar2"));
+        bar2.setOption(this.setShuiqiData(this.qishuiData,"实际用汽","标准用汽",'#e1bb02','#52fcbc' ))
+    },
+    drawLineM() {
+      let bar3 = this.$echarts.init(document.getElementById("myChart-bar3"));
+      bar3.setOption(this.setMyData())
+    },
+    drawJtGc() {
+         let A = this.returnDataNd(this.gcDataA);
+         let myChartA1 = this.$echarts.init(
             document.getElementById("myChartA1")
           );
           let myChartA2 = this.$echarts.init(
             document.getElementById("myChartA2")
           );
+          console.log(A,"输出来一个数据八八八")
+          myChartA1.setOption(this.setJtOption(A.myData[0],A.myData[1],A.myData[2],A.myData[3],A.myData[4],A.myData[5],A.time))
           let myChartB1 = this.$echarts.init(
             document.getElementById("myChartB1")
           );
@@ -1519,1480 +1551,59 @@ export default {
             document.getElementById("myChartE2")
           );
 
-          myChartA1.setOption({
-            color: "#00e573",
-            title: {
-              text: "靛蓝浓度（g/L）",
-              x: "7%",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              }
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: [
-                {
-                  name: "靛蓝",
-                  textStyle: {
-                    color: "#00e573" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "80%",
-              textStyle: {
-                fontSize: 28 //字体大小
-                // color: "#ffffff" //字体颜色
-              }
-            },
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         dataView: {readOnly: false},
-            //         magicType: {type: ['line', 'bar']},
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeAs,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝",
-                type: "line",
-                symbolSize: 10,
-                data: indigoConcentrationA,
-                markPoint: {
-                  data: [
-                    { type: "max", name: "最大值" },
-                    { type: "min", name: "最小值" }
-                  ]
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00e573"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 200,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#e6bf00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          myChartA2.setOption({
-            color: "#ff9000",
-            title: {
-              text: "ORP",
-              x: "7%",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              }
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: [
-                {
-                  name: "靛蓝",
-                  textStyle: {
-                    color: "#ff9000" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "80%",
-              textStyle: {
-                fontSize: 28 //字体大小
-                // color: "#ffffff" //字体颜色
-              }
-            },
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         dataView: {readOnly: false},
-            //         magicType: {type: ['line', 'bar']},
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeAs,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝",
-                type: "line",
-                symbolSize: 10,
-                data: orpA,
-                markPoint: {
-                  data: [
-                    { type: "max", name: "最大值" },
-                    { type: "min", name: "最小值" }
-                  ]
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#ff9000"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 200,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00a8ff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          myChartB1.setOption({
-            color: "#00e573",
-            title: {
-              text: "靛蓝浓度（g/L）",
-              x: "7%",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              }
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: [
-                {
-                  name: "靛蓝",
-                  textStyle: {
-                    color: "#00e573" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "80%",
-              textStyle: {
-                fontSize: 28 //字体大小
-                // color: "#ffffff" //字体颜色
-              }
-            },
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         dataView: {readOnly: false},
-            //         magicType: {type: ['line', 'bar']},
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeBs,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝",
-                type: "line",
-                symbolSize: 10,
-                data: indigoConcentrationB,
-                markPoint: {
-                  data: [
-                    { type: "max", name: "最大值" },
-                    { type: "min", name: "最小值" }
-                  ]
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00e573"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 200,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#e6bf00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          myChartB2.setOption({
-            color: "#ff9000",
-            title: {
-              text: "ORP",
-              x: "7%",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              }
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: [
-                {
-                  name: "靛蓝",
-                  textStyle: {
-                    color: "#ff9000" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "80%",
-              textStyle: {
-                fontSize: 28 //字体大小
-                // color: "#ffffff" //字体颜色
-              }
-            },
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         dataView: {readOnly: false},
-            //         magicType: {type: ['line', 'bar']},
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeBs,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝",
-                type: "line",
-                symbolSize: 10,
-                data: orpB,
-                markPoint: {
-                  data: [
-                    { type: "max", name: "最大值" },
-                    { type: "min", name: "最小值" }
-                  ]
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#ff9000"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 250,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00a8ff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          myChartC1.setOption({
-            color: "#00e573",
-            title: {
-              text: "靛蓝浓度（g/L）",
-              x: "7%",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              }
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: [
-                {
-                  name: "靛蓝",
-                  textStyle: {
-                    color: "#00e573" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "80%",
-              textStyle: {
-                fontSize: 28 //字体大小
-                // color: "#ffffff" //字体颜色
-              }
-            },
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         dataView: {readOnly: false},
-            //         magicType: {type: ['line', 'bar']},
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeCs,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝",
-                type: "line",
-                symbolSize: 10,
-                data: indigoConcentrationC,
-                markPoint: {
-                  data: [
-                    { type: "max", name: "最大值" },
-                    { type: "min", name: "最小值" }
-                  ]
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00e573"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 200,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#e6bf00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          myChartC2.setOption({
-            color: "#ff9000",
-            title: {
-              text: "ORP",
-              x: "7%",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              }
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: [
-                {
-                  name: "靛蓝",
-                  textStyle: {
-                    color: "#ff9000" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "80%",
-              textStyle: {
-                fontSize: 28 //字体大小
-                // color: "#ffffff" //字体颜色
-              }
-            },
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         dataView: {readOnly: false},
-            //         magicType: {type: ['line', 'bar']},
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeCs,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝",
-                type: "line",
-                symbolSize: 10,
-                data: orpC,
-                markPoint: {
-                  data: [
-                    { type: "max", name: "最大值" },
-                    { type: "min", name: "最小值" }
-                  ]
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#ff9000"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 200,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00a8ff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          myChartD1.setOption({
-            color: "#00e573",
-            title: {
-              text: "靛蓝浓度（g/L）",
-              x: "7%",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              }
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: [
-                {
-                  name: "靛蓝",
-                  textStyle: {
-                    color: "#00e573" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "80%",
-              textStyle: {
-                fontSize: 28 //字体大小
-                // color: "#ffffff" //字体颜色
-              }
-            },
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         dataView: {readOnly: false},
-            //         magicType: {type: ['line', 'bar']},
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeDs,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝",
-                type: "line",
-                symbolSize: 10,
-                data: indigoConcentrationD,
-                markPoint: {
-                  data: [
-                    { type: "max", name: "最大值" },
-                    { type: "min", name: "最小值" }
-                  ]
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00e573"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 200,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#e6bf00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          myChartD2.setOption({
-            color: "#ff9000",
-            title: {
-              text: "ORP",
-              x: "7%",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              }
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: [
-                {
-                  name: "靛蓝",
-                  textStyle: {
-                    color: "#ff9000" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "80%",
-              textStyle: {
-                fontSize: 28 //字体大小
-                // color: "#ffffff" //字体颜色
-              }
-            },
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         dataView: {readOnly: false},
-            //         magicType: {type: ['line', 'bar']},
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeDs,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝",
-                type: "line",
-                symbolSize: 10,
-                data: orpD,
-                markPoint: {
-                  data: [
-                    { type: "max", name: "最大值" },
-                    { type: "min", name: "最小值" }
-                  ]
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#ff9000"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 200,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00a8ff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          myChartE1.setOption({
-            color: "#00e573",
-            title: {
-              text: "靛蓝浓度（g/L）",
-              x: "7%",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              }
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: [
-                {
-                  name: "靛蓝",
-                  textStyle: {
-                    color: "#00e573" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "80%",
-              textStyle: {
-                fontSize: 28 //字体大小
-                // color: "#ffffff" //字体颜色
-              }
-            },
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         dataView: {readOnly: false},
-            //         magicType: {type: ['line', 'bar']},
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeEs,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝",
-                type: "line",
-                symbolSize: 10,
-                data: indigoConcentrationE,
-                markPoint: {
-                  data: [
-                    { type: "max", name: "最大值" },
-                    { type: "min", name: "最小值" }
-                  ]
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#00e573"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 200,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#e6bf00 ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-          myChartE2.setOption({
-            color: "#ff9000",
-            title: {
-              text: "ORP",
-              x: "7%",
-              // subtext: "纯属虚构"
-              textStyle: {
-                fontWeight: "normal", //标题颜色
-                color: "#fff",
-                fontSize: 28
-              }
-            },
-            tooltip: {
-              trigger: "axis"
-            },
-            legend: {
-              margin: 100,
-              data: [
-                {
-                  name: "靛蓝",
-                  textStyle: {
-                    color: "#ff9000" // 图例文字颜色
-                  }
-                }
-              ],
-              x: "80%",
-              textStyle: {
-                fontSize: 28 //字体大小
-                // color: "#ffffff" //字体颜色
-              }
-            },
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         dataView: {readOnly: false},
-            //         magicType: {type: ['line', 'bar']},
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
-            xAxis: {
-              type: "category",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              boundaryGap: false,
-              data: timeEs,
-              axisLabel: {
-                color: "white"
-              }
-            },
-            yAxis: {
-              type: "value",
-              //线框颜色
-              axisLine: {
-                lineStyle: {
-                  color: "#354875",
-                  width: 2
-                }
-              },
-              axisLabel: {
-                formatter: "{value}",
-                color: "white"
-                // width:"8"
-                // fontSize:"30px"
-              },
-              splitLine: {
-                lineStyle: {
-                  type: "dashed",
-                  color: "#354875"
-                }
-              }
-            },
-            series: [
-              {
-                name: "靛蓝",
-                type: "line",
-                symbolSize: 10,
-                data: orpE,
-                markPoint: {
-                  data: [
-                    { type: "max", name: "最大值" },
-                    { type: "min", name: "最小值" }
-                  ]
-                },
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 4,
-                      color: "#ff9000"
-                    }
-                  }
-                }
-              },
-              {
-                name: "平行于y轴的趋势线",
-                type: "line",
-                //data:[0],
-                markLine: {
-                  silent: true,
-                  data: [
-                    {
-                      yAxis: 200,
-                      lineStyle: {
-                        type: "dash",
-                        color: "#00a8ff ",
-                        width: 3
-                      },
-                      label: {
-                        // formatter: "12.6",
-                        textStyle: {
-                          fontSize: 20
-                          // fontWeight: "bolder"
-                        }
-                      }
-                    }
-                  ],
-                  itemStyle: {
-                    normal: {
-                      borderWidth: 1,
-
-                      lineStyle: {
-                        type: "dash",
-                        color: "red ",
-                        width: 3
-                      }
-
-                      // label: {
-                      //   formatter: "12.6",
-                      //   textStyle: {
-                      //     fontSize: 20,
-                      //     fontWeight: "bolder"
-                      //   }
-                      // }
-                    }
-                  }
-                }
-              }
-            ]
-          });
-        // });
-
-      // console.log(this.dianlanA1);
-      // console.log(this.dianlanTimeA1);
+    },
+    // setMyData
+    drawLine() {
+          // 机台工艺执行
+          let gyA1 = this.$echarts.init(
+            document.getElementById("myChart-gyA1")
+          );
+           let jyData = this.returnData(this.jtgyData);
+          gyA1.setOption(this.setGyOption(jyData.myData[0],jyData.myData[1],jyData.myData[2],jyData.myData[3],jyData.myData[4],jyData.myData[5],jyData.time))
+          let gyA2 = this.$echarts.init(
+            document.getElementById("myChart-gyA2")
+          );
+            gyA2.setOption(this.setSrOption(jyData.srData[0],jyData.srData[1],jyData.srData[2],jyData.srData[3],jyData.srData[4],jyData.srData[5],jyData.time))
+         let jyDataB = this.returnData(this.jtgyDataB);
+         let gyB1 = this.$echarts.init(
+            document.getElementById("myChart-gyB1")
+          );
+          gyB1.setOption(this.setGyOption(jyDataB.myData[0],jyDataB.myData[1],jyDataB.myData[2],jyDataB.myData[3],jyDataB.myData[4],jyDataB.myData[5],jyDataB.time))
+          let gyB2 = this.$echarts.init(
+            document.getElementById("myChart-gyB2")
+          );
+          gyB2.setOption(this.setSrOption(jyDataB.srData[0],jyDataB.srData[1],jyDataB.srData[2],jyDataB.srData[3],jyDataB.srData[4],jyDataB.srData[5],jyDataB.time))
+        
+          //c机器
+          let jyDataC = this.returnData(this.jtgyDataC);
+          let gyC1 = this.$echarts.init(
+            document.getElementById("myChart-gyC1")
+          );
+           gyC1.setOption(this.setGyOption(jyDataC.myData[0],jyDataC.myData[1],jyDataC.myData[2],jyDataC.myData[3],jyDataC.myData[4],jyDataC.myData[5],jyDataC.time))
+          let gyC2 = this.$echarts.init(
+            document.getElementById("myChart-gyC2")
+          );
+           gyC2.setOption(this.setSrOption(jyDataC.srData[0],jyDataC.srData[1],jyDataC.srData[2],jyDataC.srData[3],jyDataC.srData[4],jyDataC.srData[5],jyDataC.time))
+        //D机器
+        let jyDataD = this.returnData(this.jtgyDataD);
+         let gyD1 = this.$echarts.init(
+            document.getElementById("myChart-gyD1")
+          );
+          let gyD2 = this.$echarts.init(
+            document.getElementById("myChart-gyD2")
+          );
+          gyD1.setOption(this.setGyOption(jyDataD.myData[0],jyDataD.myData[1],jyDataD.myData[2],jyDataD.myData[3],jyDataD.myData[4],jyDataD.myData[5],jyDataD.time))
+          gyD2.setOption(this.setSrOption(jyDataD.srData[0],jyDataD.srData[1],jyDataD.srData[2],jyDataD.srData[3],jyDataD.srData[4],jyDataD.srData[5],jyDataD.time))
+          //E机器
+          let jyDataE = this.returnData(this.jtgyDataE);
+          let gyE1 = this.$echarts.init(
+            document.getElementById("myChart-gyE1")
+          );
+          let gyE2 = this.$echarts.init(
+            document.getElementById("myChart-gyE2")
+          );
+          gyE1.setOption(this.setGyOption(jyDataE.myData[0],jyDataE.myData[1],jyDataE.myData[2],jyDataE.myData[3],jyDataE.myData[4],jyDataE.myData[5],jyDataE.time))
+          gyE2.setOption(this.setSrOption(jyDataE.srData[0],jyDataE.srData[1],jyDataE.srData[2],jyDataE.srData[3],jyDataE.srData[4],jyDataE.srData[5],jyDataE.time))
     }
   }
 };
