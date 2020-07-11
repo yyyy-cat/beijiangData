@@ -998,8 +998,8 @@ export default {
       return options
     },
     //机台工艺过程
-    //"靛蓝浓度实际","靛蓝浓度标准","靛蓝前浓度实际","靛蓝前浓度标准","靛蓝后浓度实际",靛蓝后浓度标准
-     setJtOption(dlndsj, dlndbz, dlqndsj, dlqndbz, dlhndsj, dlhndbz,time,dlndsjname, dlndbzname, dlqndsjname, dlqndbzname, dlhndsjname, dlhndbzname) {
+    //"靛蓝浓度实际","靛蓝浓度标准","靛蓝前浓度实际","靛蓝前浓度标准","靛蓝后浓度标准",靛蓝后浓度标准
+     setJtOption(dlndsj, dlndbz, dlqndsj, dlqndbz, dlhndsj, dlhndbz,time) {
       let options = {
             color: ["#00ff0c", "#00eaff", "#ff6c00"],
             title: {
@@ -1017,24 +1017,24 @@ export default {
             },
             legend: {
               margin: 100,
-              data: ["靛蓝前打底", "靛蓝", "靛蓝后套面"],
+              data: ["靛蓝浓度", "靛蓝前浓度", "靛蓝后浓度"],
               data: [
                 {
-                  name: "靛蓝前打底",
+                  name: "靛蓝浓度",
                   //  icon : 'circle',
                   textStyle: {
                     color: "#00ff0c" // 图例文字颜色
                   }
                 },
                 {
-                  name: "靛蓝",
+                  name: "靛蓝前浓度",
                   //  icon : 'circle',
                   textStyle: {
                     color: "#00eaff" // 图例文字颜色
                   }
                 },
                 {
-                  name: "靛蓝后套面",
+                  name: "靛蓝后浓度",
                   //  icon : 'circle',
                   textStyle: {
                     color: "#ff6c00" // 图例文字颜色
@@ -1096,7 +1096,7 @@ export default {
             },
             series: [
               {
-                name: dlndsjname,
+                name: "靛蓝浓度",
                 type: "line",
                 // stack: '总量',
                 symbolSize: 10,
@@ -1115,7 +1115,7 @@ export default {
                 }
               },
               {
-                name: dlqndsjname,
+                name: "靛蓝前浓度",
                 type: "line",
                 // stack: '总量',
                 symbolSize: 10,
@@ -1134,7 +1134,7 @@ export default {
                 }
               },
               {
-                name: dlhndsjname,
+                name: "靛蓝后浓度",
                 type: "line",
                 // stack: '总量',
                 symbolSize: 10,
@@ -1153,7 +1153,7 @@ export default {
                 }
               },
               {
-                name: dlndbzname,
+                name: "靛蓝浓度标准",
                 type: "line",
                 // stack: '总量',
                 symbolSize: 10,
@@ -1173,7 +1173,7 @@ export default {
                 }
               },
               {
-                name: dlqndbzname,
+                name: "靛蓝前浓度标准",
                 type: "line",
                 // stack: '总量',
                 symbolSize: 10,
@@ -1193,7 +1193,7 @@ export default {
                 }
               },
               {
-                name: dlhndbzname,
+                name: "靛蓝后浓度标准",
                 type: "line",
                 // stack: '总量',
                 symbolSize: 10,
@@ -1525,7 +1525,7 @@ export default {
             document.getElementById("myChartA2")
           );
           console.log(A,"输出来一个数据八八八")
-          myChartA1.setOption(this.setJtOption(A.myData[0],A.myData[1],A.myData[2],A.myData[3],A.myData[4],A.myData[5],A.time,"靛蓝浓度实际","靛蓝浓度标准","靛蓝前浓度实际","靛蓝前浓度标准","靛蓝后浓度实际","靛蓝后浓度标准"))
+          myChartA1.setOption(this.setJtOption(A.myData[0],A.myData[1],A.myData[2],A.myData[3],A.myData[4],A.myData[5],A.time))
           let myChartB1 = this.$echarts.init(
             document.getElementById("myChartB1")
           );
