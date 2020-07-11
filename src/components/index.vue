@@ -27,10 +27,10 @@
         <span :style="fontCol1">韶关</span>
         <img :src="sximg1" />
       </div>
-      <div class="citys" @click="addss()">
+      <!-- <div class="citys" @click="addss()">
         <span :style="fontCol2">香港</span>
         <img :src="sximg2" />
-      </div>
+      </div> -->
       <div class="cityss" @click="addsss()">
         <span :style="fontCol3">越南</span>
         <img :src="sximg3" />

@@ -227,7 +227,7 @@ export default {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value}',
+                        formatter: 0,
                         textStyle: { 
                             fontSize : 30,
                             color: opt.zts     
@@ -240,7 +240,7 @@ export default {
                 {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value}',
+                        formatter: 100,
                         textStyle: { 
                             fontSize : 30   
                             }

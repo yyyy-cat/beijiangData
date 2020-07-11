@@ -269,7 +269,7 @@ export default {
             yAxis: [
                 {
                     type: 'value',
-                     name: this.setDw(),
+                    name: this.setDw(),
                      nameTextStyle: {
                         color: '#00ecfc',
                         fontSize: 40,
@@ -279,19 +279,21 @@ export default {
                         formatter: '{value}',
                         textStyle: { 
                             fontSize : 30,
-                            color: '#00ecfc'   
+                            color: '#00ecfc'    
                             }
-                    }
+                    },
                 },
                 {
                     type: 'value',
-                   
                     axisLabel: {
                         formatter: '{value}',
                         textStyle: { 
-                            fontSize : 30 ,
-                            color: 'none'  
+                            fontSize : 30,
+                            color: '#00ecfc'
                             }
+                    },
+                    nameTextStyle: {
+                        fontSize: 30,
                     },
                 }
             ],

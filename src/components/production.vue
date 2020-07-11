@@ -132,62 +132,34 @@
           <p>2.能耗信息（水）</p>
           <div class="mother-shuju-table1">
             <el-table
+              height="900"
               :data="tableDataAA2"
               border
               style="width: 100%;"
             >
               <el-table-column prop="采集时间" label="采集时间" align="center" width="560">
-                <!--<template slot-scope="scope">-->
-                  <!--<span>{{timestampToTime(scope.row.stockTime)}}</span>-->
-                <!--</template>-->
               </el-table-column>
               <el-table-column prop="用水信息(吨)" label="用水信息（吨）" align="center" width="600"></el-table-column>
               <el-table-column prop="用水信息(吨/万米)" label="用水信息（吨/万米）" align="center" width="740"></el-table-column>
             </el-table>
           </div>
-
-          <!-- <div class="mother-shuju-two">
-            <div class="mother-shuju-three2">
-              <el-pagination
-                :page-size="pagesize"
-                :current-page.sync="currentPageAA2"
-                background
-                layout="jumper , prev, pager, next"
-                :total="totalAA2"
-              ></el-pagination>
-            </div>
-          </div>-->
         </div>
         <!-- AA3 -->
         <div class="mother-shuju-one">
           <p>3.能耗信息（汽）</p>
           <div class="mother-shuju-table1">
             <el-table
+              height="900"
               :data="tableDataAA3"
               border
               style="width: 100%;"
             >
               <el-table-column prop="采集时间" label="采集时间" align="center" width="560">
-                <!--<template slot-scope="scope">-->
-                  <!--<span>{{timestampToTime(scope.row.stockTime)}}</span>-->
-                <!--</template>-->
               </el-table-column>
               <el-table-column prop="用汽信息(m³)" label="用汽信息（m³）" align="center" width="600"></el-table-column>
               <el-table-column prop="用汽信息(m³/万米)" label="用汽信息（m³/万米）" align="center" width="740"></el-table-column>
             </el-table>
           </div>
-
-          <!-- <div class="mother-shuju-two">
-            <div class="mother-shuju-three2">
-              <el-pagination
-                :page-size="pagesize"
-                :current-page.sync="currentPageAA3"
-                background
-                layout="jumper , prev, pager, next"
-                :total="totalAA3"
-              ></el-pagination>
-            </div>
-          </div>-->
         </div>
 
         <!-- AA5 -->

@@ -100,21 +100,10 @@
         <button style="float: left; line-height: 120px;" @click="tijiao">查&nbsp;&nbsp;&nbsp;询</button>
       </div>
     </div>
-    <!-- <p> -->
-    <!-- <button @click="hidShow('母液用料分析')">母液用料分析</button>
-      <button @click="hidShow('能耗分析')">能耗分析</button>
-      <button @click="hidShow('母液检测分析')">母液检测分析</button>
-    <button @click="hidShow('底水检测')">底水检测</button>-->
-    <!-- <label style="font-size: 50px; "><input type="radio" name="qwe" id="a" v-model="bol[0]" style="font-size: 50px;" >母液用料分析</label>
-      <label style="font-size: 50px; "><input type="radio" name="qwe" id="a" v-model="bol[1]" style="font-size: 50px;" >能耗分析</label>
-      <label style="font-size: 50px; "><input type="radio" name="qwe" id="a" v-model="bol[2]" style="font-size: 50px;" >母液检测分析</label>
-    <label style="font-size: 50px; "><input type="radio" name="qwe" id="a" v-model="bol[3]" style="font-size: 50px;" >底水检测</label>-->
-
-    <!-- </p> -->
     <ul class="ul">
       <!-- <li @click="cur=0" :class="{active:cur==5}">母液用料分析</li> -->
       <li @click="aaa(0)" :class="{active:cur==0}">母液用料分析</li>
-      <li @click="aaa(1)" :class="{active:cur==1}">能耗分析</li>
+      <!-- <li @click="aaa(1)" :class="{active:cur==1}">能耗分析</li> -->
       <li @click="aaa(2)" :class="{active:cur==2}">母液检测分析</li>
       <li @click="aaa(3)" :class="{active:cur==3}">底水检测</li>
       <!-- <li @click="cur=4" :class="{active:cur==4}">E机</li> -->
@@ -126,7 +115,7 @@
       <div class="mother-shuju-one" v-show="cur==0" style="color: white !important;">
         <div class="mother-shuju-table1 historyShow" style="color: white !important;">
           <el-table
-
+            height="1850"
             :data="tableData1"
             border
             style="width: 103%;color: white !important;"
@@ -195,23 +184,12 @@
             </el-table-column>
           </el-table>
         </div>
-        <!-- <div class="mother-shuju-two">
-            <div class="mother-shuju-three1">
-              <el-pagination
-                :page-size="pagesize"
-                :current-page.sync="currentPage"
-                background
-                layout="jumper , prev, pager, next"
-                :total="total"
-              ></el-pagination>
-            </div>
-        </div>-->
       </div>
       <!-- AA2 -->
       <div class="mother-shuju-one" v-show="cur==1">
         <div class="mother-shuju-table1">
           <el-table
-
+            height="1850"
             :data="tableData2"
             border
             style="width: 40%; margin: 0 auto; color: white;"
@@ -228,24 +206,12 @@
             <el-table-column prop="气_偏差" label="气_偏差" align="center" width="300"></el-table-column>
           </el-table>
         </div>
-
-        <!-- <div class="mother-shuju-two">
-            <div class="mother-shuju-three2">
-              <el-pagination
-                :page-size="pagesize"
-                :current-page.sync="currentPage"
-                background
-                layout="jumper , prev, pager, next"
-                :total="total"
-              ></el-pagination>
-            </div>
-        </div>-->
       </div>
       <!-- AA3 -->
       <div class="mother-shuju-one" v-show="cur==2">
         <div class="mother-shuju-table1" style="color: white;">
           <el-table
-
+            height="1850"
             :data="tableData3"
             border
             style="width: 90%; margin: 0 auto; color: white;"
@@ -274,23 +240,12 @@
           </el-table>
         </div>
 
-        <!-- <div class="mother-shuju-two">
-            <div class="mother-shuju-three2">
-              <el-pagination
-                :page-size="pagesize"
-                :current-page.sync="currentPage"
-                background
-                layout="jumper , prev, pager, next"
-                :total="total"
-              ></el-pagination>
-            </div>
-        </div>-->
       </div>
       <!-- AA4 -->
       <div class="mother-shuju-one" v-show="cur==3">
         <div class="mother-shuju-table1" id="history">
           <el-table
-
+            height="1850"
             :data="tableData4"
             border
             style="width: 54.7%; margin: 0 auto; color: white;"

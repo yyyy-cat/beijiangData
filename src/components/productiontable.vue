@@ -1878,6 +1878,7 @@ export default {
 }
 /deep/.cell{
   line-height: 60px;
+  padding: 10px!important;
 }
 * {
   margin: 0;
@@ -1910,7 +1911,7 @@ a {
   text-align: center;
   font-size: 60px;
   color: white;
-  padding: 18px 0 40px;
+  padding: 18px 0 20px;
 }
 
 .protab-sc_bg4 p,
